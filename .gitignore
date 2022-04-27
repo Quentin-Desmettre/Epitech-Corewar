@@ -1,0 +1,7 @@
+*
+!*.h
+!.gitignore
+!*.c
+!Makefile
+!*/
+tests_folder/
