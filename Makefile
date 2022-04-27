@@ -9,6 +9,10 @@ all	:
 	make -C asm
 	make -C corewar
 
+re	:
+	make re -C asm
+	make re -C corewar
+
 clean	:
 	make clean -C asm
 	make clean -C corewar
