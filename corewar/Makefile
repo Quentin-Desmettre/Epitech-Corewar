@@ -15,7 +15,7 @@ FLAGS	=	-Wall -Wextra -g
 
 LIB	=	-L ../lib/my -l my
 
-INCLUDE	=	-I ../lib/my/include
+INCLUDE	=	-I ../lib/my/include -I ../include
 
 CFLAGS	=	-Wall -Wextra $(LIB) $(INCLUDE)
 
