@@ -53,20 +53,14 @@ typedef struct op_s {
     #define REG_SIZE        DIR_SIZE
 
 /*
-** op_tab
-*/
-extern  op_t    op_tab[];
-
-/*
 ** header
 */
     #define PROG_NAME_LENGTH        128
     #define COMMENT_LENGTH          2048
-
-typedef struct header_s
-{
-    int  magic;
     #define COREWAR_EXEC_MAGIC      0xea83f3        /* why not */
+
+typedef struct header_s {
+    int  magic;
     char prog_name[PROG_NAME_LENGTH + 1];
     int  prog_size;
     char comment[COMMENT_LENGTH + 1];
@@ -79,7 +73,7 @@ typedef struct header_s
     #define CYCLE_DELTA     5
     #define NBR_LIVE        40
 
-op_t op_tab[] = {
+static const op_t op_tab[] = {
     {"live", 1, {T_DIR}, 1, 10, "alive"},
     {"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load"},
     {"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store"},
@@ -104,5 +98,27 @@ op_t op_tab[] = {
     {"aff", 1, {T_REG}, 16, 2, "aff"},
     {0, 0, {0}, 0, 0, 0}
 };
+
+typedef struct champ_s{
+    int champ_nbr;
+    char *name_champ;
+    int nb_is_impose;
+    struct champ_s *next;
+} champ_t;
+
+typedef struct {
+    int adress_act;
+    int adress_next;
+    int num_champ;
+    int index;
+    int num_impose[4];
+    int last_opt;
+    int dump_cycle;
+} param_champ_t;
+
+int check_argv(int ac, char **av, int *dump_cycle);
+void check_dump(param_champ_t *param, char *arg);
+void check_num(param_champ_t *param, char *arg);
+void check_address(param_champ_t *param, char *arg);
 
 #endif

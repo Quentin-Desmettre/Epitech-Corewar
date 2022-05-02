@@ -34,12 +34,28 @@ static int nbr_check(char const *str, int *range, int *sign, int *is_error)
     return (my_number);
 }
 
+int check_str(int *is_error, char const *str)
+{
+    int i = 0;
+
+    if (str[0] == '-')
+        i++;
+    for (; str[i]; i++)
+        if (str[i] <= '0' || str[i] >= '9') {
+            *is_error = 1;
+            return 1;
+        }
+    return 0;
+}
+
 int my_getnbr(char const *str, int *is_error)
 {
     int sign = 1;
     int range = 0;
 
     *is_error = 0;
+    if (check_str(is_error, str))
+        return 0;
     sign_check(&sign, str, &range);
     return nbr_check(str, &range, &sign, is_error);
 }

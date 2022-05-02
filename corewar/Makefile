@@ -6,6 +6,8 @@
 ##
 
 SRC	=	main.c \
+		arg_manage.c \
+		check_args.c
 
 OBJ	=	$(SRC:.c=.o)
 
