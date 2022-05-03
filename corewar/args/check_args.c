@@ -44,12 +44,12 @@ void check_address(param_champ_t *param, char *arg)
 {
     int error = 0;
 
-    if (param->adress_next != 0) {
+    if (param->adress_next != -1) {
         write(2, "Invalid option.\n", 16);
         exit(84);
     }
     param->adress_next = my_getnbr(arg, &error);
-    if (error) {
+    if (error || param->adress_next <= 0) {
         write(2, "-a argument ", 12);
         my_putstr(arg);
         write(2, " is invalid.\n Enter a valid memory offset.\n", 43);

@@ -41,7 +41,7 @@ int check_str(int *is_error, char const *str)
     if (str[0] == '-')
         i++;
     for (; str[i]; i++)
-        if (str[i] <= '0' || str[i] >= '9') {
+        if (str[i] < '0' || str[i] > '9') {
             *is_error = 1;
             return 1;
         }

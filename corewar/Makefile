@@ -5,11 +5,15 @@
 ## Makefile
 ##
 
-SRC	=	main.c \
-		arg_manage.c \
-		check_args.c
+SRC	=	main.c
 
-OBJ	=	$(SRC:.c=.o)
+ARGS	=	args/arg_manage.c \
+			args/check_args.c \
+			args/check_champ.c \
+			args/num_champ.c \
+			args/create_champ.c
+
+OBJ	=	$(SRC:.c=.o) $(ARGS:.c=.o)
 
 NAME	=	corewar
 
@@ -40,4 +44,4 @@ fclean: clean
 re:	fclean all
 
 valgrind:
-	gcc -o $(NAME) $(FLAGS) $(SRC) $(LIB) $(INCLUDE) -g
+	gcc -o $(NAME) $(FLAGS) $(SRC) $(ARGS) $(LIB) $(INCLUDE) -g

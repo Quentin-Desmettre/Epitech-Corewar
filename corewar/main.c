@@ -25,9 +25,24 @@ int help_message(char *name_binarie)
     return 0;
 }
 
+void print_info_champ(champ_t *info_champ)
+{
+    while (info_champ) {
+        my_putstr("Champ name : ");
+        my_putstr(info_champ->name_champ);
+        my_putstr("\nChamp nbr : ");
+        my_put_nbr(info_champ->champ_nbr);
+        my_putstr("\nChamp adress : ");
+        my_put_nbr(info_champ->adress);
+        my_putchar('\n');
+        info_champ = info_champ->next;
+    }
+}
+
 int main(int ac, char **av)
 {
     int dump_cycle = 0;
+    champ_t *info_champ = NULL;
 
     if (ac == 2)
         if (my_strcmp(av[1], "-h") == 0)
@@ -36,6 +51,8 @@ int main(int ac, char **av)
         write(2, "Need at least 2 champ\n", 22);
         return 84;
     }
-    check_argv(ac, av, &dump_cycle);
+    check_argv(&ac, av, &dump_cycle, &info_champ);
+    check_champ(ac, &info_champ);
+    print_info_champ(info_champ);
     return (0);
 }
