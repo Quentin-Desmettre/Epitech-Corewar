@@ -5,9 +5,7 @@
 ** num_champ.c
 */
 
-#include "unistd.h"
 #include "corewar_include/op.h"
-#include "libmy.h"
 
 void find_little_number(int valid_num[][4], int *nbr)
 {

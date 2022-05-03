@@ -17,6 +17,10 @@
     #define NAME_CMD_STRING         ".name"
     #define COMMENT_CMD_STRING      ".comment"
 
+#include "libmy.h"
+#include "unistd.h"
+#include <fcntl.h>
+
 /*
 ** regs
 */

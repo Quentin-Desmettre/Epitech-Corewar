@@ -5,9 +5,7 @@
 ** check_champ.c
 */
 
-#include "unistd.h"
 #include "corewar_include/op.h"
-#include "libmy.h"
 
 void delete_champ(champ_t **info_champ)
 {

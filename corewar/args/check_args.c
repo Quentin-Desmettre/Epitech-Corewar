@@ -5,9 +5,7 @@
 ** check_args.c
 */
 
-#include "unistd.h"
 #include "corewar_include/op.h"
-#include "libmy.h"
 
 void check_dump(param_champ_t *param, char *arg)
 {

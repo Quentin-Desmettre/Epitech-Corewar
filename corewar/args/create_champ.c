@@ -5,10 +5,7 @@
 ** create_champ.c
 */
 
-#include "unistd.h"
 #include "corewar_include/op.h"
-#include "libmy.h"
-#include <fcntl.h>
 
 champ_t *init_node(param_champ_t *param, char *path_file)
 {

@@ -5,10 +5,7 @@
 ** arg_manage.c
 */
 
-#include "unistd.h"
 #include "corewar_include/op.h"
-#include "libmy.h"
-#include <fcntl.h>
 
 param_champ_t *init_value(void)
 {

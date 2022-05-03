@@ -5,9 +5,7 @@
 ** main.c
 */
 
-#include "unistd.h"
 #include "corewar_include/op.h"
-#include "libmy.h"
 
 int help_message(char *name_binarie)
 {
