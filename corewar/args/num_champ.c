@@ -11,7 +11,7 @@ void find_little_number(int valid_num[][4], int *nbr)
 {
     int i;
 
-    for (i = 0; i < 4 && (*valid_num)[i] == 0; i++);
+    for (i = 0; i < MAX_ARGS_NUMBER && (*valid_num)[i] == 0; i++);
     *nbr = (*valid_num)[i];
     (*valid_num)[i] = 0;
 }
@@ -56,8 +56,8 @@ int check_same_nbr(param_champ_t *param)
 {
     int error = 0;
 
-    for (int i = 0; i < 5; i++) {
-        for (int j = i + 1; j < 5 && !error; j++) {
+    for (int i = 0; i < MAX_ARGS_NUMBER + 1; i++) {
+        for (int j = i + 1; j < MAX_ARGS_NUMBER + 1 && !error; j++) {
             error = (param->num_impose[i] == param->num_impose[j] &&
             param->num_impose[i] != 0) ? 1 : 0;
         }

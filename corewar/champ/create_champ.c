@@ -7,6 +7,28 @@
 
 #include "corewar_include/op.h"
 
+void delete_champ(champ_t **info_champ)
+{
+    champ_t *save = *info_champ;
+    champ_t *tmp = NULL;
+
+    if ((*info_champ)->champ_nbr >= 5) {
+        tmp = (*info_champ)->next;
+        free((*info_champ));
+        (*info_champ) = tmp;
+        save = tmp;
+    }
+    while (*info_champ) {
+        if ((*info_champ)->next && (*info_champ)->next->champ_nbr >= 5) {
+            tmp = (*info_champ)->next->next;
+            free((*info_champ)->next);
+            (*info_champ)->next = tmp;
+        }
+        (*info_champ) = (*info_champ)->next;
+    }
+    (*info_champ) = save;
+}
+
 champ_t *init_node(param_champ_t *param, char *path_file)
 {
     champ_t *node = malloc(sizeof(champ_t));

@@ -46,7 +46,7 @@ void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ)
     for (int i = 1; i < *ac; i++) {
         if (check_if_opt(param, av[i], av[i + 1], &i))
             continue;
-        if (param->index == 4) {
+        if (param->index == MAX_ARGS_NUMBER) {
             write(2, "The number of champion load is above the limit.\n", 48);
             exit(84);
         }

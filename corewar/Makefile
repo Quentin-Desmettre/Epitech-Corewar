@@ -5,15 +5,18 @@
 ## Makefile
 ##
 
-SRC	=	main.c
+SRC	=	main.c \
+		convert_endian.c
 
 ARGS	=	args/arg_manage.c \
 			args/check_args.c \
 			args/check_champ.c \
-			args/num_champ.c \
-			args/create_champ.c
+			args/num_champ.c
 
-OBJ	=	$(SRC:.c=.o) $(ARGS:.c=.o)
+CHAMP	=	champ/create_champ.c \
+			champ/read_check_header.c
+
+OBJ	=	$(SRC:.c=.o) $(ARGS:.c=.o) $(CHAMP:.c=.o)
 
 NAME	=	corewar
 
@@ -44,4 +47,4 @@ fclean: clean
 re:	fclean all
 
 valgrind:
-	gcc -o $(NAME) $(FLAGS) $(SRC) $(ARGS) $(LIB) $(INCLUDE) -g
+	gcc -o $(NAME) $(FLAGS) $(SRC) $(ARGS) $(CHAMP) $(LIB) $(INCLUDE) -g

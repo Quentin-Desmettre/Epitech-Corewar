@@ -8,7 +8,7 @@
     #define _OP_H_
     #define MEM_SIZE                (6*1024)
     #define IDX_MOD                 512   /* modulo of the index < */
-    #define MAX_ARGS_NUMBER         4     /* this may not be changed 2^*IND_SIZE */
+    #define MAX_ARGS_NUMBER         4
     #define COMMENT_CHAR            '#'
     #define LABEL_CHAR              ':'
     #define DIRECT_CHAR             '%'
@@ -18,7 +18,7 @@
     #define COMMENT_CMD_STRING      ".comment"
     #define REG_NUMBER      16
     #include "libmy.h"
-    #include "unistd.h"
+    #include <unistd.h>
     #include <fcntl.h>
 
 typedef char args_type_t;
@@ -88,6 +88,8 @@ typedef struct champ_s{
     int nb_is_impose;
     int adress;
     int adress_impose;
+    char *instruction;
+    header_t header;
     struct champ_s *next;
 } champ_t;
 
@@ -132,5 +134,13 @@ int check_same_nbr(param_champ_t *param);
 param_champ_t *init_value(void);
 int check_if_opt(param_champ_t *param, char *str, char *str_next, int *index);
 void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ);
+
+//endian
+void convert_endian(int *nbr);
+
+//header_champ
+void check_header(champ_t **info_champ, size_t size);
+void read_header(champ_t **info_champ, size_t size);
+void fill_header_champ(champ_t **info_champ);
 
 #endif
