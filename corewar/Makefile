@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC	=	main.c \
+SRC	=	\
 		convert_endian.c
 
 ARGS	=	args/arg_manage.c \
@@ -33,6 +33,7 @@ all: build_lib compile
 build_lib:
 	@make --no-print-directory -C ../lib/my/
 
+compile: SRC += main.c
 compile: $(OBJ)
 	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
 
@@ -48,3 +49,10 @@ re:	fclean all
 
 valgrind:
 	gcc -o $(NAME) $(FLAGS) $(SRC) $(ARGS) $(CHAMP) $(LIB) $(INCLUDE) -g
+
+tests: CFLAGS += --coverage
+tests: $(OBJ)
+	make -s -C ../lib/my/
+	make -s --no-print-directory -C ../tests/corewar/
+	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/corewar/*.o -lcriterion -lmy --coverage
+	./test_bin ; echo -ne

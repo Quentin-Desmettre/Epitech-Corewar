@@ -28,4 +28,5 @@ fclean	:
 
 tests_run:
 	make tests -C asm
+	make tests -C corewar
 	gcovr --html --html-details -o asm.html
