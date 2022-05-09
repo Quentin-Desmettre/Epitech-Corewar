@@ -56,3 +56,4 @@ tests: $(OBJ)
 	make -s --no-print-directory -C ../tests/corewar/
 	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/corewar/*.o -lcriterion -lmy --coverage
 	./test_bin ; echo -ne
+	@make clean

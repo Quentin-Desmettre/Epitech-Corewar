@@ -61,3 +61,4 @@ tests: $(OBJ)
 	make -s --no-print-directory -C ../tests/asm/
 	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/asm/*.o -lcriterion -lmy --coverage
 	./test_bin ; echo -ne
+	@make clean
