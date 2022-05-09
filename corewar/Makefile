@@ -5,8 +5,7 @@
 ## Makefile
 ##
 
-SRC	=	\
-		convert_endian.c
+#corewar
 
 ARGS	=	args/arg_manage.c \
 			args/check_args.c \
@@ -16,7 +15,15 @@ ARGS	=	args/arg_manage.c \
 CHAMP	=	champ/create_champ.c \
 			champ/read_check_header.c
 
-OBJ	=	$(SRC:.c=.o) $(ARGS:.c=.o) $(CHAMP:.c=.o)
+SRC_TESTS = convert_endian.c \
+	$(ARGS) \
+	$(CHAMP)
+
+SRC = $(SRC_TESTS) \
+	main.c
+
+OBJ	=	$(SRC_TESTS:.c=.o)
+OBJ2 = $(SRC:.c=.o)
 
 NAME	=	corewar
 
@@ -33,13 +40,12 @@ all: build_lib compile
 build_lib:
 	@make --no-print-directory -C ../lib/my/
 
-compile: SRC += main.c
-compile: $(OBJ)
-	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
+compile: $(OBJ2)
+	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE)
 
 clean:
 	@make clean --no-print-directory -C ../lib/my/
-	rm -f $(OBJ)
+	rm -f $(OBJ2)
 
 fclean: clean
 	@make fclean --no-print-directory -C ../lib/my/
@@ -48,7 +54,7 @@ fclean: clean
 re:	fclean all
 
 valgrind:
-	gcc -o $(NAME) $(FLAGS) $(SRC) $(ARGS) $(CHAMP) $(LIB) $(INCLUDE) -g
+	gcc -o $(NAME) $(FLAGS) $(SRC_TESTS) $(ARGS) $(CHAMP) $(LIB) $(INCLUDE) -g
 
 tests: CFLAGS += --coverage
 tests: $(OBJ)
