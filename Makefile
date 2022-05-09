@@ -16,7 +16,16 @@ re	:
 clean	:
 	make clean -C asm
 	make clean -C corewar
+	find . -name "*.gcda" -delete
+	find . -name "*.gcno" -delete
+	find . -name "*.html" -delete
+	find . -name "*.css" -delete
+	find . -name "*.gcov.txt" -delete
 
 fclean	:
 	make fclean -C asm
 	make fclean -C corewar
+
+tests_run:
+	make tests -C asm
+	gcovr --html --html-details -o asm.html

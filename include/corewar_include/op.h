@@ -27,6 +27,7 @@ typedef char args_type_t;
     #define T_DIR 2
     #define T_IND 4
     #define T_LAB 8
+    #define T_ERROR 0
 
 typedef struct op_s {
     char *mnemonique;

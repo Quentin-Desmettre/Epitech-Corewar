@@ -10,9 +10,9 @@
     #include <unistd.h>
     #include <stdio.h>
     #include <errno.h>
+    #include <stdint.h>
     #include "libmy.h"
     #include "op.h"
-
 
 /// \brief Check if the given file has error
 /// \param file The file to check

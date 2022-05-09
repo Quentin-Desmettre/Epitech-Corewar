@@ -21,11 +21,11 @@ static int nbr_check(char const *str, int *range, int *sign, int *is_error)
 
     for (int i = *range; str[i] >= '0' && str[i] <= '9'; i++) {
         if (my_number > (2147483648 - (str[i] - 48)) / 10) {
-            *is_error = 1;
+            is_error ? *is_error = 1 : 0;
             return -2;
         }
         if (*sign == 1 && my_number > (2147483647 - (str[i] - 48)) / 10) {
-            *is_error = 1;
+            is_error ? *is_error = 1 : 0;
             return -2;
         }
         my_number = (my_number * 10) + (str[i] - 48);
@@ -42,7 +42,7 @@ int check_str(int *is_error, char const *str)
         i++;
     for (; str[i]; i++)
         if (str[i] < '0' || str[i] > '9') {
-            *is_error = 1;
+            is_error ? *is_error = 1 : 0;
             return 1;
         }
     return 0;
@@ -53,7 +53,7 @@ int my_getnbr(char const *str, int *is_error)
     int sign = 1;
     int range = 0;
 
-    *is_error = 0;
+    is_error ? *is_error = 0 : 0;
     if (check_str(is_error, str))
         return 0;
     sign_check(&sign, str, &range);
