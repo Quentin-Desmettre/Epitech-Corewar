@@ -5,7 +5,13 @@
 ## Makefile
 ##
 
-SRC	=	main.c
+COMPILE = compile/compile.c
+
+ERROR = error/has_error.c
+
+SRC	=	main.c \
+		$(COMPILE) \
+		$(ERROR)
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -15,7 +21,7 @@ FLAGS	=	-Wall -Wextra -g
 
 LIB	=	-L ../lib/my -l my
 
-INCLUDE	=	-I ../lib/my/include
+INCLUDE	=	-I ../lib/my/include -I ../include/corewar_include
 
 CFLAGS	=	-Wall -Wextra $(LIB) $(INCLUDE)
 

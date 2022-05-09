@@ -37,7 +37,7 @@ void append(char **str, char const *buf, int is_free);
 int count_occurences(char const c, char const *str);
 void re_alloc(char **str, char *new, int is_free);
 int index_of(char c, char const *str);
-void free_str_array(char **array, int include_null);
+void free_str_array(char **array);
 void my_memset(void *what, int c, int n);
 int str_is_num(char const *str);
 int mem_is_eq(void *a, void *b, size_t size);

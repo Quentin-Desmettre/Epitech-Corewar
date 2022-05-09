@@ -5,5 +5,7 @@
 !Makefile
 !*/
 tests_folder/
+.vscode/
+tester/
 cmake-build-debug/
 champions

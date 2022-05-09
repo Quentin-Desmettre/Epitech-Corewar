@@ -37,13 +37,11 @@ void my_memcpy(void *dest, void *source, size_t size)
 
 
 
-void free_str_array(char **array, int include_null)
+void free_str_array(char **array)
 {
     int i = 0;
 
     for (; array[i]; i++)
-        free(array[i]);
-    if (include_null)
         free(array[i]);
     free(array);
 }
