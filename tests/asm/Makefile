@@ -6,7 +6,7 @@
 ##
 
 SRC = \
-	test.c
+	test_output_file.c
 
 OBJ = $(SRC:.c=.o)
 

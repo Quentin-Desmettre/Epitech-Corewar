@@ -17,9 +17,9 @@ char *get_next_line(FILE *f)
             free(line);
             return NULL;
         }
-        if (line[0] == '#' || line[0] == '\0') {
+        if (line[0] == '#' || line[0] == '\n') {
             free(line);
-            continue;
+            line = NULL;
         } else
             return line;
     }
@@ -31,7 +31,7 @@ char const *get_output_file(char const *file)
     char *dup = my_strdup(file);
     char *output;
 
-    if (!my_strcmp(file + len - 2, ".s")) {
+    if (len >= 2 && !my_strcmp(file + len - 2, ".s")) {
         dup[len - 2] = 0;
         output = str_concat(2, dup, ".cor");
         free(dup);

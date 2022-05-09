@@ -39,6 +39,11 @@ compile: $(OBJ)
 clean:
 	@make clean --no-print-directory -C ../lib/my/
 	rm -f $(OBJ)
+	find . -name "*.gcda" -delete
+	find . -name "*.gcno" -delete
+	find . -name "*.html" -delete
+	find . -name "*.css" -delete
+	find . -name "*.gcov.txt" -delete
 
 fclean: clean
 	@make fclean --no-print-directory -C ../lib/my/
