@@ -16,6 +16,9 @@ typedef struct {
     char *labels[3];
     int nb_label;
 } command_t;
+
+int is_in_bounds(int nb, int low, int up);
+
 /*
 
 How to store a command:
@@ -74,15 +77,29 @@ char code_of(char const *name)
     return -1;
 }
 
+int str_is_num_signed(char const *str)
+{
+    int start = (str[0] == '-') ? 1 : 0;
+
+    return str_is_num(str + start);
+}
+
 char type_of_arg(char const *arg)
 {
+    if (!arg[0])
+        return T_ERROR;
     if (arg[0] == 'r')
-        return T_REG;
-    if (arg[0] == DIRECT_CHAR)
-        return T_DIR;
-    if (arg[0] == LABEL_CHAR || contain("12345678", arg[0]))
-        return T_IND;
-    return T_ERROR;
+        return (arg[1] && str_is_num(arg + 1) && is_in_bounds(my_getnbr(
+        arg + 1, NULL), 0, REG_NUMBER + 1)) ? T_REG : T_ERROR;
+    if (arg[0] == DIRECT_CHAR) {
+        if (arg[1] == LABEL_CHAR)
+            return (arg[2] && contain_only(arg + 2,
+            LABEL_CHARS)) ? T_DIR : T_ERROR;
+        return (arg[1] && str_is_num_signed(arg + 1)) ? T_DIR : T_ERROR;
+    }
+    if (arg[0] == LABEL_CHAR)
+        return (arg[1] && contain_only(arg + 1, LABEL_CHARS)) ? T_IND : T_ERROR;
+    return str_is_num_signed(arg) ? T_IND : T_ERROR;
 }
 
 uint8_t coding_byte_for(char **words)
@@ -174,29 +191,35 @@ void get_args(command_t *c, char **words)
         if (type == T_DIR) {
             if (words[i][1] == LABEL_CHAR) {
                 tmp_16t = 0;
-                my_memcpy(c->params + c->cmd_size, &tmp_16t, 2);
-                c->cmd_size += 2;
+                my_memcpy(c->params + c->cmd_size, &tmp_16t, IND_SIZE);
+                c->cmd_size += IND_SIZE;
                 c->labels[c->nb_label] = my_strdup(words[i] + 2);
                 c->nb_label++;
             } else {
                 tmp = getnbr_overflow(words[i] + 1);
-                convert_endian(&tmp);
-                my_memcpy(c->params + c->cmd_size, &tmp, DIR_SIZE);
-                c->cmd_size += DIR_SIZE;
+                if (has_index(words, i)) {
+                    tmp_16t = tmp;
+                    my_memcpy(c->params + c->cmd_size, &tmp_16t, IND_SIZE);
+                    c->cmd_size += IND_SIZE;
+                } else {
+                    convert_endian(&tmp);
+                    my_memcpy(c->params + c->cmd_size, &tmp, DIR_SIZE);
+                    c->cmd_size += DIR_SIZE;
+                }
             }
         }
         if (type == T_IND) {
             if (words[i][0] == LABEL_CHAR) {
                 tmp_16t = 0;
-                my_memcpy(c->params + c->cmd_size, &tmp_16t, 2);
-                c->cmd_size += 2;
+                my_memcpy(c->params + c->cmd_size, &tmp_16t, IND_SIZE);
+                c->cmd_size += IND_SIZE;
                 c->labels[c->nb_label] = my_strdup(words[i] + 2);
                 c->nb_label++;
             } else {
                 tmp_16t = getnbr_overflow(words[i]);
                 convert_endian_short(&tmp_16t);
-                my_memcpy(c->params + c->cmd_size, &tmp_16t, 2);
-                c->cmd_size += 2;
+                my_memcpy(c->params + c->cmd_size, &tmp_16t, IND_SIZE);
+                c->cmd_size += IND_SIZE;
             }
         }
     }
@@ -276,7 +299,6 @@ int write_file(FILE *f, char const *output)
     char **words;
     file_buffer_t buf;
     command_t *tmp;
-    label_t *tmp_lab;
 
     my_memset(&buf, 0, sizeof(file_buffer_t));
     buf.header.magic = COREWAR_EXEC_MAGIC;
@@ -288,8 +310,6 @@ int write_file(FILE *f, char const *output)
         else if (!my_strcmp(words[0], ".comment"))
             get_comment(&buf.header, line);
         else {
-            if (words[0][my_strlen(words[0]) - 1] == LABEL_CHAR) {
-            }
             tmp = create_command(words, buf.commands ? buf.commands->prev->data : NULL);
             append_node(&buf.commands, tmp);
         }

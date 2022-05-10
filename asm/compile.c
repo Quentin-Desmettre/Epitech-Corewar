@@ -51,6 +51,5 @@ int compile_file(char const *file)
     }
     if (has_error(file))
         return 0;
-    return 1;
     return write_file(f, get_output_file(file));
 }

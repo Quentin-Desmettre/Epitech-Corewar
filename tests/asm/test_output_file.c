@@ -76,6 +76,29 @@ Test (type_of_arg, type_of_arg)
     cr_assert(type_of_arg(":label") == T_IND);
     cr_assert(type_of_arg("7") == T_IND);
     cr_assert(type_of_arg("aa") == T_ERROR);
+    cr_assert(type_of_arg("r0") == T_ERROR);
+    cr_assert(type_of_arg("r-1") == T_ERROR);
+    cr_assert(type_of_arg("r16") == T_REG);
+    cr_assert(type_of_arg("r17") == T_ERROR);
+    cr_assert(type_of_arg("r") == T_ERROR);
+    cr_assert(type_of_arg("%:hi") == T_DIR);
+    cr_assert(type_of_arg("%::hi") == T_ERROR);
+    cr_assert(type_of_arg("%89:") == T_ERROR);
+    cr_assert(type_of_arg("%:èè") == T_ERROR);
+    cr_assert(type_of_arg("%-2") == T_DIR);
+    cr_assert(type_of_arg("%:") == T_ERROR);
+    cr_assert(type_of_arg("%") == T_ERROR);
+    cr_assert(type_of_arg(":") == T_ERROR);
+    cr_assert(type_of_arg(":hi") == T_IND);
+    cr_assert(type_of_arg(":") == T_ERROR);
+    cr_assert(type_of_arg(":hi") == T_IND);
+    cr_assert(type_of_arg("-7878") == T_IND);
+    cr_assert(type_of_arg("--67") == T_ERROR);
+    cr_assert(type_of_arg("::") == T_ERROR);
+    cr_assert(type_of_arg("%-") == T_DIR);
+    cr_assert(type_of_arg("6767") == T_IND);
+    cr_assert(type_of_arg("-") == T_IND);
+    cr_assert(type_of_arg("") == T_ERROR);
 }
 
 Test (coding_byte, coding_byte)
@@ -133,13 +156,6 @@ Test (check_command, check_command)
         NULL
     };
     cr_assert(check_command(args4) == 1);
-}
-
-Test (is_label, is_label)
-{
-    cr_assert(is_label("hi:") == 1);
-    cr_assert(is_label(":hi") == 0);
-    cr_assert(is_label(":") == 1);
 }
 
 Test (check_label, check_label)

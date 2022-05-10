@@ -13,10 +13,15 @@ ERROR = \
 		error/has_error.c \
 		error/check_commands.c
 
-SRC	=	$(COMPILE) \
+SRC_TEST	=	$(COMPILE) \
 		$(ERROR)
 
-OBJ	=	$(SRC:.c=.o)
+SRC = $(SRC_TEST) \
+	main.c
+
+OBJ	=	$(SRC_TEST:.c=.o)
+
+OBJ2 = $(SRC:.c=.o)
 
 NAME	=	asm
 
@@ -33,16 +38,15 @@ all: build_lib compile
 build_lib:
 	@make --no-print-directory -C ../lib/my/
 
-compile: SRC += main.c
-compile: $(OBJ)
-	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
+compile: $(OBJ2)
+	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE)
 
 debug: CFLAGS += -g
 debug: all
 
 clean:
 	@make clean --no-print-directory -C ../lib/my/
-	rm -f $(OBJ)
+	rm -f $(OBJ2)
 	find . -name "*.gcda" -delete
 	find . -name "*.gcno" -delete
 	find . -name "*.html" -delete
@@ -57,7 +61,7 @@ fclean: clean
 re:	fclean all
 
 valgrind:
-	gcc -o $(NAME) $(FLAGS) $(SRC) $(LIB) $(INCLUDE) -g
+	gcc -o $(NAME) $(FLAGS) $(SRC_TEST) $(LIB) $(INCLUDE) -g
 
 tests: CFLAGS += --coverage
 tests: $(OBJ)
