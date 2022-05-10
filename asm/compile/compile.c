@@ -13,7 +13,8 @@ typedef struct {
     uint8_t params[MAX_ARGS_NUMBER * DIR_SIZE];
     int offset;
     int cmd_size;
-    char *label;
+    char *labels[3];
+    int nb_label;
 } command_t;
 /*
 
@@ -75,9 +76,6 @@ char code_of(char const *name)
 
 char type_of_arg(char const *arg)
 {
-    int error = 0;
-    int nb;
-
     if (arg[0] == 'r')
         return T_REG;
     if (arg[0] == DIRECT_CHAR)
@@ -105,25 +103,171 @@ uint8_t coding_byte_for(char **words)
     return byte;
 }
 
+void convert_endian(int *nbr)
+{
+    int left = (((*nbr >> 24) & 0xff) | ((*nbr << 8) & 0xff0000));
+    int right = (((*nbr >> 8) & 0xff00) | ((*nbr << 24) & 0xff000000));
+
+    *nbr = left | right;
+}
+
+unsigned my_pow(unsigned nb, unsigned power)
+{
+    unsigned res = 1;
+
+    for (unsigned i = 0; i < power; i++)
+        res *= nb;
+    return res;
+}
+
+int getnbr_overflow(char *str)
+{
+    int nb = 0;
+    int len = my_strlen(str);
+
+    for (int i = 0; len - i > 0; i++) {
+        if (str[len - i - 1] == '-') {
+            nb *= -1;
+            break;
+        }
+        nb += (str[len - i - 1] - '0') * my_pow(10, i);
+    }
+    return nb;
+}
+
+void convert_endian_short(short *nbr)
+{
+    short swapped = (*nbr >> 8) | (*nbr << 8);
+
+    *nbr = swapped;
+}
+
+int has_index(char **words, int nb_arg)
+{
+    int code = code_of(words[0]);
+
+    if (code == 9)
+        return 1;
+    if ((code == 10 || code == 14) && nb_arg < 3)
+        return 1;
+    if (code == 11 && nb_arg > 1)
+        return 1;
+    if (code == 12 || code == 15)
+        return 1;
+    return 0;
+}
+
+void get_args(command_t *c, char **words)
+{
+    char type;
+    char tmp_char;
+    uint16_t tmp_16t = 0;
+    int32_t tmp;
+
+    for (int i = 1; words[i]; i++) {
+        type = type_of_arg(words[i]);
+        if (type == T_REG) {
+            tmp_char = my_getnbr(words[i] + 1, NULL);
+            my_memcpy(c->params + c->cmd_size, &tmp_char, 1);
+            c->cmd_size += 1;
+        }
+        if (type == T_DIR) {
+            if (words[i][1] == LABEL_CHAR) {
+                tmp_16t = 0;
+                my_memcpy(c->params + c->cmd_size, &tmp_16t, 2);
+                c->cmd_size += 2;
+                c->labels[c->nb_label] = my_strdup(words[i] + 2);
+                c->nb_label++;
+            } else {
+                tmp = getnbr_overflow(words[i] + 1);
+                convert_endian(&tmp);
+                my_memcpy(c->params + c->cmd_size, &tmp, DIR_SIZE);
+                c->cmd_size += DIR_SIZE;
+            }
+        }
+        if (type == T_IND) {
+            if (words[i][0] == LABEL_CHAR) {
+                tmp_16t = 0;
+                my_memcpy(c->params + c->cmd_size, &tmp_16t, 2);
+                c->cmd_size += 2;
+                c->labels[c->nb_label] = my_strdup(words[i] + 2);
+                c->nb_label++;
+            } else {
+                tmp_16t = getnbr_overflow(words[i]);
+                convert_endian_short(&tmp_16t);
+                my_memcpy(c->params + c->cmd_size, &tmp_16t, 2);
+                c->cmd_size += 2;
+            }
+        }
+    }
+}
+
+int is_special_case(int code)
+{
+    return (code == 1) || (code == 9) || (code == 12) || (code == 15);
+}
+
 command_t *create_command(char **words, command_t *prev)
 {
     command_t *c = malloc(sizeof(command_t));
 
     c->offset = (prev ? prev->offset + prev->cmd_size : 0);
     c->code = code_of(words[0]);
-    c->coding_byte = coding_byte_for(words);
+    if (!is_special_case(c->code))
+        c->coding_byte = coding_byte_for(words);
+    get_args(c, words);
     return c;
+}
+
+int write_command(command_t *cmd, int fd)
+{
+    int size = 0;
+
+    size += write(fd, &cmd->code, 1);
+    if (!is_special_case(cmd->code))
+        size += write(fd, &cmd->coding_byte, 1);
+    size += write(fd, cmd->params, cmd->cmd_size);
+    return size;
 }
 
 int write_buffer(file_buffer_t *buf, char const *output)
 {
     int fd = open(output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    list_t *list = buf->commands;
+    int i = 0;
+    int prog_size = 0;
 
     if (fd < 0)
         return 0;
     write(fd, &buf->header, sizeof(header_t));
+    while (1) {
+        if (!list || (i && list == buf->commands))
+            break;
+        prog_size += write_command(list->data, fd);
+        list = list->next;
+        i = 1;
+    }
+    lseek(fd, progsize_offset(), SEEK_SET);
+    convert_endian(&prog_size);
+    write(fd, &prog_size, 4);
     close(fd);
     return 1;
+}
+
+static void save_name(header_t *header, char *line)
+{
+    char *name = get_name(line, PROG_NAME_LENGTH);
+
+    my_strcpy(header->prog_name, name);
+    free(name);
+}
+
+void get_comment(header_t *header, char *line)
+{
+    char **words = my_str_to_word_array(line, "\"");
+
+    my_strcpy(header->comment, words[1]);
+    free_str_array(words);
 }
 
 int write_file(FILE *f, char const *output)
@@ -132,15 +276,30 @@ int write_file(FILE *f, char const *output)
     char **words;
     file_buffer_t buf;
     command_t *tmp;
+    label_t *tmp_lab;
 
     my_memset(&buf, 0, sizeof(file_buffer_t));
+    buf.header.magic = COREWAR_EXEC_MAGIC;
+    convert_endian(&buf.header.magic);
     while ((line = get_next_line(f))) {
-        words = my_str_to_word_array(line, ", \t");
-        tmp = create_command(words, buf.commands ? buf.commands->prev->data : NULL);
+        words = my_str_to_word_array(line, ", \t\n");
+        if (!my_strcmp(words[0], ".name"))
+            save_name(&buf.header, line);
+        else if (!my_strcmp(words[0], ".comment"))
+            get_comment(&buf.header, line);
+        else {
+            if (words[0][my_strlen(words[0]) - 1] == LABEL_CHAR) {
+            }
+            tmp = create_command(words, buf.commands ? buf.commands->prev->data : NULL);
+            append_node(&buf.commands, tmp);
+        }
+        free_str_array(words);
+        free(line);
     }
     if (errno) {
         printf("file error\n");
         return 0;
     }
+    //resolve_labels(&buf);
     return write_buffer(&buf, output);
 }

@@ -43,6 +43,7 @@ char const *get_output_file(char const *file)
 int compile_file(char const *file)
 {
     FILE *f = fopen(file, "r");
+    int is_comment_set;
 
     if (!f) {
         dprint(2, "Error while opening '%s'.\n", file);
@@ -50,5 +51,6 @@ int compile_file(char const *file)
     }
     if (has_error(file))
         return 0;
+    return 1;
     return write_file(f, get_output_file(file));
 }

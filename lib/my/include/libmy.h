@@ -15,4 +15,6 @@
     #include "others.h"
     #include "strmanip.h"
 
+void my_memcpy(void *dest, void *source, size_t size);
+
 #endif

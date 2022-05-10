@@ -10,7 +10,8 @@ COMPILE = \
 		compile/compile.c
 
 ERROR = \
-		error/has_error.c
+		error/has_error.c \
+		error/check_commands.c
 
 SRC	=	$(COMPILE) \
 		$(ERROR)
@@ -35,6 +36,9 @@ build_lib:
 compile: SRC += main.c
 compile: $(OBJ)
 	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
+
+debug: CFLAGS += -g
+debug: all
 
 clean:
 	@make clean --no-print-directory -C ../lib/my/
@@ -61,4 +65,3 @@ tests: $(OBJ)
 	make -s --no-print-directory -C ../tests/asm/
 	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/asm/*.o -lcriterion -lmy --coverage
 	./test_bin ; echo -ne
-	@make clean

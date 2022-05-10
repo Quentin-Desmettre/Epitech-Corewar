@@ -74,4 +74,14 @@ char type_of_arg(char const *arg);
  */
 uint8_t coding_byte_for(char **words);
 
+
+int get_error_for(FILE *f, char const *file);
+int check_label(char **args);
+int check_command(char **args);
+int is_label(char const *arg);
+int error(FILE *f, char const *file);
+char *get_name(char const *line, int max);
+int check_comment(FILE *f, char const *file);
+int check_name(FILE *f, char const *file);
+
 #endif /* !ASM_H_ */
