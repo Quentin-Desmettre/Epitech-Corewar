@@ -18,8 +18,6 @@ clean	:
 	make clean -C corewar
 	find . -name "*.gcda" -delete
 	find . -name "*.gcno" -delete
-	find . -name "*.html" -delete
-	find . -name "*.css" -delete
 	find . -name "*.gcov.txt" -delete
 
 fclean	:
@@ -30,3 +28,4 @@ tests_run:
 	make tests -C asm
 	make tests -C corewar
 	gcovr --html --html-details -o asm.html
+	@make clean

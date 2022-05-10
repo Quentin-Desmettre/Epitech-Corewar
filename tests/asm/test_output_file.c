@@ -95,3 +95,96 @@ Test (coding_byte, coding_byte)
     };
     cr_assert(coding_byte_for(words3) == 0x5C);
 }
+
+int getnbr_overflow(char *str);
+
+Test (getnbr, getnbr)
+{
+    cr_assert(getnbr_overflow("35") == 35);
+    cr_assert(getnbr_overflow("-35") == -35);
+}
+
+Test (check_command, check_command)
+{
+    char *args[] = {
+        ".comment",
+        NULL
+    };
+    cr_assert(check_command(args) == 0);
+
+    char *args2[] = {
+        "live",
+        "r3",
+        "r4",
+        NULL
+    };
+    cr_assert(check_command(args2) == 0);
+
+    char *args3[] = {
+        "live",
+        "r2",
+        NULL
+    };
+    cr_assert(check_command(args3) == 0);
+
+    char *args4[] = {
+        "live",
+        "%234",
+        NULL
+    };
+    cr_assert(check_command(args4) == 1);
+}
+
+Test (is_label, is_label)
+{
+    cr_assert(is_label("hi:") == 1);
+    cr_assert(is_label(":hi") == 0);
+    cr_assert(is_label(":") == 1);
+}
+
+Test (check_label, check_label)
+{
+    char *args[] = {
+        "hi::",
+        NULL
+    };
+    cr_assert(check_label(args) == 0);
+
+    char *args2[] = {
+        "é:",
+        NULL
+    };
+    cr_assert(check_label(args2) == 0);
+
+    char *args3[] = {
+        ":",
+        NULL
+    };
+    cr_assert(check_label(args3) == 0);
+
+    char *args4[] = {
+        "hi:",
+        NULL
+    };
+    cr_assert(check_label(args4) == 0);
+
+    char *args5[] = {
+        "hi:",
+        "live",
+        "%234",
+        NULL
+    };
+    cr_assert(check_label(args5) == 1);
+}
+
+Test (get_name, get_name)
+{
+    cr_assert(get_name(".name \"                                                                                                                                                                                                                                                                                                                                                                                                                                                   \"", 128) == NULL);
+    cr_assert_str_eq(get_name(".name \"abel\"", 128), "abel");
+}
+
+Test (error, error)
+{
+    FILE *f = fopen("/dev/random", "r");
+    cr_assert(error(f, "test") == 0);
+}

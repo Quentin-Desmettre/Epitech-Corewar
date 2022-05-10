@@ -6,8 +6,8 @@
 */
 
 #include <criterion/criterion.h>
+#include "libmy.h"
 
-Test (t, t)
+Test (endian, endian)
 {
-    cr_assert(1 == 1);
 }
