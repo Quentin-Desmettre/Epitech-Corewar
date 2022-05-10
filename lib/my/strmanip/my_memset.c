@@ -35,8 +35,6 @@ void my_memcpy(void *dest, void *source, size_t size)
         a[i] = b[i];
 }
 
-
-
 void free_str_array(char **array)
 {
     int i = 0;

@@ -6,14 +6,20 @@
 ##
 
 COMPILE = \
-		compile.c \
-		compile/compile.c
+		compile.c                      \
+		compile/compile.c              \
+		compile/get_args.c             \
+		compile/get_header.c           \
+		compile/labels.c               \
+		compile/write_buffer.c
 
 ERROR = \
-		error/has_error.c \
-		error/check_commands.c
+		error/has_error.c              \
+		error/check_commands.c         \
+		endian.c
 
-SRC_TEST	=	$(COMPILE) \
+SRC_TEST = \
+		$(COMPILE) \
 		$(ERROR)
 
 SRC = $(SRC_TEST) \

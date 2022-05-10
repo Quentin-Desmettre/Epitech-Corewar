@@ -43,7 +43,7 @@ char const *get_output_file(char const *file)
 int compile_file(char const *file)
 {
     FILE *f = fopen(file, "r");
-    int is_comment_set;
+    DIR_SIZE;
 
     if (!f) {
         dprint(2, "Error while opening '%s'.\n", file);
