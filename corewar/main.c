@@ -23,10 +23,37 @@ int help_message(char *name_binarie)
     return 0;
 }
 
+int find_little_but_higher(champ_t *champ, int int_compare)
+{
+    int little_int = 8;
+    champ_t *save = champ;
+
+    while (champ) {
+        if (champ->champ_nbr > int_compare && champ->champ_nbr < little_int)
+            little_int = champ->champ_nbr;
+        champ = champ->next;
+    }
+    champ = save;
+    return little_int;
+}
+
+champ_t *sort_my_list(champ_t *champ)
+{
+    int num_of_champ = get_num_of_champ(&champ);
+    champ_t *sorted = NULL;
+    int little = 0;
+
+    for (int i = 0; i < num_of_champ; i++) {
+        little = find_little_but_higher(champ, little);
+        printf("%d\n", little);
+    }
+}
+
 void set_map(champ_t *champ, char *map)
 {
     map = malloc(sizeof(char) * MEM_SIZE);
     my_memset(map, 0, MEM_SIZE);
+    sort_my_list(champ);
     champ = champ;
 }
 

@@ -22,7 +22,7 @@ void setup_valid_num(champ_t **info_champ, int valid_num[][4])
 
     while (*info_champ) {
         if ((*info_champ)->nb_is_impose)
-            (*valid_num)[(*info_champ)->nb_is_impose - 1] = 0;
+            (*valid_num)[(*info_champ)->nb_is_impose] = 0;
         (*info_champ) = (*info_champ)->next;
     }
     (*info_champ) = save;
