@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC	=	\
+SRC	=	main.c\
 		convert_endian.c
 
 ARGS	=	args/arg_manage.c \
@@ -33,7 +33,6 @@ all: build_lib compile
 build_lib:
 	@make --no-print-directory -C ../lib/my/
 
-compile: SRC += main.c
 compile: $(OBJ)
 	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
 
