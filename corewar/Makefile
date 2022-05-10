@@ -5,8 +5,6 @@
 ## Makefile
 ##
 
-#corewar
-
 ARGS	=	args/arg_manage.c \
 			args/check_args.c \
 			args/check_champ.c \
