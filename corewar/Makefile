@@ -11,7 +11,8 @@ ARGS	=	args/arg_manage.c \
 			args/num_champ.c
 
 CHAMP	=	champ/create_champ.c \
-			champ/read_check_header.c
+			champ/read_check_header.c \
+			champ/sort_champ.c
 
 SRC_TESTS = convert_endian.c \
 	$(ARGS) \
@@ -21,6 +22,7 @@ SRC = $(SRC_TESTS) \
 	main.c
 
 OBJ	=	$(SRC_TESTS:.c=.o)
+
 OBJ2 = $(SRC:.c=.o)
 
 NAME	=	corewar
@@ -51,12 +53,14 @@ fclean: clean
 
 re:	fclean all
 
-valgrind:
-	gcc -o $(NAME) $(FLAGS) $(SRC_TESTS) $(ARGS) $(CHAMP) $(LIB) $(INCLUDE) -g
+valgrind:	CFLAGS += -g
+valgrind:	$(OBJ2)
+	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE)
 
 tests: CFLAGS += --coverage
 tests: $(OBJ)
 	make -s -C ../lib/my/
 	make -s --no-print-directory -C ../tests/corewar/
-	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/corewar/*.o -lcriterion -lmy --coverage
+	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/corewar/*.o -lcriterion \
+	-lmy --coverage
 	./test_bin ; echo -ne
