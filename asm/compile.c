@@ -7,7 +7,7 @@
 
 #include "asm.h"
 
-char *get_next_line(FILE *f)
+char *get_next_line(FILE *f, int *nb_line)
 {
     char *line = NULL;
     size_t s;
@@ -17,6 +17,7 @@ char *get_next_line(FILE *f)
             free(line);
             return NULL;
         }
+        (nb_line) ? (*nb_line) += 1 : 0;
         if (line[0] == '#' || line[0] == '\n') {
             free(line);
             line = NULL;

@@ -38,7 +38,7 @@ int has_double(list_t *labels)
     return 0;
 }
 
-int16_t get_label_pos(list_t *labels, char const *name, int *not_found)
+int32_t get_label_pos(list_t *labels, char const *name, int *not_found)
 {
     list_t *begin = labels;
     label_t *lab;
@@ -60,9 +60,10 @@ int16_t get_label_pos(list_t *labels, char const *name, int *not_found)
 int search_for_label(command_t *current, int index_of_label, list_t *labels)
 {
     int error = 0;
-    int16_t lab_pos = get_label_pos(labels,
+    int32_t lab_pos = get_label_pos(labels,
     current->labels[index_of_label], &error);
-    int16_t offset = lab_pos - current->offset;
+    int32_t offset_32 = lab_pos - current->offset;
+    int16_t offset = offset_32;
 
     if (error) {
         dprint(2, "Error: Label '%s' not found.\n",
@@ -70,7 +71,13 @@ int search_for_label(command_t *current, int index_of_label, list_t *labels)
         return 0;
     }
     convert_endian_short(&offset);
-    my_memcpy(current->params + current->label_pos[index_of_label], &offset, 2);
+    convert_endian(&offset_32);
+    if (current->label_sizes[index_of_label] == 2)
+        my_memcpy(current->params + current->label_pos[index_of_label],
+        &offset, 2);
+    else
+        my_memcpy(current->params + current->label_pos[index_of_label],
+        &offset_32, 4);
     return 1;
 }
 
