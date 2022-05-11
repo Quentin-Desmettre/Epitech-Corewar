@@ -6,7 +6,6 @@
 */
 
 #include <criterion/criterion.h>
-#include "libmy.h"
 
 Test (endian, endian)
 {

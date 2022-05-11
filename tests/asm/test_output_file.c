@@ -24,6 +24,9 @@ Test (output_file, output_file_test_output_file)
 
     f = get_output_file("s");
     cr_assert_str_eq(f, "s.cor");
+
+    f = get_output_file("./test/abel.s");
+    cr_assert_str_eq(f, "abel.cor");
 }
 
 Test (next_line, get_next_line)

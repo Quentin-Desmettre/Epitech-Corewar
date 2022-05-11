@@ -19,6 +19,7 @@ clean	:
 	find . -name "*.gcda" -delete
 	find . -name "*.gcno" -delete
 	find . -name "*.gcov.txt" -delete
+	find . -name "vgcore.*" -delete
 
 fclean	:
 	make fclean -C asm
