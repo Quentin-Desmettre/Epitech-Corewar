@@ -25,8 +25,8 @@ fclean	:
 	make fclean -C asm
 	make fclean -C corewar
 
-tests_run:
-	make tests -C asm
-	make tests -C corewar
-	gcovr --html --html-details -o asm.html
-	@make clean
+# tests_run:
+# 	make tests -C asm
+# 	make tests -C corewar
+# 	gcovr --html --html-details -o asm.html
+# 	@make clean
