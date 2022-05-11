@@ -107,7 +107,6 @@ typedef struct {
 //main.c
 int help_message(char *name_binarie);
 void print_info_champ(champ_t *info_champ);
-int main(int ac, char **av);
 
 //check args
 void check_dump(param_champ_t *param, char *arg);

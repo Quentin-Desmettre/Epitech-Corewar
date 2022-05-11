@@ -27,23 +27,25 @@ char *get_next_line(FILE *f)
 
 char const *get_output_file(char const *file)
 {
-    int len = my_strlen(file);
-    char *dup = my_strdup(file);
+    char **words = my_str_to_word_array(file, "/");
+    char *dup = words[my_str_array_len(words) - 1];
     char *output;
+    int len = my_strlen(dup);
 
-    if (len >= 2 && !my_strcmp(file + len - 2, ".s")) {
+    if (len >= 2 && !my_strcmp(dup + len - 2, ".s")) {
         dup[len - 2] = 0;
         output = str_concat(2, dup, ".cor");
-        free(dup);
+        free_str_array(words);
         return output;
     }
-    return str_concat(2, file, ".cor");
+    output = str_concat(2, dup, ".cor");
+    free_str_array(words);
+    return output;
 }
 
 int compile_file(char const *file)
 {
     FILE *f = fopen(file, "r");
-    DIR_SIZE;
 
     if (!f) {
         dprint(2, "Error while opening '%s'.\n", file);

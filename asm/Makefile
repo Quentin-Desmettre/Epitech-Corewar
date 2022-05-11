@@ -45,7 +45,7 @@ build_lib:
 	@make --no-print-directory -C ../lib/my/
 
 compile: $(OBJ2)
-	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE)
+	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE) $(CFLAGS)
 
 debug: CFLAGS += -g
 debug: all
@@ -75,3 +75,7 @@ tests: $(OBJ)
 	make -s --no-print-directory -C ../tests/asm/
 	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/asm/*.o -lcriterion -lmy --coverage
 	./test_bin ; echo -ne
+
+functional_tests: all
+	cp ./asm ../tests/asm/functional/my/
+	cd ../tests/asm/functional/ ; python tester.py ; cd -

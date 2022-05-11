@@ -7,6 +7,7 @@
 
 #include "asm.h"
 
+void replace_comment(char *line);
 int getnbr_overflow(char *str);
 
 int is_in_bounds(int nb, int low, int up)
@@ -36,8 +37,8 @@ int check_command(char **args)
 int is_label_valid(char const *arg)
 {
     return arg[my_strlen(arg) - 1] == LABEL_CHAR &&
-    count_occurences(LABEL_CHAR, arg) != 1 &&
-    !contain_only(arg, LABEL_CHARS ":") && my_strlen(arg) < 2;
+    count_occurences(LABEL_CHAR, arg) == 1 &&
+    contain_only(arg, LABEL_CHARS ":") && my_strlen(arg) >= 2;
 }
 
 int check_label(char **args)
@@ -54,13 +55,17 @@ int get_error_for(FILE *f, char const *file)
     int is_lab;
 
     while ((line = get_next_line(f))) {
+        replace_comment(line);
         words = my_str_to_word_array(line, " \t,\n");
+        if (!words[0]) {
+            free_str_array(words);
+            free(line);
+            continue;
+        }
         is_lab = is_label_valid(words[0]);
-
         if ((is_lab && !check_label(words)) ||
         (!is_lab && !check_command(words)))
             return !error(f, file);
-
     }
     if (errno)
         return !error(f, file);

@@ -60,17 +60,12 @@ int has_index(char *name, int nb_arg)
 {
     int code = code_of(name);
 
-    printf("%s\n", name);
     if (code == 9)
         return 1;
     if ((code == 10 || code == 14) && nb_arg < 3)
         return 1;
-    if (code == 11 && nb_arg > 1) {
-        printf("sti\n");
+    if (code == 11 && nb_arg > 1)
         return 1;
-    } else {//
-        printf("%d %d\n", code, nb_arg);
-    }
     if (code == 12 || code == 15)
         return 1;
     return 0;

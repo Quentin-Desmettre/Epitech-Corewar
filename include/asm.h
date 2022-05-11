@@ -18,10 +18,12 @@ typedef struct {
     char code;
     uint8_t coding_byte;
     uint8_t params[MAX_ARGS_NUMBER * DIR_SIZE];
-    int offset;
+    int16_t offset;
     int cmd_size;
     char *labels[3];
+    char label_pos[3];
     int nb_label;
+    int is_special;
 } command_t;
 
 typedef struct {
@@ -98,8 +100,9 @@ uint8_t coding_byte_for(char **words);
 /**
  * @brief Resolve all logged labels
  * @param buf The buffer containing all commands and labels
+ * @return 0 if it failed, 1 if it succeeded
  */
-void resolve_labels(file_buffer_t *buf);
+int resolve_labels(file_buffer_t *buf);
 
 command_t *create_command(char **words, command_t *prev);
 int get_error_for(FILE *f, char const *file);
