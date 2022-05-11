@@ -45,6 +45,7 @@ typedef struct op_s {
     #define PROG_NAME_LENGTH 128
     #define COMMENT_LENGTH 2048
     #define COREWAR_EXEC_MAGIC 0xea83f3
+    #define COREWAR_EXEC_MAGIC_REVERSED 0xf383ea00
 
 typedef struct header_s {
     int magic;

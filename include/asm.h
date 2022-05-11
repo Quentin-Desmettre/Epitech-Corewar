@@ -18,10 +18,11 @@ typedef struct {
     char code;
     uint8_t coding_byte;
     uint8_t params[MAX_ARGS_NUMBER * DIR_SIZE];
-    int16_t offset;
+    int32_t offset;
     int cmd_size;
     char *labels[3];
     char label_pos[3];
+    char label_sizes[3];
     int nb_label;
     int is_special;
 } command_t;
@@ -35,6 +36,7 @@ typedef struct {
     header_t header;
     list_t *commands;
     list_t *labels;
+    FILE *f;
 } file_buffer_t;
 
 /**
@@ -67,7 +69,7 @@ char const *get_output_file(char const *file);
  * getline failed. In case of an error, errno is set to indicate the cause.
  * You should always free the given string.
  */
-char *get_next_line(FILE *f);
+char *get_next_line(FILE *f, int *line);
 
 /**
  * @brief Get the offset of the progsize, inside the header_t structure
@@ -88,7 +90,7 @@ char code_of(char const *name);
  * @return T_REG if the argument is a register, T_DIR if the argument is direct,
  * T_IND if it is indirect, and T_ERROR if it is none of that.
  */
-char type_of_arg(char const *arg);
+char type_of_arg(char const *arg, char **err_mess);
 
 /**
  * @brief Get the coding byte for the given arguments.
@@ -105,20 +107,19 @@ uint8_t coding_byte_for(char **words);
 int resolve_labels(file_buffer_t *buf);
 
 command_t *create_command(char **words, command_t *prev);
-int get_error_for(FILE *f, char const *file);
-int check_label(char **args);
-int check_command(char **args);
-int error(FILE *f, char const *file);
+int get_error_for(FILE *f, char const *file, int *line);
+int check_label(char **args, char **err_mess, FILE *f, int *line);
+int check_command(char **args, char **err_mess);
+int error(FILE *f, char const *mess, char const *file, int line);
 char *get_name(char const *line, int max);
-int check_comment(FILE *f, char const *file);
-int check_name(FILE *f, char const *file);
+int check_comment(FILE *f, char const *file, int *line);
+int check_name(FILE *f, char const *file, int *line);
 void convert_endian(int *nbr);
 void convert_endian_short(short *nbr);
 int write_buffer(file_buffer_t *buf, char const *output);
 int is_in_bounds(int nb, int low, int up);
 size_t progsize_offset(void);
 char code_of(char const *name);
-char type_of_arg(char const *arg);
 uint8_t coding_byte_for(char **words);
 int has_index(char *name, int nb_arg);
 int compile_file(char const *file);
