@@ -41,48 +41,61 @@ static label_t *create_label(char const *name, command_t *cmd)
     return l;
 }
 
-char **split_next_line(FILE *f, int *nb_line)
+char **get_labels(char ***base_words, FILE *f, int *nb_line)
 {
-    char *line = get_next_line(f, NULL);
-    char **words = my_str_to_word_array(line, ", \t\n");
+    char **words = *base_words;
+    char **labels = malloc(sizeof(char *));
+    char *line = NULL;
 
-    while (!words[0]) {
-        free(line);
-        free_str_array(words);
-        line = get_next_line(f, nb_line);
-        if (!line)
-            return NULL;
-        words = my_str_to_word_array(line, ", \t\n");
+    labels[0] = 0;
+    while (is_label_valid(words[0])) {
+        append_str_array(&labels, my_strdup(words[0]));
+        if (words[1]) {
+            *base_words = words + 1;
+            return labels;
+        }
+        do {
+            line = get_next_line(f, nb_line);
+            if (!line) {
+                *base_words = NULL;
+                return labels;
+            }
+            words = my_str_to_word_array(line, ", \t\n");
+        } while (!words[0]);
     }
-    free(line);
-    return words;
+    *base_words = words;
+    return labels;
+}
+
+command_t *create_null_command(command_t *prev)
+{
+    command_t *cmd = malloc(sizeof(command_t));
+
+    my_memset(cmd, 0, sizeof(command_t));
+    cmd->offset = prev ? prev->offset + prev->cmd_size + 1 : 0;
+    return cmd;
 }
 
 static void get_data(char **words, file_buffer_t *buf, char *line)
 {
     command_t *tmp;
-    int is_label = 0;
-    char *label_name;
+    char **labels;
 
     if (!my_strcmp(words[0], ".name"))
         save_name(&buf->header, line);
     else if (!my_strcmp(words[0], ".comment"))
         get_comment(&buf->header, line);
     else {
-        // get_labels
-        is_label = is_label_valid(words[0]);
-        if (is_label && !words[1]) {
-            label_name = my_strdup(words[0]);
-            words = split_next_line(buf->f, NULL) - 1;
-        } else if (is_label)
-            label_name = my_strdup(words[0]);
-        // create_command, starting after the last label
-        tmp = create_command(words + is_label,
-        buf->commands ? buf->commands->prev->data : NULL);
+        labels = get_labels(&words, buf->f, NULL);
+        if (words) {
+            tmp = create_command(words,
+            buf->commands ? buf->commands->prev->data : NULL);
+        } else
+            tmp = create_null_command(buf->commands ?
+            buf->commands->prev->data : NULL);
         append_node(&buf->commands, tmp);
-        // add all the labels
-        if (is_label)
-            append_node(&buf->labels, create_label(label_name, tmp));
+        for (int i = 0; labels[i]; i++)
+            append_node(&buf->labels, create_label(labels[i], tmp));
     }
 }
 

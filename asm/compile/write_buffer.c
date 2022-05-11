@@ -11,6 +11,8 @@ static int write_command(command_t *cmd, int fd)
 {
     int size = 0;
 
+    if (cmd->code == 0)
+        return 0;
     size += write(fd, &cmd->code, 1);
     if (!is_special_case(cmd->code))
         size += write(fd, &cmd->coding_byte, 1);

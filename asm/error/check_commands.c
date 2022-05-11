@@ -9,7 +9,7 @@
 
 void replace_comment(char *line);
 int getnbr_overflow(char *str);
-char **split_next_line(FILE *f, int *nb_line);
+char **get_labels(char ***base_words, FILE *f, int *line);
 
 int is_in_bounds(int nb, int low, int up)
 {
@@ -47,25 +47,17 @@ int is_label_valid(char const *arg)
 
 int check_label(char **args, char **err_mess, FILE *f, int *line)
 {
-    int has_reset = 0;
+    char **labels = get_labels(&args, f, line);
 
-    if (!args[1]) {
-        args = split_next_line(f, line);
-        has_reset = 1;
-    }
-    if (!args) {
-        *err_mess = "Missing label definition";
-        return 0;
-    }
-    args -= has_reset;
-    return check_command(args + 1, err_mess);
+    if (!args)
+        return 1;
+    return check_command(args, err_mess);
 }
 
 int get_error_for(FILE *f, char const *file, int *nb_line)
 {
     char *line;
     char **words;
-    int is_lab;
     char *err_mess = "yolo";
 
     while ((line = get_next_line(f, nb_line))) {
@@ -76,10 +68,10 @@ int get_error_for(FILE *f, char const *file, int *nb_line)
             free(line);
             continue;
         }
-        is_lab = is_label_valid(words[0]);
-        if ((is_lab && !check_label(words, &err_mess, f, nb_line)) ||
-        (!is_lab && !check_command(words, &err_mess)))
+        if (!check_label(words, &err_mess, f, nb_line))
             return !error(f, err_mess, file, *nb_line);
     }
-    return errno ? !error(f, "error while reading file", file, *nb_line) : 0;
+    if (errno)
+        return !error(f, "error while reading file", file, *nb_line);
+    return 0;
 }
