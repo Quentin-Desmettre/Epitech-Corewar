@@ -7,7 +7,45 @@
 
 #include "asm.h"
 
-static int write_command(command_t *cmd, int fd)
+command_t *create_command(char **words, command_t *prev)
+{
+    command_t *c = malloc(sizeof(command_t));
+
+    my_memset(c, 0, sizeof(command_t));
+    if (prev) {
+        c->offset = prev->offset + prev->cmd_size + 1;
+        if (!prev->is_special)
+            c->offset++;
+    }
+    c->code = code_of(words[0]);
+    if (!is_special_case(c->code)) {
+        c->coding_byte = coding_byte_for(words);
+    } else
+        c->is_special = 1;
+    get_args(c, words);
+    return c;
+}
+
+command_t *create_null_command(command_t *prev)
+{
+    command_t *cmd = malloc(sizeof(command_t));
+
+    my_memset(cmd, 0, sizeof(command_t));
+    cmd->offset = prev ? prev->offset + prev->cmd_size + 1 : 0;
+    return cmd;
+}
+
+label_t *create_label(char const *name, command_t *cmd)
+{
+    label_t *l = malloc(sizeof(label_t));
+
+    l->name = my_strdup(name);
+    l->name[my_strlen(l->name) - 1] = 0;
+    l->cmd = cmd;
+    return l;
+}
+
+int write_command(command_t *cmd, int fd)
 {
     int size = 0;
 

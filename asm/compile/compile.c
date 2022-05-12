@@ -7,7 +7,7 @@
 
 #include "asm.h"
 
-static void save_name(header_t *header, char *line)
+void save_name(header_t *header, char *line)
 {
     char *name = get_name(line, PROG_NAME_LENGTH);
     int len = my_strlen(name);
@@ -18,7 +18,7 @@ static void save_name(header_t *header, char *line)
     free(name);
 }
 
-static void get_comment(header_t *header, char *line)
+void get_comment(header_t *header, char *line)
 {
     char *comment = get_name(line, COMMENT_LENGTH);
     int len = my_strlen(comment);
@@ -27,33 +27,6 @@ static void get_comment(header_t *header, char *line)
         comment[len - 1] = 0;
     my_strcpy(header->comment, comment);
     free(comment);
-}
-
-static label_t *create_label(char const *name, command_t *cmd)
-{
-    label_t *l = malloc(sizeof(label_t));
-
-    l->name = my_strdup(name);
-    l->name[my_strlen(l->name) - 1] = 0;
-    l->cmd = cmd;
-    return l;
-}
-
-char **do_while(char ***base_words, FILE *f, int *nb_line)
-{
-    char **words;
-    char *line;
-
-    do {
-        line = get_next_line(f, nb_line);
-        if (!line) {
-            *base_words = NULL;
-            return NULL;
-        }
-        replace_comment(line);
-        words = my_str_to_word_array(line, ", \t\n");
-    } while (!words[0]);
-    return words;
 }
 
 char **get_labels(char ***base_words, FILE *f, int *nb_line)
@@ -68,7 +41,7 @@ char **get_labels(char ***base_words, FILE *f, int *nb_line)
             *base_words = words + 1;
             return labels;
         }
-        words = do_while(base_words, f, nb_line);
+        words = split_next_line(base_words, f, nb_line);
         if (!words)
             return labels;
     }
@@ -76,16 +49,7 @@ char **get_labels(char ***base_words, FILE *f, int *nb_line)
     return labels;
 }
 
-command_t *create_null_command(command_t *prev)
-{
-    command_t *cmd = malloc(sizeof(command_t));
-
-    my_memset(cmd, 0, sizeof(command_t));
-    cmd->offset = prev ? prev->offset + prev->cmd_size + 1 : 0;
-    return cmd;
-}
-
-static void get_data(char **words, file_buffer_t *buf, char *line)
+void get_data(char **words, file_buffer_t *buf, char *line)
 {
     command_t *tmp;
     char **labels;
@@ -106,14 +70,6 @@ static void get_data(char **words, file_buffer_t *buf, char *line)
         for (int i = 0; labels[i]; i++)
             append_node(&buf->labels, create_label(labels[i], tmp));
     }
-}
-
-void replace_comment(char *line)
-{
-    int idx = index_of('#', line);
-
-    if (idx >= 0)
-        line[idx] = 0;
 }
 
 int write_file(FILE *f, char const *output)

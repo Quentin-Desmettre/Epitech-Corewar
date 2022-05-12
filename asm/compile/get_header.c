@@ -7,17 +7,25 @@
 
 #include "asm.h"
 
-size_t progsize_offset(void)
-{
-    return (size_t)(&((header_t *)NULL)->prog_size);
-}
-
 char code_of(char const *name)
 {
     for (int i = 0; op_tab[i].mnemonique; i++)
         if (!my_strcmp(op_tab[i].mnemonique, name))
             return op_tab[i].code;
     return -1;
+}
+
+char check_direct_validity(char const *arg, char **err_mess)
+{
+    int is_valid;
+
+    if (arg[1] == LABEL_CHAR)
+        is_valid = (arg[2] && contain_only(arg + 2,
+        LABEL_CHARS)) ? T_DIR : T_ERROR;
+    else
+        is_valid = (arg[1] && str_is_num_signed(arg + 1)) ? T_DIR : T_ERROR;
+    *err_mess = is_valid ? *err_mess : "Invalid direct";
+    return is_valid;
 }
 
 char type_of_arg(char const *arg, char **err_mess)
@@ -34,15 +42,8 @@ char type_of_arg(char const *arg, char **err_mess)
         *err_mess = is_valid ? *err_mess : "Invalid register";
         return is_valid ? T_REG : T_ERROR;
     }
-    if (arg[0] == DIRECT_CHAR) {
-        if (arg[1] == LABEL_CHAR)
-            is_valid = (arg[2] && contain_only(arg + 2,
-            LABEL_CHARS)) ? T_DIR : T_ERROR;
-        else
-            is_valid = (arg[1] && str_is_num_signed(arg + 1)) ? T_DIR : T_ERROR;
-        *err_mess = is_valid ? *err_mess : "Invalid direct";
-        return is_valid;
-    }
+    if (arg[0] == DIRECT_CHAR)
+        return check_direct_validity(arg, err_mess);
     if (arg[0] == LABEL_CHAR)
         is_valid = (arg[1] && contain_only(arg + 1, LABEL_CHARS)) ? 4 : T_ERROR;
     else

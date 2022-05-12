@@ -7,6 +7,31 @@
 
 #include "asm.h"
 
+void replace_comment(char *line)
+{
+    int idx = index_of('#', line);
+
+    if (idx >= 0)
+        line[idx] = 0;
+}
+
+char **split_next_line(char ***base_words, FILE *f, int *nb_line)
+{
+    char **words;
+    char *line;
+
+    do {
+        line = get_next_line(f, nb_line);
+        if (!line) {
+            *base_words = NULL;
+            return NULL;
+        }
+        replace_comment(line);
+        words = my_str_to_word_array(line, ", \t\n");
+    } while (!words[0]);
+    return words;
+}
+
 char *get_next_line(FILE *f, int *nb_line)
 {
     char *line = NULL;
