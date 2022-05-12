@@ -123,6 +123,11 @@ char code_of(char const *name);
 uint8_t coding_byte_for(char **words);
 int has_index(char *name, int nb_arg);
 int compile_file(char const *file);
+void replace_comment(char *line);
+int getnbr_overflow(char *str);
+char **get_labels(char ***base_words, FILE *f, int *line);
+int is_label_valid(char const *arg);
+void replace_comment(char *line);
 
 static inline void add_int16t(command_t *c, int16_t i)
 {
