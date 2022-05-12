@@ -7,10 +7,6 @@
 
 #include "asm.h"
 
-void replace_comment(char *line);
-int getnbr_overflow(char *str);
-char **get_labels(char ***base_words, FILE *f, int *line);
-
 int is_in_bounds(int nb, int low, int up)
 {
     return (nb > low && nb < up);
@@ -24,9 +20,10 @@ int check_command(char **args, char **err_mess)
 
     code--;
     if (code < 0)
-        return 0;
+        return (*err_mess = "Invalid op code") ? 0 : 0;
     if (nb_args != op_tab[code].nbr_args)
-        return 0;
+        return (*err_mess = "Invalid number of arguments") ? 0 : 0;
+
     for (int i = 1; i < nb_args + 1; i++) {
         type = type_of_arg(args[i], err_mess);
         if (type == T_ERROR || !(op_tab[code].type[i - 1] & type)) {
@@ -49,6 +46,7 @@ int check_label(char **args, char **err_mess, FILE *f, int *line)
 {
     char **labels = get_labels(&args, f, line);
 
+    free_str_array(labels);
     if (!args)
         return 1;
     return check_command(args, err_mess);

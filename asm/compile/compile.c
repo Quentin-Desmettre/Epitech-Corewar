@@ -7,8 +7,6 @@
 
 #include "asm.h"
 
-int is_label_valid(char const *arg);
-
 static void save_name(header_t *header, char *line)
 {
     char *name = get_name(line, PROG_NAME_LENGTH);
@@ -41,11 +39,27 @@ static label_t *create_label(char const *name, command_t *cmd)
     return l;
 }
 
+char **do_while(char ***base_words, FILE *f, int *nb_line)
+{
+    char **words;
+    char *line;
+
+    do {
+        line = get_next_line(f, nb_line);
+        if (!line) {
+            *base_words = NULL;
+            return NULL;
+        }
+        replace_comment(line);
+        words = my_str_to_word_array(line, ", \t\n");
+    } while (!words[0]);
+    return words;
+}
+
 char **get_labels(char ***base_words, FILE *f, int *nb_line)
 {
     char **words = *base_words;
     char **labels = malloc(sizeof(char *));
-    char *line = NULL;
 
     labels[0] = 0;
     while (is_label_valid(words[0])) {
@@ -54,14 +68,9 @@ char **get_labels(char ***base_words, FILE *f, int *nb_line)
             *base_words = words + 1;
             return labels;
         }
-        do {
-            line = get_next_line(f, nb_line);
-            if (!line) {
-                *base_words = NULL;
-                return labels;
-            }
-            words = my_str_to_word_array(line, ", \t\n");
-        } while (!words[0]);
+        words = do_while(base_words, f, nb_line);
+        if (!words)
+            return labels;
     }
     *base_words = words;
     return labels;
