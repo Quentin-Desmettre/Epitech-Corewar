@@ -8,16 +8,6 @@
 #include "op.h"
 #include "libmy.h"
 
-void showbits(char x)
-{
-    int i=0;
-    for (i = (sizeof(char) * 8) - 1; i >= 0; i--)
-    {
-        putchar(x & (1u << i) ? '1' : '0');
-    }
-    printf("\n");
-}
-
 int get_coding_byte(char coding_byte, args_t *args)
 {
     for (int i = 0; i < 3; i++) {

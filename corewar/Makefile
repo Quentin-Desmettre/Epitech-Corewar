@@ -23,6 +23,7 @@ VMCORE	=	instructions/instructions_manager.c \
 			instructions/i_store.c \
 
 SRC_TESTS = convert_endian.c \
+	corewar.c \
 	$(ARGS) \
 	$(CHAMP) \
 	$(VMCORE) \
