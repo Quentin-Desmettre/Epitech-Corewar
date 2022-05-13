@@ -11,7 +11,7 @@ SRC = \
 OBJ = $(SRC:.c=.o)
 
 CFLAGS = -Wall -Wextra -I ../../include/ -I ../../lib/my/include \
-	-I ../../include/corewar_include -I ../../include
+	-I ../../include/corewar_include
 
 all: $(OBJ)
 

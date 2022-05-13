@@ -23,11 +23,40 @@ int help_message(char *name_binarie)
     return 0;
 }
 
+void dump_print(char *map)
+{
+    int pos_index = 0;
+
+    for (pos_index = 0; pos_index < 6144; pos_index += 32) {
+        print("%-5X: ", pos_index);
+        for (int i = pos_index; i < pos_index + 32; i++)
+            print("%02hhX ", map[i]);
+        print("\n");
+    }
+}
+
 void set_map(champ_t *champ, char *map)
 {
-    map = malloc(sizeof(char) * MEM_SIZE);
-    my_memset(map, 0, MEM_SIZE);
-    champ = champ;
+    champ_t *save;
+    int num_of_champ = 0;
+    int pos = 0;
+
+    map = malloc(sizeof(char) * (MEM_SIZE + 1));
+    my_memset(map, 0, MEM_SIZE + 1);
+    champ = sort_my_list(champ);
+    save = champ;
+    num_of_champ = get_num_of_champ(&champ);
+    for (int i = 0; save; i++) {
+        pos = i * (MEM_SIZE / num_of_champ);
+        save->adress = (save->adress == -1) ? pos : save->adress;
+        map = cor_strcpy(map, save->instruction,
+        (int [2]){save->adress != -1 ? save->adress : pos, 1},
+        save->header.prog_size);
+        if (!map)
+            exit(84);
+        save = save->next;
+    }
+    dump_print(map);
 }
 
 int main(int ac, char **av)

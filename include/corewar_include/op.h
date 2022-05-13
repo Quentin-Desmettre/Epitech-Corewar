@@ -20,6 +20,7 @@
     #include <unistd.h>
     #include <fcntl.h>
     #include "libmy.h"
+    #include "corewar.h"
 
 typedef char args_type_t;
 
@@ -45,6 +46,7 @@ typedef struct op_s {
     #define PROG_NAME_LENGTH 128
     #define COMMENT_LENGTH 2048
     #define COREWAR_EXEC_MAGIC 0xea83f3
+    #define COREWAR_EXEC_MAGIC_REVERSED 0xf383ea00
 
 typedef struct header_s {
     int magic;
@@ -107,7 +109,6 @@ typedef struct {
 //main.c
 int help_message(char *name_binarie);
 void print_info_champ(champ_t *info_champ);
-int main(int ac, char **av);
 
 //check args
 void check_dump(param_champ_t *param, char *arg);
@@ -143,5 +144,14 @@ void convert_endian(int *nbr);
 void check_header(champ_t **info_champ, size_t size);
 void read_header(champ_t **info_champ, size_t size);
 void fill_header_champ(champ_t **info_champ);
+
+//sort_champ
+int find_little_but_higher(champ_t *champ, int int_compare);
+champ_t *create_nodes(champ_t *info, int champ);
+champ_t *append_champ_with_value(champ_t *sorted, int little, champ_t *all);
+champ_t *sort_my_list(champ_t *champ);
+
+//my_exit
+char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
 
 #endif

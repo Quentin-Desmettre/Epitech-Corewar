@@ -9,11 +9,9 @@
 
 void re_alloc(char **str, char *new, int is_free)
 {
-    char *tmp = *str;
-
-    *str = new;
     if (is_free)
-        free(tmp);
+        free(*str);
+    *str = new;
 }
 
 char *replace(char const *str, int from, int nb, char *new)

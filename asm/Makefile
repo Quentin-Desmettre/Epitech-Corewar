@@ -6,16 +6,28 @@
 ##
 
 COMPILE = \
-		compile.c \
-		compile/compile.c
+		compile.c                      \
+		compile/compile.c              \
+		compile/get_args.c             \
+		compile/get_header.c           \
+		compile/labels.c               \
+		compile/write_buffer.c
 
 ERROR = \
-		error/has_error.c
+		error/has_error.c              \
+		error/check_commands.c         \
+		endian.c
 
-SRC	=	$(COMPILE) \
+SRC_TEST = \
+		$(COMPILE) \
 		$(ERROR)
 
-OBJ	=	$(SRC:.c=.o)
+SRC = $(SRC_TEST) \
+	main.c
+
+OBJ	=	$(SRC_TEST:.c=.o)
+
+OBJ2 = $(SRC:.c=.o)
 
 NAME	=	asm
 
@@ -32,13 +44,15 @@ all: build_lib compile
 build_lib:
 	@make --no-print-directory -C ../lib/my/
 
-compile: SRC += main.c
-compile: $(OBJ)
-	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
+compile: $(OBJ2)
+	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE) $(CFLAGS)
+
+debug: CFLAGS += -g
+debug: all
 
 clean:
 	@make clean --no-print-directory -C ../lib/my/
-	rm -f $(OBJ)
+	rm -f $(OBJ2)
 	find . -name "*.gcda" -delete
 	find . -name "*.gcno" -delete
 	find . -name "*.html" -delete
@@ -53,7 +67,7 @@ fclean: clean
 re:	fclean all
 
 valgrind:
-	gcc -o $(NAME) $(FLAGS) $(SRC) $(LIB) $(INCLUDE) -g
+	gcc -o $(NAME) $(FLAGS) $(SRC_TEST) $(LIB) $(INCLUDE) -g
 
 tests: CFLAGS += --coverage
 tests: $(OBJ)
@@ -61,4 +75,7 @@ tests: $(OBJ)
 	make -s --no-print-directory -C ../tests/asm/
 	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/asm/*.o -lcriterion -lmy --coverage
 	./test_bin ; echo -ne
-	@make clean
+
+functional_tests: all
+	cp ./asm ../tests/asm/functional/my/
+	cd ../tests/asm/functional/ ; python tester.py ; cd -

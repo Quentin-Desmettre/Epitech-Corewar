@@ -24,6 +24,9 @@ Test (output_file, output_file_test_output_file)
 
     f = get_output_file("s");
     cr_assert_str_eq(f, "s.cor");
+
+    f = get_output_file("./test/abel.s");
+    cr_assert_str_eq(f, "abel.cor");
 }
 
 Test (next_line, get_next_line)
@@ -76,6 +79,29 @@ Test (type_of_arg, type_of_arg)
     cr_assert(type_of_arg(":label") == T_IND);
     cr_assert(type_of_arg("7") == T_IND);
     cr_assert(type_of_arg("aa") == T_ERROR);
+    cr_assert(type_of_arg("r0") == T_ERROR);
+    cr_assert(type_of_arg("r-1") == T_ERROR);
+    cr_assert(type_of_arg("r16") == T_REG);
+    cr_assert(type_of_arg("r17") == T_ERROR);
+    cr_assert(type_of_arg("r") == T_ERROR);
+    cr_assert(type_of_arg("%:hi") == T_DIR);
+    cr_assert(type_of_arg("%::hi") == T_ERROR);
+    cr_assert(type_of_arg("%89:") == T_ERROR);
+    cr_assert(type_of_arg("%:èè") == T_ERROR);
+    cr_assert(type_of_arg("%-2") == T_DIR);
+    cr_assert(type_of_arg("%:") == T_ERROR);
+    cr_assert(type_of_arg("%") == T_ERROR);
+    cr_assert(type_of_arg(":") == T_ERROR);
+    cr_assert(type_of_arg(":hi") == T_IND);
+    cr_assert(type_of_arg(":") == T_ERROR);
+    cr_assert(type_of_arg(":hi") == T_IND);
+    cr_assert(type_of_arg("-7878") == T_IND);
+    cr_assert(type_of_arg("--67") == T_ERROR);
+    cr_assert(type_of_arg("::") == T_ERROR);
+    cr_assert(type_of_arg("%-") == T_DIR);
+    cr_assert(type_of_arg("6767") == T_IND);
+    cr_assert(type_of_arg("-") == T_IND);
+    cr_assert(type_of_arg("") == T_ERROR);
 }
 
 Test (coding_byte, coding_byte)
@@ -94,4 +120,90 @@ Test (coding_byte, coding_byte)
         "truc", "r1", "r3", "34", NULL
     };
     cr_assert(coding_byte_for(words3) == 0x5C);
+}
+
+int getnbr_overflow(char *str);
+
+Test (getnbr, getnbr)
+{
+    cr_assert(getnbr_overflow("35") == 35);
+    cr_assert(getnbr_overflow("-35") == -35);
+}
+
+Test (check_command, check_command)
+{
+    char *args[] = {
+        ".comment",
+        NULL
+    };
+    cr_assert(check_command(args) == 0);
+
+    char *args2[] = {
+        "live",
+        "r3",
+        "r4",
+        NULL
+    };
+    cr_assert(check_command(args2) == 0);
+
+    char *args3[] = {
+        "live",
+        "r2",
+        NULL
+    };
+    cr_assert(check_command(args3) == 0);
+
+    char *args4[] = {
+        "live",
+        "%234",
+        NULL
+    };
+    cr_assert(check_command(args4) == 1);
+}
+
+Test (check_label, check_label)
+{
+    char *args[] = {
+        "hi::",
+        NULL
+    };
+    cr_assert(check_label(args) == 0);
+
+    char *args2[] = {
+        "é:",
+        NULL
+    };
+    cr_assert(check_label(args2) == 0);
+
+    char *args3[] = {
+        ":",
+        NULL
+    };
+    cr_assert(check_label(args3) == 0);
+
+    char *args4[] = {
+        "hi:",
+        NULL
+    };
+    cr_assert(check_label(args4) == 0);
+
+    char *args5[] = {
+        "hi:",
+        "live",
+        "%234",
+        NULL
+    };
+    cr_assert(check_label(args5) == 1);
+}
+
+Test (get_name, get_name)
+{
+    cr_assert(get_name(".name \"                                                                                                                                                                                                                                                                                                                                                                                                                                                   \"", 128) == NULL);
+    cr_assert_str_eq(get_name(".name \"abel\"", 128), "abel");
+}
+
+Test (error, error)
+{
+    FILE *f = fopen("/dev/random", "r");
+    cr_assert(error(f, "test") == 0);
 }

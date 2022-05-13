@@ -14,6 +14,8 @@ typedef struct {
     char type[3];
 } args_t;
 
+enum I_TYPE {EMPTY, REGISTER, DIRECT, INDIRECT};
+
 // Instructions
 int i_live(int arga);
 int i_zjmp(int arga);

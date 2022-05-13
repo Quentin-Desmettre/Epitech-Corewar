@@ -7,6 +7,7 @@
 
 SRC = \
 	iomanip/my_getnbr.c                         \
+	iomanip/corewar.c                           \
 	iomanip/my_put_nbr.c                        \
 	iomanip/my_putchar.c                        \
 	iomanip/my_putstr.c                         \

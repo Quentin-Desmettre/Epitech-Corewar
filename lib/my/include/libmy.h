@@ -15,4 +15,9 @@
     #include "others.h"
     #include "strmanip.h"
 
+void my_memcpy(void *dest, void *source, size_t size);
+unsigned my_pow(unsigned nb, unsigned power);
+int getnbr_overflow(char *str);
+int str_is_num_signed(char const *str);
+
 #endif

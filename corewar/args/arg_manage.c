@@ -13,6 +13,7 @@ param_champ_t *init_value(void)
 
     param->adress_act = 0;
     param->adress_next = -1;
+    param->dump_cycle = 0;
     param->index = 0;
     param->last_opt = 0;
     param->num_champ = 1;

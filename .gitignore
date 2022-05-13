@@ -9,3 +9,6 @@ tests_folder/
 tester/
 cmake-build-debug/
 champions
+.idea
+github
+asm/tests
