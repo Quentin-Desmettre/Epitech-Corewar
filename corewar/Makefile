@@ -16,6 +16,7 @@ CHAMP	=	champ/create_champ.c \
 			champ/sort_champ.c
 
 SRC_TESTS = convert_endian.c \
+	corewar.c \
 	$(ARGS) \
 	$(CHAMP)
 
