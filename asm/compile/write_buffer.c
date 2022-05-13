@@ -28,11 +28,15 @@ command_t *create_command(char **words, command_t *prev)
 
 command_t *create_null_command(command_t *prev)
 {
-    command_t *cmd = malloc(sizeof(command_t));
+    command_t *c = malloc(sizeof(command_t));
 
-    my_memset(cmd, 0, sizeof(command_t));
-    cmd->offset = prev ? prev->offset + prev->cmd_size + 1 : 0;
-    return cmd;
+    my_memset(c, 0, sizeof(command_t));
+    if (prev) {
+        c->offset = prev->offset + prev->cmd_size + 1;
+        if (!prev->is_special)
+            c->offset++;
+    }
+    return c;
 }
 
 label_t *create_label(char const *name, command_t *cmd)
