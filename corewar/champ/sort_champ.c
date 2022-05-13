@@ -71,5 +71,5 @@ champ_t *sort_my_list(champ_t *champ)
         champ = champ->next;
         free(tmp);
     }
-    return sorted;
+    return (sorted);
 }

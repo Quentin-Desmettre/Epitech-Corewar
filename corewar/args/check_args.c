@@ -11,6 +11,10 @@ void check_dump(param_champ_t *param, char *arg)
 {
     int error = 0;
 
+    if (!arg) {
+        write(2, "Invalid option.\n", 16);
+        exit(84);
+    }
     if (param->dump_cycle) {
         write(2, "Double definition of option dump.\n", 34);
         exit(84);

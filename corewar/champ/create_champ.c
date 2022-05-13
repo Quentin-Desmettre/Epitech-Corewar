@@ -42,7 +42,7 @@ champ_t *init_node(param_champ_t *param, char *path_file)
         node->champ_nbr = param->num_champ;
         param->num_champ++;
     }
-    node->adress = param->adress_act;
+    node->adress = param->adress_next;
     node->adress_impose = (node->adress != -1) ? 1 : 0;
     node->next = NULL;
     return node;
@@ -73,6 +73,6 @@ void create_champ(char *path_file, param_champ_t *param, champ_t **info_champ)
     close(fd);
     append_champ(path_file, param, info_champ);
     param->index++;
-    param->adress_act = param->adress_next;
+    param->adress_act = -1;
     param->adress_next = -1;
 }
