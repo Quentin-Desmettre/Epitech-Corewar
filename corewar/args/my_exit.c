@@ -33,7 +33,7 @@ void my_exit(int status)
 
 char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size)
 {
-    int index_str2 = 0;
+    size_t index_str2 = 0;
 
     for (size_t i = cc[0]; index_str2 < size; i++, index_str2++) {
         if (i > MEM_SIZE)
