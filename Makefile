@@ -18,15 +18,19 @@ clean	:
 	make clean -C corewar
 	find . -name "*.gcda" -delete
 	find . -name "*.gcno" -delete
-	find . -name "*.gcov.txt" -delete
+	find . -name "*.o" -delete
 	find . -name "vgcore.*" -delete
 
 fclean	:
 	make fclean -C asm
 	make fclean -C corewar
 
-# tests_run:
-# 	make tests -C asm
-# 	make tests -C corewar
-# 	gcovr --html --html-details -o asm.html
-# 	@make clean
+tests_run: fclean
+	make tests -C asm
+	gcovr --html --html-details -o asm.html
+	find . -name "*.o" -delete
+	mkdir -p test_report
+	mv *.html *.css test_report/
+
+doc:
+	doxygen corewar.doxy
