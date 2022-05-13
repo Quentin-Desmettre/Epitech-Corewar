@@ -23,6 +23,18 @@ int help_message(char *name_binarie)
     return 0;
 }
 
+void dump_print(char *map)
+{
+    int pos_index = 0;
+
+    for (pos_index = 0; pos_index < 6144; pos_index += 32) {
+        print("%-5X: ", pos_index);
+        for (int i = pos_index; i < pos_index + 32; i++)
+            print("%02hhX ", map[i]);
+        print("\n");
+    }
+}
+
 void set_map(champ_t *champ, char *map)
 {
     champ_t *save;
@@ -43,6 +55,7 @@ void set_map(champ_t *champ, char *map)
             exit(84);
         save = save->next;
     }
+    dump_print(map);
 }
 
 int main(int ac, char **av)
