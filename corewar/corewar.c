@@ -69,8 +69,9 @@ void setup_game(int ac, char **av)
     check_argv(&ac, av, &dump_cycle, &info_champ);
     check_champ(ac, &info_champ);
     map = set_map(info_champ, map);
-    main_loop(map, info_champ);
-    if (dump_cycle)
-        dump_print(map);
-    print_winner(info_champ);
+    instruction_reader(info_champ);
+//    main_loop(map, info_champ);
+//    if (dump_cycle)
+//        dump_print(map);
+//    print_winner(info_champ);
 }
