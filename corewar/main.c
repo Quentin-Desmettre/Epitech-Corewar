@@ -25,9 +25,24 @@ int help_message(char *name_binarie)
 
 void set_map(champ_t *champ, char *map)
 {
-    map = malloc(sizeof(char) * MEM_SIZE);
-    my_memset(map, 0, MEM_SIZE);
+    champ_t *save;
+    int num_of_champ = 0;
+    int pos = 0;
+
+    map = malloc(sizeof(char) * (MEM_SIZE + 1));
+    my_memset(map, 0, MEM_SIZE + 1);
     champ = sort_my_list(champ);
+    save = champ;
+    num_of_champ = get_num_of_champ(&champ);
+    for (int i = 0; save; i++) {
+        pos = i * (MEM_SIZE / num_of_champ);
+        map = cor_strcpy(map, save->instruction,
+        (int [2]){save->adress != -1 ? save->adress : pos, 1},
+        save->header.prog_size);
+        if (!map)
+            exit(84);
+        save = save->next;
+    }
 }
 
 int main(int ac, char **av)

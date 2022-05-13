@@ -150,4 +150,7 @@ champ_t *create_nodes(champ_t *info, int champ);
 champ_t *append_champ_with_value(champ_t *sorted, int little, champ_t *all);
 champ_t *sort_my_list(champ_t *champ);
 
+//my_exit
+char *cor_strcpy(char *str1, const char *str2, int cc[2], size_t size);
+
 #endif

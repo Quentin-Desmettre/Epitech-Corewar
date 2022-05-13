@@ -8,7 +8,8 @@
 ARGS	=	args/arg_manage.c \
 			args/check_args.c \
 			args/check_champ.c \
-			args/num_champ.c
+			args/num_champ.c \
+			args/my_exit.c
 
 CHAMP	=	champ/create_champ.c \
 			champ/read_check_header.c \
@@ -54,7 +55,7 @@ fclean: clean
 re:	fclean all
 
 valgrind:	CFLAGS += -g
-valgrind:	$(OBJ2)
+valgrind:	clean $(OBJ2)
 	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE)
 
 tests: CFLAGS += --coverage
