@@ -8,6 +8,11 @@
 #ifndef COREWAR_H
     #define COREWAR_H
 
+// ARGS
+typedef struct {
+    int args[3];
+    char type[3];
+} args_t;
 
 // Instructions
 int i_live(int arga);
