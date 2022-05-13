@@ -33,7 +33,7 @@ Test (output_file, output_file_test_output_file)
 
 Test (next_line, get_next_line)
 {
-    FILE *f = fopen("tmp_file", "w");
+    FILE *f = fopen("/tmp/tmp_file", "w");
     char const *strings[] = {
         "ligne1\n",
         "ligne2\n",
