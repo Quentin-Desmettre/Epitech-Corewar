@@ -20,15 +20,13 @@ char **split_next_line(char ***base_words, FILE *f, int *nb_line)
     char **words;
     char *line;
 
-    do {
-        line = get_next_line(f, nb_line);
-        if (!line) {
-            *base_words = NULL;
-            return NULL;
-        }
-        replace_comment(line);
-        words = my_str_to_word_array(line, ", \t\n");
-    } while (!words[0]);
+    line = get_next_line(f, nb_line);
+    if (!line) {
+        *base_words = NULL;
+        return NULL;
+    }
+    replace_comment(line);
+    words = my_str_to_word_array(line, ", \t\n");
     return words;
 }
 
@@ -36,6 +34,7 @@ char *get_next_line(FILE *f, int *nb_line)
 {
     char *line = NULL;
     size_t s;
+    char **words;
 
     while (1) {
         if (getline(&line, &s, f) < 0) {
@@ -43,11 +42,15 @@ char *get_next_line(FILE *f, int *nb_line)
             return NULL;
         }
         (nb_line) ? (*nb_line) += 1 : 0;
-        if (line[0] == '#' || line[0] == '\n') {
+        words = my_str_to_word_array(line, "\t \n");
+        if (line[0] == '#' || line[0] == '\n' || !words[0]) {
             free(line);
             line = NULL;
-        } else
+        } else {
+            free_str_array(words);
             return line;
+        }
+        free_str_array(words);
     }
 }
 

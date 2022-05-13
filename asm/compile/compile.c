@@ -89,8 +89,6 @@ int write_file(FILE *f, char const *output)
         free_str_array(words);
         free(line);
     }
-    if (errno)
-        return dprint(2, "Error while reading file.\n") ? 0 : 0;
     if (!resolve_labels(&buf))
         return 0;
     return write_buffer(&buf, output);

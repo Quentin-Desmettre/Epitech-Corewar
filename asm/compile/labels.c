@@ -86,16 +86,18 @@ int resolve_labels(file_buffer_t *buf)
     list_t *command = buf->commands;
     command_t *cmd;
     int cont = 1;
+    int rcont = 1;
 
-    if (!command)
-        return 1;
-    if (has_double(buf->labels))
-        return 0;
+    if (!command || has_double(buf->labels))
+        return !command ? 1 : 0;
     do {
         cmd = command->data;
-        for (int i = 0; i < cmd->nb_label && cont; i++)
+        for (int i = 0; i < cmd->nb_label && cont; i++) {
             cont = search_for_label(cmd, i, buf->labels);
-        if (!cont)
+            rcont = cont;
+            cont = (i + 1 < cmd->nb_label) ? 0 : cont;
+        }
+        if (!rcont)
             return 0;
         command = command->next;
     } while (command != buf->commands);

@@ -37,9 +37,9 @@ int check_command(char **args, char **err_mess)
 
 int is_label_valid(char const *arg)
 {
-    return arg[my_strlen(arg) - 1] == LABEL_CHAR &&
+    return my_strlen(arg) >= 2 && arg[my_strlen(arg) - 1] == LABEL_CHAR &&
     count_occurences(LABEL_CHAR, arg) == 1 &&
-    contain_only(arg, LABEL_CHARS ":") && my_strlen(arg) >= 2;
+    contain_only(arg, LABEL_CHARS ":");
 }
 
 int check_label(char **args, char **err_mess, FILE *f, int *line)
@@ -69,7 +69,5 @@ int get_error_for(FILE *f, char const *file, int *nb_line)
         if (!check_label(words, &err_mess, f, nb_line))
             return !error(f, err_mess, file, *nb_line);
     }
-    if (errno)
-        return !error(f, "error while reading file", file, *nb_line);
     return 0;
 }

@@ -73,7 +73,7 @@ tests: CFLAGS += --coverage
 tests: $(OBJ)
 	make -s -C ../lib/my/
 	make -s --no-print-directory -C ../tests/asm/
-	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/asm/*.o -lcriterion -lmy --coverage
+	gcc $(CFLAGS) -o test_bin -g $(OBJ) ../tests/asm/*.o -lcriterion -lmy
 	./test_bin ; echo -ne
 
 functional_tests: all
