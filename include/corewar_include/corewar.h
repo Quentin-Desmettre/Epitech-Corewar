@@ -1,0 +1,11 @@
+/*
+** EPITECH PROJECT, 2022
+** B_CPE_201_LIL_2_1_corewar_noa_trachez
+** File description:
+** TODO: description
+*/
+
+#ifndef B_CPE_201_LIL_2_1_COREWAR_NOA_TRACHEZ_COREWAR_H
+#define B_CPE_201_LIL_2_1_COREWAR_NOA_TRACHEZ_COREWAR_H
+
+#endif //B_CPE_201_LIL_2_1_COREWAR_NOA_TRACHEZ_COREWAR_H
