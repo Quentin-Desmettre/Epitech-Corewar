@@ -23,47 +23,8 @@ int help_message(char *name_binarie)
     return 0;
 }
 
-void dump_print(char *map)
-{
-    int pos_index = 0;
-
-    for (pos_index = 0; pos_index < 6144; pos_index += 32) {
-        print("%-5X: ", pos_index);
-        for (int i = pos_index; i < pos_index + 32; i++)
-            print("%02hhX ", map[i]);
-        print("\n");
-    }
-}
-
-void set_map(champ_t *champ, char *map)
-{
-    champ_t *save;
-    int num_of_champ = 0;
-    int pos = 0;
-
-    map = malloc(sizeof(char) * (MEM_SIZE + 1));
-    my_memset(map, 0, MEM_SIZE + 1);
-    champ = sort_my_list(champ);
-    save = champ;
-    num_of_champ = get_num_of_champ(&champ);
-    for (int i = 0; save; i++) {
-        pos = i * (MEM_SIZE / num_of_champ);
-        map = cor_strcpy(map, save->instruction,
-        (int [2]){save->adress != -1 ? save->adress : pos, 1},
-        save->header.prog_size);
-        if (!map)
-            exit(84);
-        save = save->next;
-    }
-    dump_print(map);
-}
-
 int main(int ac, char **av)
 {
-    int dump_cycle = 0;
-    champ_t *info_champ = NULL;
-    char *map = NULL;
-
     if (ac == 2)
         if (my_strcmp(av[1], "-h") == 0)
             return (help_message(av[0]));
@@ -71,8 +32,6 @@ int main(int ac, char **av)
         write(2, "Need at least 2 champ\n", 22);
         return 84;
     }
-    check_argv(&ac, av, &dump_cycle, &info_champ);
-    check_champ(ac, &info_champ);
-    set_map(info_champ, map);
+    setup_game(ac, av);
     return (0);
 }

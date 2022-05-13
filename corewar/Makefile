@@ -15,9 +15,18 @@ CHAMP	=	champ/create_champ.c \
 			champ/read_check_header.c \
 			champ/sort_champ.c
 
+VMCORE	=	instructions/instructions_manager.c \
+			instructions/i_conditions.c \
+			instructions/i_load.c \
+			instructions/i_misc.c \
+			instructions/i_operations.c \
+			instructions/i_store.c \
+
 SRC_TESTS = convert_endian.c \
+	corewar.c \
 	$(ARGS) \
-	$(CHAMP)
+	$(CHAMP) \
+	$(VMCORE) \
 
 SRC = $(SRC_TESTS) \
 	main.c
@@ -32,7 +41,7 @@ FLAGS	=	-Wall -Wextra -g
 
 LIB	=	-L ../lib/my -l my
 
-INCLUDE	=	-I ../lib/my/include -I ../include
+INCLUDE	=	-I ../lib/my/include -I ../include -I ../include/corewar_include
 
 CFLAGS	=	-Wall -Wextra $(LIB) $(INCLUDE)
 

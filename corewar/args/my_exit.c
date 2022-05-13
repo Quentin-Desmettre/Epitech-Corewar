@@ -36,7 +36,7 @@ char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size)
     size_t index_str2 = 0;
 
     for (size_t i = cc[0]; index_str2 < size; i++, index_str2++) {
-        if (i > MEM_SIZE)
+        if (i >= MEM_SIZE)
             i = 0;
         if (str1[i] != '\0' && cc[1]) {
             free(str1);

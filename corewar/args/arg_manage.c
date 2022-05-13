@@ -13,6 +13,7 @@ param_champ_t *init_value(void)
 
     param->adress_act = 0;
     param->adress_next = -1;
+    param->dump_cycle = 0;
     param->index = 0;
     param->last_opt = 0;
     param->num_champ = 1;
@@ -39,6 +40,18 @@ int check_if_opt(param_champ_t *param, char *str, char *str_next, int *index)
     return (0);
 }
 
+void error_on_check_argv(param_champ_t *param)
+{
+    if (check_same_nbr(param)) {
+        write(2, "double definition of prog_number.\n", 34);
+        exit(84);
+    }
+    if (param->adress_next != -1 || param->num_impose[param->index]) {
+        write(2, "Invalid option.\n", 16);
+        exit(84);
+    }
+}
+
 void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ)
 {
     param_champ_t *param = init_value();
@@ -52,10 +65,7 @@ void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ)
         }
         create_champ(av[i], param, info_champ);
     }
-    if (check_same_nbr(param)) {
-        write(2, "double definition of prog_number.\n", 34);
-        exit(84);
-    }
+    error_on_check_argv(param);
     *ac = param->num_impose[param->index];
     *dump_cycle = param->dump_cycle;
     free(param);

@@ -28,6 +28,10 @@ void check_num(param_champ_t *param, char *arg)
 {
     int error = 0;
 
+    if (!arg) {
+        write(2, "Invalid option.\n", 16);
+        exit(84);
+    }
     if (param->num_impose[param->index] != 0) {
         write(2, "Invalid option.\n", 16);
         exit(84);
@@ -46,6 +50,10 @@ void check_address(param_champ_t *param, char *arg)
 {
     int error = 0;
 
+    if (!arg) {
+        write(2, "Invalid option.\n", 16);
+        exit(84);
+    }
     if (param->adress_next != -1) {
         write(2, "Invalid option.\n", 16);
         exit(84);
