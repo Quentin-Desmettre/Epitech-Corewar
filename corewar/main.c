@@ -48,6 +48,7 @@ void set_map(champ_t *champ, char *map)
     num_of_champ = get_num_of_champ(&champ);
     for (int i = 0; save; i++) {
         pos = i * (MEM_SIZE / num_of_champ);
+        save->adress = (save->adress == -1) ? pos : save->adress;
         map = cor_strcpy(map, save->instruction,
         (int [2]){save->adress != -1 ? save->adress : pos, 1},
         save->header.prog_size);

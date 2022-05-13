@@ -26,11 +26,11 @@ champ_t *create_nodes(champ_t *info, int champ)
     champ_t *save = info;
     champ_t *return_champ = malloc(sizeof(champ_t));
 
-    while (info->champ_nbr != champ)
+    while (info->next != NULL && info->champ_nbr != champ)
         info = info->next;
     return_champ->champ_nbr = info->champ_nbr;
     return_champ->name_champ = info->name_champ;
-    return_champ->nb_is_impose = info->  nb_is_impose;
+    return_champ->nb_is_impose = info->nb_is_impose;
     return_champ->adress = info->adress;
     return_champ->adress_impose = info->adress_impose;
     return_champ->instruction = info->instruction;
