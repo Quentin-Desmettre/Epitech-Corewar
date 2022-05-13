@@ -5,8 +5,7 @@
 ** my_exit
 */
 
-#include "../../include/corewar_include/op.h"
-#include "../../lib/my/include/strmanip.h"
+#include "corewar_include/op.h"
 
 champ_t **get_champ_t(void)
 {
@@ -18,26 +17,32 @@ champ_t **get_champ_t(void)
 void my_exit(int status)
 {
     champ_t **champ = get_champ_t();
+    champ_t *tmp = NULL;
 
     if (!get_champ_t())
         exit(status);
-    for (int i = 0, champ[i]; i++)
-        free(*champ[i]);
-    free(champ);
+    while (*champ) {
+        tmp = *champ;
+        *champ = (*champ)->next;
+        free(tmp);
+        tmp = NULL;
+    }
+    free(tmp);
     exit(status);
 }
 
-char *cor_strcpy(char *str1, char *str2, int cc[2], size_t size)
+char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size)
 {
-    int index_str2 = 0;
+    size_t index_str2 = 0;
 
-    for (int i = cc[0]; i < size; i++) {
+    for (size_t i = cc[0]; index_str2 < size; i++, index_str2++) {
         if (i > MEM_SIZE)
             i = 0;
-        if (str1[i] != '\0' && cc[1])
-            return NULL;
+        if (str1[i] != '\0' && cc[1]) {
+            free(str1);
+            return (NULL);
+        }
         str1[i] = str2[index_str2];
-        index_str2++;
     }
-    return str2;
+    return (str1);
 }
