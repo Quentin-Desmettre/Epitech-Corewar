@@ -304,21 +304,6 @@ int check_name(FILE *f, char const *file, int *line);
 void get_args(command_t *c, char **words);
 
 /**
- * @brief Get the dir object
- * 
- * @param name 
- * @param word 
- * @param c 
- * @param i 
- */
-void get_dir(char *name, char *word, command_t *c, int i);
-void get_label(int is_index, command_t *c, char *word);
-void get_ind(command_t *c, char *word);
-void get_reg(char *word, command_t *c);
-void save_name(header_t *header, char *line);
-void get_comment(header_t *header, char *line);
-
-/**
  * @brief Create a label object.
  * @param name The name of the label.
  * @param cmd The command it is linked to.
@@ -442,5 +427,12 @@ static inline size_t progsize_offset(void)
 {
     return (size_t)(&((header_t *)NULL)->prog_size);
 }
+
+void get_dir(char *name, char *word, command_t *c, int i);
+void get_label(int is_index, command_t *c, char *word);
+void get_ind(command_t *c, char *word);
+void get_reg(char *word, command_t *c);
+void save_name(header_t *header, char *line);
+void get_comment(header_t *header, char *line);
 
 #endif /* !ASM_H_ */

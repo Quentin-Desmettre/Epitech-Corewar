@@ -84,11 +84,13 @@ for file in files:
     else:
         succeeded += 1
         print_green()
-        print("%s:%s Test succeeded." %(file_to_print, (" " * (max - len(file_to_print)))))
+        print("%s:%s Test passed." %(file_to_print, (" " * (max - len(file_to_print)))))
 
     print_white()
     os.system("rm -f my_cor ref_cor")
 
-print("=" * os.get_terminal_size().columns)
-print("Succeeded: \033[32m%d\033[37m, Failed: \033[31m%d\033[37m, Crashed: \033[31m%d\033[37m." %(succeeded, failed, crashed))
-print("=" * os.get_terminal_size().columns)
+formatted = "Passed: \033[32m%d\033[37m, Failed: \033[31m%d\033[37m, Crashed: \033[31m%d\033[37m." %(succeeded, failed, crashed)
+
+print("=" * len(formatted))
+print(formatted)
+print("=" * len(formatted))

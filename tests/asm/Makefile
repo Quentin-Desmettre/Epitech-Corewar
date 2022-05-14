@@ -6,7 +6,15 @@
 ##
 
 SRC = \
-	test_output_file.c
+	test_asm_h.c         \
+	test_check_command.c \
+	test_compile.c       \
+	test_compile2.c      \
+	test_get_args.c      \
+	test_get_header.c    \
+	test_has_error.c     \
+	test_label.c         \
+	test_write_buffer.c
 
 OBJ = $(SRC:.c=.o)
 

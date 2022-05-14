@@ -27,10 +27,15 @@ fclean	:
 
 tests_run: fclean
 	make tests -C asm
-	gcovr --html --html-details -o asm.html
+	gcovr --html --html-details -o corewar.html
 	find . -name "*.o" -delete
 	mkdir -p test_report
 	mv *.html *.css test_report/
+
+functional:
+	echo "Starting ASM tests..."
+	make -s functional_tests -C asm > asm.log ; tail -n 3 asm.log | head -n 1
+	echo "See full detail in asm.log."
 
 doc:
 	doxygen corewar.doxy
