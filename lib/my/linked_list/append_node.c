@@ -7,6 +7,19 @@
 
 #include "libmy.h"
 
+void push_to_stack(s_list_t **stack, void *data)
+{
+    s_list_t *node = malloc(sizeof(s_list_t));
+
+    if (!node) {
+        write(2, "ERROR: malloc() failed.\n", 24);
+        my_exit(84);
+    }
+    node->data = data;
+    node->next = *stack;
+    *stack = node;
+}
+
 void append_node(list_t **begin, void *data)
 {
     list_t *new = malloc(sizeof(list_t));

@@ -80,9 +80,9 @@ int has_error(char const *file)
 
     if (!f)
         return dprint(2, "Error: Cannot open '%s'.\n", file) ? 1 : 1;
-    if (!check_name(f, file, &line) || !check_comment(f, file, &line))
+    if (!check_name(f, file, &line) || !check_comment(f, file, &line) ||
+    get_error_for(f, file, &line))
         return 1;
-    if (get_error_for(f, file, &line))
-        return 1;
+    fclose(f);
     return 0;
 }

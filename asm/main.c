@@ -16,6 +16,7 @@ int main(int ac, char **av)
     for (int i = 1; i < ac; i++) {
         if (!compile_file(av[i]))
             rval = 84;
+        flush_garbage();
     }
-    return rval;
+    exit(rval);
 }

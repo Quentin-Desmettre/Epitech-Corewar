@@ -15,6 +15,15 @@
     #include "others.h"
     #include "strmanip.h"
 
+void my_free(void *data);
+void my_exit(int code);
+void *my_malloc(size_t size);
+void flush_garbage(void);
+
+    #define malloc my_malloc
+    #define free my_free
+    #define exit my_exit
+
 void my_memcpy(void *dest, void *source, size_t size);
 unsigned my_pow(unsigned nb, unsigned power);
 int getnbr_overflow(char *str);

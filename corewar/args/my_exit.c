@@ -14,23 +14,6 @@ champ_t **get_champ_t(void)
     return (&champ);
 }
 
-void my_exit(int status)
-{
-    champ_t **champ = get_champ_t();
-    champ_t *tmp = NULL;
-
-    if (!get_champ_t())
-        exit(status);
-    while (*champ) {
-        tmp = *champ;
-        *champ = (*champ)->next;
-        free(tmp);
-        tmp = NULL;
-    }
-    free(tmp);
-    exit(status);
-}
-
 char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size)
 {
     size_t index_str2 = 0;

@@ -24,5 +24,6 @@ void append_node(list_t **begin, void *data);
 void remove_node(list_t **begin, unsigned offset, void (*freer)(void *));
 void destroy_list(list_t **list, void (*freer)(void *));
 list_t *copy_list(list_t *used);
+void push_to_stack(s_list_t **stack, void *data);
 
 #endif

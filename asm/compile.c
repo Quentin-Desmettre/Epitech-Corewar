@@ -37,10 +37,9 @@ char *get_next_line(FILE *f, int *nb_line)
     char **words;
 
     while (1) {
-        if (getline(&line, &s, f) < 0) {
-            free(line);
-            return NULL;
-        }
+        if (getline(&line, &s, f) < 0)
+            return free(line), NULL;
+        re_alloc(&line, my_strdup(line), 1);
         (nb_line) ? (*nb_line) += 1 : 0;
         words = my_str_to_word_array(line, "\t \n");
         if (line[0] == '#' || line[0] == '\n' || !words[0]) {
@@ -75,12 +74,17 @@ char const *get_output_file(char const *file)
 int compile_file(char const *file)
 {
     FILE *f = fopen(file, "r");
+    int rval;
 
     if (!f) {
         dprint(2, "Error while opening '%s'.\n", file);
         return 0;
     }
-    if (has_error(file))
+    if (has_error(file)) {
+        fclose(f);
         return 0;
-    return write_file(f, get_output_file(file));
+    }
+    rval = write_file(f, get_output_file(file));
+    fclose(f);
+    return rval;
 }
