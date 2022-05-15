@@ -26,6 +26,7 @@ fclean	:
 	make fclean -C corewar
 
 tests_run: fclean
+	echo "Testing ASM..."
 	make tests -C asm
 	gcovr --html --html-details -o corewar.html
 	find . -name "*.o" -delete
@@ -33,7 +34,7 @@ tests_run: fclean
 	mv *.html *.css test_report/
 
 functional:
-	echo "Starting ASM tests..."
+	echo "Testing ASM..."
 	make -s functional_tests -C asm > asm.log ; tail -n 3 asm.log | head -n 1
 	echo "See full detail in asm.log."
 
