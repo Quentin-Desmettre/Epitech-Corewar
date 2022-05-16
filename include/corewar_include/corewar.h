@@ -34,7 +34,7 @@ int i_and(int arga, int argb, int argc);
 int i_or(int arga, int argb, int argc);
 int i_xor(int arga, int argb, int argc);
 
-// lib
-void my_memcpy(void *dest, void *source, size_t size);
+int i_has_index(int mnemonic, int nb_arg);
+int get_instruction_args(int mnemonic, char *instructions, args_t *args);
 
 #endif /*COREWAR_H*/
