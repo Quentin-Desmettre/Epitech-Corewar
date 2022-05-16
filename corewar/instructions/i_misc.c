@@ -7,16 +7,10 @@
 
 #include "op.h"
 
-int *nbr_live_done(void)
-{
-    static int nbr_lives_done = 0;
-
-    return (&nbr_lives_done);
-}
-
 int i_live(int arg[3], champ_t *champ, char *arena)
 {
-    int *tmp = 0;
+    static int nbr_lives_done = 0;
+    int *cycle_to_die = 0;
     champ_t *save = champ;
 
     while (save) {
@@ -27,8 +21,12 @@ int i_live(int arg[3], champ_t *champ, char *arena)
         }
         save = save->next;
     }
-    tmp = nbr_live_done();
-    (*tmp)++;
+    nbr_lives_done++;
+    if (nbr_lives_done == 40) {
+        cycle_to_die = get_cycle_to_die();
+        (*cycle_to_die)--;
+        nbr_lives_done = 0;
+    }
     return (0);
 }
 

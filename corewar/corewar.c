@@ -7,6 +7,13 @@
 
 #include "corewar_include/op.h"
 
+int *get_cycle_to_die(void)
+{
+    static int cycle_to_die = CYCLE_TO_DIE;
+
+    return (&cycle_to_die);
+}
+
 void dump_print(char *map)
 {
     int pos_index = 0;
@@ -22,14 +29,13 @@ void dump_print(char *map)
 char *set_map(champ_t **champ, char *map)
 {
     champ_t *save;
-    int num_of_champ;
+    int num_of_champ = get_num_of_champ(champ);
     int pos;
 
     map = malloc(sizeof(char) * (MEM_SIZE + 1));
     my_memset(map, 0, MEM_SIZE + 1);
     *champ = sort_my_list(*champ);
     save = *champ;
-    num_of_champ = get_num_of_champ(champ);
     for (int i = 0; save; i++) {
         pos = i * (MEM_SIZE / num_of_champ);
         save->pc = (save->param.adress == -1) ? pos : save->param.adress;
@@ -90,11 +96,6 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
     }
     if (need_dump != -1)
         dump_print(map);
-}
-
-void print_winner(champ_t *info_champ)
-{
-    my_putstr("A gagné\n");
 }
 
 void setup_game(int ac, char **av)
