@@ -9,7 +9,10 @@
 
 int i_add(int arg[3], champ_t *champ, char *arena)
 {
-    print("add %d %d %d\n", arg[0], arg[1], arg[2]);
+    int first = champ->registers[arg[0]];
+    int second = champ->registers[arg[1]];
+
+    champ->registers[arg[3]] = first + second;
     return (0);
 }
 
