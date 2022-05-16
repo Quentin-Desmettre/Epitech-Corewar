@@ -37,7 +37,7 @@ typedef struct champ_s{
     int carry;
     header_t header;
     param_champ_t param;
-    args_t args; // AJOUTE CA CONNARD !
+    args_t args;
     struct champ_s *next;
 } champ_t;
 
