@@ -45,16 +45,16 @@ char *set_map(champ_t *champ, char *map)
     return (map);
 }
 
-void main_loop(char *map, champ_t *champions)
+void main_loop(char *map, champ_t *champions, int dump_cycle)
 {
     int nbr_cycle = CYCLE_TO_DIE;
+    int need_dump = dump_cycle;
 
-    while (nbr_cycle >= 0) {
-        for (int tmp = nbr_cycle; tmp >= 0; tmp--) {
-            my_putstr("coucou\n");
-        }
-        nbr_cycle -= CYCLE_DELTA;
+    while (1 && dump_cycle) {
+        dump_cycle--;
     }
+    if (need_dump != -1)
+        dump_print(map);
 }
 
 void print_winner(champ_t *info_champ)
@@ -71,9 +71,8 @@ void setup_game(int ac, char **av)
     check_argv(&ac, av, &dump_cycle, &info_champ);
     check_champ(ac, &info_champ);
     map = set_map(info_champ, map);
+    setup_all_champ_for_game(&info_champ);
 //    instruction_reader(info_champ);
-//    main_loop(map, info_champ);
-    if (dump_cycle != -1)
-        dump_print(map);
+    main_loop(map, info_champ, dump_cycle);
 //    print_winner(info_champ);
 }

@@ -20,6 +20,20 @@ int get_num_of_champ(champ_t **info_champ)
     return nb;
 }
 
+void setup_all_champ_for_game(champ_t **info_champ)
+{
+    champ_t *save = *info_champ;
+
+    while (save) {
+        save->cycle = 0;
+        save->cycle_to_wait = 0;
+        my_memset(save->registers, 0, REG_NUMBER);
+        save->pc = 0;
+        save->is_alive = 0;
+        save = save->next;
+    }
+}
+
 void check_champ(int nb_to_change, champ_t **info_champ)
 {
     int valid_num[4] = {1, 2, 3, 4};

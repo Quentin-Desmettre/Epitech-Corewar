@@ -28,6 +28,8 @@ typedef struct champ_s{
     char *name_champ;
     char *instruction;
     char registers[REG_NUMBER];
+    int cycle;
+    int cycle_to_wait;
     int pc;
     int is_alive;
     header_t header;
@@ -62,6 +64,7 @@ void create_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
 //check champ
 void delete_champ(champ_t **info_champ);
 int get_num_of_champ(champ_t **info_champ);
+void setup_all_champ_for_game(champ_t **info_champ);
 void check_champ(int nb_to_change, champ_t **info_champ);
 
 //num champ
@@ -96,7 +99,7 @@ char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
 //corewar
 void dump_print(char *map);
 char *set_map(champ_t *champ, char *map);
-void main_loop(char *map, champ_t *champions);
+void main_loop(char *map, champ_t *champions, int dump_cycle);
 void print_winner(champ_t *info_champ);
 void setup_game(int ac, char **av);
 
