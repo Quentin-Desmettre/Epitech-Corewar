@@ -50,4 +50,5 @@ void check_champ(int nb_to_change, champ_t **info_champ)
         delete_champ(info_champ);
     }
     fill_header_champ(info_champ);
+    setup_all_champ_for_game(info_champ);
 }

@@ -45,13 +45,49 @@ char *set_map(champ_t *champ, char *map)
     return (map);
 }
 
+void check_alive_champ(champ_t **champ)
+{
+    champ_t *head = *champ;
+
+    if (!head->is_alive)
+        (*champ) = head->next;
+    while (head) {
+        if (!head->next->is_alive && head->next)
+            head->next = head->next->next;
+        else
+            head->next = NULL;
+        head = head->next;
+    }
+}
+
+void get_instruction(char *map, champ_t *champ)
+{
+    champ->cycle++;
+    if (champ->cycle_to_wait == -1)
+        instruction_reader(map, champ);
+    if (champ->cycle == champ->cycle_to_wait)
+        exec_instructions(champ, map);
+}
+
 void main_loop(char *map, champ_t *champions, int dump_cycle)
 {
     int nbr_cycle = CYCLE_TO_DIE;
+    int current_cycle = 0;
     int need_dump = dump_cycle;
+    champ_t *head = champions;
 
-    while (1 && dump_cycle) {
-        dump_cycle--;
+    while (dump_cycle != 0) {
+        while (head) {
+            get_instruction(map, head);
+            head = head->next;
+        }
+        dump_cycle > 0 ? dump_cycle-- : dump_cycle;
+        current_cycle++;
+        if (current_cycle == nbr_cycle) {
+            check_alive_champ(&champions);
+            current_cycle = 0;
+        }
+        head = champions;
     }
     if (need_dump != -1)
         dump_print(map);
@@ -71,8 +107,6 @@ void setup_game(int ac, char **av)
     check_argv(&ac, av, &dump_cycle, &info_champ);
     check_champ(ac, &info_champ);
     map = set_map(info_champ, map);
-    setup_all_champ_for_game(&info_champ);
-//    instruction_reader(info_champ);
     main_loop(map, info_champ, dump_cycle);
 //    print_winner(info_champ);
 }

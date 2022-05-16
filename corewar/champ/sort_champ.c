@@ -59,17 +59,11 @@ champ_t *sort_my_list(champ_t *champ)
 {
     int num_of_champ = get_num_of_champ(&champ);
     champ_t *sorted = NULL;
-    champ_t *tmp = NULL;
     int little = 0;
 
     for (int i = 0; i < num_of_champ; i++) {
         little = find_little_but_higher(champ, little);
         sorted = append_champ_with_value(sorted, little, champ);
-    }
-    while (champ) {
-        tmp = champ;
-        champ = champ->next;
-        free(tmp);
     }
     return (sorted);
 }

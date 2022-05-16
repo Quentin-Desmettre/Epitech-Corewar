@@ -13,6 +13,8 @@ enum I_TYPE {EMPTY, REGISTER, DIRECT, INDIRECT};
 
 // ARGS
 typedef struct {
+    int code;
+    int byte_offset;
     int args[3];
     char type[3];
 } args_t;
@@ -32,8 +34,10 @@ typedef struct champ_s{
     int cycle_to_wait;
     int pc;
     int is_alive;
+    int carry;
     header_t header;
     param_champ_t param;
+    args_t args; // AJOUTE CA CONNARD !
     struct champ_s *next;
 } champ_t;
 
@@ -121,7 +125,9 @@ int i_and(int arga, int argb, int argc);
 int i_or(int arga, int argb, int argc);
 int i_xor(int arga, int argb, int argc);
 
+// instructions
 int i_has_index(int mnemonic, int nb_arg);
 int get_instruction_args(int mnemonic, char *instructions, args_t *args);
-
+void instruction_reader(char *instructions, champ_t *champ);
+void exec_instructions(champ_t *champ, char *map);
 #endif /*COREWAR_H*/

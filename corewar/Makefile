@@ -13,10 +13,11 @@ ARGS	=	args/arg_manage.c \
 
 CHAMP	=	champ/create_champ.c \
 			champ/read_check_header.c \
-			champ/sort_champ.c
+			champ/sort_champ.c \
 
 VMCORE	=	instructions/instructions_manager.c \
 			instructions/get_args.c \
+			instructions/exec_instructions.c \
 			instructions/i_conditions.c \
 			instructions/i_load.c \
 			instructions/i_misc.c \
