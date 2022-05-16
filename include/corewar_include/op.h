@@ -85,15 +85,19 @@ static const op_t op_tab[] = {
     {0, 0, {0}, 0, 0, 0}
 };
 
-typedef struct champ_s{
+typedef struct param_champ_s {
     int champ_nbr;
-    char *name_champ;
     int nb_is_impose;
     int adress;
     int adress_impose;
+} param_champ_t;
+
+typedef struct champ_s{
+    char *name_champ;
     char *instruction;
     header_t header;
     struct champ_s *next;
+    param_champ_t param;
 } champ_t;
 
 typedef struct {
@@ -104,21 +108,21 @@ typedef struct {
     int num_impose[5];
     int last_opt;
     int dump_cycle;
-} param_champ_t;
+} param_argv_t;
 
 //main.c
 int help_message(char *name_binarie);
 void print_info_champ(champ_t *info_champ);
 
 //check args
-void check_dump(param_champ_t *param, char *arg);
-void check_num(param_champ_t *param, char *arg);
-void check_address(param_champ_t *param, char *arg);
+void check_dump(param_argv_t *param, char *arg);
+void check_num(param_argv_t *param, char *arg);
+void check_address(param_argv_t *param, char *arg);
 
 //create champ
-champ_t *init_node(param_champ_t *param, char *path_file);
-void append_champ(char *path_file, param_champ_t *param, champ_t **info_champ);
-void create_champ(char *path_file, param_champ_t *param, champ_t **info_champ);
+champ_t *init_node(param_argv_t *param, char *path_file);
+void append_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
+void create_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
 
 //check champ
 void delete_champ(champ_t **info_champ);
@@ -130,11 +134,11 @@ void find_little_number(int valid_num[][4], int *nbr);
 void setup_valid_num(champ_t **info_champ, int valid_num[][4]);
 void set_champ_real_num(champ_t **info_champ, int valid_num[][4]);
 void change_all_nb_champ(champ_t **info_champ, int nb);
-int check_same_nbr(param_champ_t *param);
+int check_same_nbr(param_argv_t *param);
 
 //arg manage
-param_champ_t *init_value(void);
-int check_if_opt(param_champ_t *param, char *str, char *str_next, int *index);
+param_argv_t *init_value(void);
+int check_if_opt(param_argv_t *param, char *str, char *str_next, int *index);
 void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ);
 
 //endian

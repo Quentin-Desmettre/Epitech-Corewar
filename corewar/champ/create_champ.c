@@ -12,14 +12,14 @@ void delete_champ(champ_t **info_champ)
     champ_t *save = *info_champ;
     champ_t *tmp = NULL;
 
-    if ((*info_champ)->champ_nbr >= 5) {
+    if ((*info_champ)->param.champ_nbr >= 5) {
         tmp = (*info_champ)->next;
         free((*info_champ));
         (*info_champ) = tmp;
         save = tmp;
     }
     while (*info_champ) {
-        if ((*info_champ)->next && (*info_champ)->next->champ_nbr >= 5) {
+        if ((*info_champ)->next && (*info_champ)->next->param.champ_nbr >= 5) {
             tmp = (*info_champ)->next->next;
             free((*info_champ)->next);
             (*info_champ)->next = tmp;
@@ -29,26 +29,26 @@ void delete_champ(champ_t **info_champ)
     (*info_champ) = save;
 }
 
-champ_t *init_node(param_champ_t *param, char *path_file)
+champ_t *init_node(param_argv_t *param, char *path_file)
 {
     champ_t *node = malloc(sizeof(champ_t));
 
     node->name_champ = path_file;
     if (param->num_impose[param->index]) {
-        node->nb_is_impose = 1;
-        node->champ_nbr = param->num_impose[param->index];
+        node->param.nb_is_impose = 1;
+        node->param.champ_nbr = param->num_impose[param->index];
     } else {
-        node->nb_is_impose = 0;
-        node->champ_nbr = param->num_champ;
+        node->param.nb_is_impose = 0;
+        node->param.champ_nbr = param->num_champ;
         param->num_champ++;
     }
-    node->adress = param->adress_next;
-    node->adress_impose = (node->adress != -1) ? 1 : 0;
+    node->param.adress = param->adress_next;
+    node->param.adress_impose = (node->param.adress != -1) ? 1 : 0;
     node->next = NULL;
     return node;
 }
 
-void append_champ(char *path_file, param_champ_t *param, champ_t **info_champ)
+void append_champ(char *path_file, param_argv_t *param, champ_t **info_champ)
 {
     champ_t *save = *info_champ;
 
@@ -62,7 +62,7 @@ void append_champ(char *path_file, param_champ_t *param, champ_t **info_champ)
     }
 }
 
-void create_champ(char *path_file, param_champ_t *param, champ_t **info_champ)
+void create_champ(char *path_file, param_argv_t *param, champ_t **info_champ)
 {
     int fd = open(path_file, O_RDONLY);
 
