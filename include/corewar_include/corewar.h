@@ -130,4 +130,12 @@ int i_has_index(int mnemonic, int nb_arg);
 int get_instruction_args(int mnemonic, char *instructions, args_t *args);
 void instruction_reader(char *instructions, champ_t *champ);
 void exec_instructions(champ_t *champ, char *map);
+
+// lib
+void my_memcpy(void *dest, void *source, size_t size);
+
+//glob
+int *get_cycle_to_die(void);
+champ_t **get_champ_struct(void);
+
 #endif /*COREWAR_H*/
