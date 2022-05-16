@@ -15,7 +15,7 @@ void check_dump(param_argv_t *param, char *arg)
         write(2, "Invalid option.\n", 16);
         exit(84);
     }
-    if (param->dump_cycle) {
+    if (param->dump_cycle != -1) {
         write(2, "Double definition of option dump.\n", 34);
         exit(84);
     }
@@ -59,7 +59,7 @@ void check_address(param_argv_t *param, char *arg)
         exit(84);
     }
     param->adress_next = my_getnbr(arg, &error);
-    if (error || param->adress_next <= 0) {
+    if (error || param->adress_next < 0) {
         write(2, "-a argument ", 12);
         my_putstr(arg);
         write(2, " is invalid.\n Enter a valid memory offset.\n", 43);

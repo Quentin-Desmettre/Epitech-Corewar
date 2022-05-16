@@ -9,11 +9,11 @@
 
 param_argv_t *init_value(void)
 {
-    param_argv_t *param = malloc(sizeof(param_champ_t));
+    param_argv_t *param = malloc(sizeof(param_argv_t));
 
     param->adress_act = 0;
     param->adress_next = -1;
-    param->dump_cycle = 0;
+    param->dump_cycle = -1;
     param->index = 0;
     param->last_opt = 0;
     param->num_champ = 1;

@@ -62,16 +62,16 @@ void print_winner(champ_t *info_champ)
 
 void setup_game(int ac, char **av)
 {
-    int dump_cycle = 0;
+    int dump_cycle = -1;
     champ_t *info_champ = NULL;
     char *map = NULL;
 
     check_argv(&ac, av, &dump_cycle, &info_champ);
     check_champ(ac, &info_champ);
     map = set_map(info_champ, map);
-    instruction_reader(info_champ);
+//    instruction_reader(info_champ);
 //    main_loop(map, info_champ);
-//    if (dump_cycle)
-//        dump_print(map);
+    if (dump_cycle != -1)
+        dump_print(map);
 //    print_winner(info_champ);
 }
