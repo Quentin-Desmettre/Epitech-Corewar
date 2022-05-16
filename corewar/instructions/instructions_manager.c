@@ -8,17 +8,16 @@
 #include "op.h"
 #include "libmy.h"
 
-int get_coding_byte(char coding_byte, args_t *args)
+void get_coding_byte(char coding_byte, args_t *args)
 {
     for (int i = 0; i < 3; i++) {
         if (((coding_byte << 2 * i) & 0x40) == 0x40)
-            args->type[i] = REGISTER;
+            args->type[i] = T_REG;
         if (((coding_byte << 2 * i) & 0x80) == 0x80)
-            args->type[i] = DIRECT;
+            args->type[i] = T_DIR;
         if (((coding_byte << 2 * i) & 0xC0) == 0xC0)
-            args->type[i] = INDIRECT;
+            args->type[i] = T_IND;
     }
-    return (0);
 }
 
 int i_has_index(int mnemonic, int nb_arg)
@@ -104,16 +103,91 @@ int instruction_manager(int mnemonic, char *instructions)
 //    return (fptr[mnemonic - 1](?));
 }
 
+#define GET_BYTE(x) (((x)) % MEM_SIZE)
+
+static inline int is_special_case(int x)
+{
+    return (x == 1) || (x == 9) || (x == 12) || (x == 15);
+}
+
+int number_of_args(args_t *args)
+{
+    int nb = 0;
+
+    while (args->type[nb] && nb < 3)
+        nb++;
+    return nb;
+}
+
+int are_types_valid(args_t *args, int op_code, int nb_arg)
+{
+    for (int i = 0; i < nb_arg; i++)
+        if (!(op_tab[op_code].type[i] & args->type[i]))
+            return 0;
+    return 1;
+}
+
+args_t *dup_args(args_t *base)
+{
+    args_t *a = malloc(sizeof(args_t));
+
+    my_memcpy(a, base, sizeof(args_t));
+    return a;
+}
+
+int size_of_arg(int code, int nb, int types[3])
+{
+    if (types[nb] == T_REG)
+        return REG_SIZE;
+    if (types[nb] == T_IND)
+        return IND_SIZE;
+    if (i_has_index(code, nb + 1))
+        return IND_SIZE;
+    return DIR_SIZE;
+}
+
+args_t *copy_args(int code, char *arena, int pc, args_t *args)
+{
+    int offset = 0;
+    int arg_size;
+    int nb_arg = number_of_args(args);
+
+    for (int i = 0; i < nb_arg; i++) {
+        arg_size = size_of_arg(code, i, args->type);
+        my_memcpy(args->args + i,
+        arena + ((pc + 2 + offset) % MEM_SIZE), arg_size);
+        convert_endian(args->args + i);
+        if (arg_size == 2)
+            args->args[i] >>= 16;
+        offset += arg_size;
+    }
+    return dup_args(args);
+}
+
+args_t *get_next_instruction(char *arena, int pc)
+{
+    int code = arena[pc];
+    int nb_arg;
+    args_t args = {};
+    int arg_sizes[] = {4, 2, 2, 2};
+
+    if (code < 1 || code > 16)
+        return NULL;
+    // args.code = code;
+    if (!is_special_case(code)) {
+        get_coding_byte(arena[GET_BYTE(pc + 1)], &args);
+        nb_arg = number_of_args(&args);
+        if (nb_arg != op_tab[code].nbr_args)
+            return NULL;
+        if (!are_types_valid(&args, code, nb_arg))
+            return NULL;
+    } else {
+        my_memcpy(args.args, arena + ((pc + 1) % MEM_SIZE), code == 1 ? 4 : 2);
+        return dup_args(&args);
+    }
+    return copy_args(code, arena, pc, &args);
+}
+
 void instruction_reader(champ_t *champ)
 {
-    int champ_pc = 0;
-    char instruction;
-
-    for (int i = champ_pc; i < champ->header.prog_size; i++) {
-        instruction = champ->instruction[i];
-        if (instruction > 0x00 && instruction <= 0x10) {
-            print("%d\n", i);
-            i += instruction_manager(instruction, champ->instruction + i);
-        }
-    }
 }
