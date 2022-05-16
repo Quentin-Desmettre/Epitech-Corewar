@@ -4,6 +4,7 @@
 ** File description:
 ** op.h
 */
+
 #ifndef _OP_H_
     #define _OP_H_
     #define MEM_SIZE (6*1024)
@@ -95,9 +96,12 @@ typedef struct param_champ_s {
 typedef struct champ_s{
     char *name_champ;
     char *instruction;
+    char registers[REG_NUMBER];
+    int pc;
+    int is_alive;
     header_t header;
-    struct champ_s *next;
     param_champ_t param;
+    struct champ_s *next;
 } champ_t;
 
 typedef struct {
