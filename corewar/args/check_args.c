@@ -7,7 +7,7 @@
 
 #include "corewar_include/op.h"
 
-void check_dump(param_champ_t *param, char *arg)
+void check_dump(param_argv_t *param, char *arg)
 {
     int error = 0;
 
@@ -15,7 +15,7 @@ void check_dump(param_champ_t *param, char *arg)
         write(2, "Invalid option.\n", 16);
         exit(84);
     }
-    if (param->dump_cycle) {
+    if (param->dump_cycle != -1) {
         write(2, "Double definition of option dump.\n", 34);
         exit(84);
     }
@@ -24,7 +24,7 @@ void check_dump(param_champ_t *param, char *arg)
         param->dump_cycle = 1;
 }
 
-void check_num(param_champ_t *param, char *arg)
+void check_num(param_argv_t *param, char *arg)
 {
     int error = 0;
 
@@ -46,7 +46,7 @@ void check_num(param_champ_t *param, char *arg)
     }
 }
 
-void check_address(param_champ_t *param, char *arg)
+void check_address(param_argv_t *param, char *arg)
 {
     int error = 0;
 

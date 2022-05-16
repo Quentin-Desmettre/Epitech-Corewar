@@ -21,8 +21,8 @@ void setup_valid_num(champ_t **info_champ, int valid_num[][4])
     champ_t *save = *info_champ;
 
     while (*info_champ) {
-        if ((*info_champ)->nb_is_impose)
-            (*valid_num)[(*info_champ)->champ_nbr - 1] = 0;
+        if ((*info_champ)->param.nb_is_impose)
+            (*valid_num)[(*info_champ)->param.champ_nbr - 1] = 0;
         (*info_champ) = (*info_champ)->next;
     }
     (*info_champ) = save;
@@ -33,8 +33,8 @@ void set_champ_real_num(champ_t **info_champ, int valid_num[][4])
     champ_t *save = *info_champ;
 
     while (*info_champ) {
-        if (!(*info_champ)->nb_is_impose)
-            find_little_number(valid_num, &(*info_champ)->champ_nbr);
+        if (!(*info_champ)->param.nb_is_impose)
+            find_little_number(valid_num, &(*info_champ)->param.champ_nbr);
         (*info_champ) = (*info_champ)->next;
     }
     (*info_champ) = save;
@@ -45,14 +45,14 @@ void change_all_nb_champ(champ_t **info_champ, int nb)
     champ_t *save = *info_champ;
 
     while (*info_champ) {
-        if (nb <= (*info_champ)->champ_nbr)
-            (*info_champ)->champ_nbr += 1;
+        if (nb <= (*info_champ)->param.champ_nbr)
+            (*info_champ)->param.champ_nbr += 1;
         (*info_champ) = (*info_champ)->next;
     }
     (*info_champ) = save;
 }
 
-int check_same_nbr(param_champ_t *param)
+int check_same_nbr(param_argv_t *param)
 {
     int error = 0;
 

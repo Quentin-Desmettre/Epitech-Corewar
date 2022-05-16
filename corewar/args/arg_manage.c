@@ -7,13 +7,13 @@
 
 #include "corewar_include/op.h"
 
-param_champ_t *init_value(void)
+param_argv_t *init_value(void)
 {
-    param_champ_t *param = malloc(sizeof(param_champ_t));
+    param_argv_t *param = malloc(sizeof(param_argv_t));
 
     param->adress_act = 0;
     param->adress_next = -1;
-    param->dump_cycle = 0;
+    param->dump_cycle = -1;
     param->index = 0;
     param->last_opt = 0;
     param->num_champ = 1;
@@ -25,7 +25,7 @@ param_champ_t *init_value(void)
     return (param);
 }
 
-int check_if_opt(param_champ_t *param, char *str, char *str_next, int *index)
+int check_if_opt(param_argv_t *param, char *str, char *str_next, int *index)
 {
     char *cmp_str[] = {"-dump", "-n", "-a"};
     void (*fun[])() = {&check_dump, &check_num, &check_address};
@@ -40,7 +40,7 @@ int check_if_opt(param_champ_t *param, char *str, char *str_next, int *index)
     return (0);
 }
 
-void error_on_check_argv(param_champ_t *param)
+void error_on_check_argv(param_argv_t *param)
 {
     if (check_same_nbr(param)) {
         write(2, "double definition of prog_number.\n", 34);
@@ -54,7 +54,7 @@ void error_on_check_argv(param_champ_t *param)
 
 void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ)
 {
-    param_champ_t *param = init_value();
+    param_argv_t *param = init_value();
 
     for (int i = 1; i < *ac; i++) {
         if (check_if_opt(param, av[i], av[i + 1], &i))

@@ -13,8 +13,8 @@ int find_little_but_higher(champ_t *champ, int int_compare)
     champ_t *save = champ;
 
     while (champ) {
-        if (champ->champ_nbr > int_compare && champ->champ_nbr < little_int)
-            little_int = champ->champ_nbr;
+        if (champ->param.champ_nbr > int_compare && champ->param.champ_nbr < little_int)
+            little_int = champ->param.champ_nbr;
         champ = champ->next;
     }
     champ = save;
@@ -26,13 +26,13 @@ champ_t *create_nodes(champ_t *info, int champ)
     champ_t *save = info;
     champ_t *return_champ = malloc(sizeof(champ_t));
 
-    while (info->next != NULL && info->champ_nbr != champ)
+    while (info->next != NULL && info->param.champ_nbr != champ)
         info = info->next;
-    return_champ->champ_nbr = info->champ_nbr;
+    return_champ->param.champ_nbr = info->param.champ_nbr;
     return_champ->name_champ = info->name_champ;
-    return_champ->nb_is_impose = info->nb_is_impose;
-    return_champ->adress = info->adress;
-    return_champ->adress_impose = info->adress_impose;
+    return_champ->param.nb_is_impose = info->param.nb_is_impose;
+    return_champ->param.adress = info->param.adress;
+    return_champ->param.adress_impose = info->param.adress_impose;
     return_champ->instruction = info->instruction;
     return_champ->header = info->header;
     return_champ->next = NULL;
