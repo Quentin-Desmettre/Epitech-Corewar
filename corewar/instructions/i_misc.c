@@ -7,32 +7,51 @@
 
 #include "op.h"
 
-int i_live(int arga)
+int *nbr_live_done(void)
 {
-    printf("live %d\n", arga);
+    static int nbr_lives_done = 0;
+
+    return (&nbr_lives_done);
+}
+
+int i_live(int arg[3], champ_t *champ, char *arena)
+{
+    int *tmp = 0;
+    champ_t *save = champ;
+
+    while (save) {
+        if (save->param.champ_nbr == arg[0]) {
+            save->is_alive += 1;
+            print("Le joueur %d (%s) est en vie.\n",
+            save->param.champ_nbr, save->header.prog_name);
+        }
+        save = save->next;
+    }
+    tmp = nbr_live_done();
+    (*tmp)++;
     return (0);
 }
 
-int i_zjmp(int arga)
+int i_zjmp(int arg[3], champ_t *champ, char *arena)
 {
-    printf("zjmp %d\n", arga);
+    print("zjmp %d\n", arg[0]);
     return (0);
 }
 
-int i_fork(int arga)
+int i_fork(int arg[3], champ_t *champ, char *arena)
 {
-    printf("fork %d\n", arga);
+    print("fork %d\n", arg[0]);
     return (0);
 }
 
-int i_lfork(int arga)
+int i_lfork(int arg[3], champ_t *champ, char *arena)
 {
-    printf("lfork %d\n", arga);
+    print("lfork %d\n", arg[0]);
     return (0);
 }
 
-int i_aff(int arga)
+int i_aff(int arg[3], champ_t *champ, char *arena)
 {
-    printf("aff %d\n", arga);
+    print("aff %d\n", arg[0]);
     return (0);
 }

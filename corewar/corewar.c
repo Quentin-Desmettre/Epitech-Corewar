@@ -49,7 +49,7 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
     int nbr_cycle = CYCLE_TO_DIE;
     int need_dump = dump_cycle;
 
-    while (1 && dump_cycle) {
+    while (dump_cycle != 0) {
         dump_cycle > 0 ? dump_cycle-- : dump_cycle;
     }
     if (need_dump != -1)

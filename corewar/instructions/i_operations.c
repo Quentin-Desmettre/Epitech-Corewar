@@ -7,14 +7,14 @@
 
 #include "op.h"
 
-int i_add(int arga, int argb, int argc)
+int i_add(int arg[3], champ_t *champ, char *arena)
 {
-    printf("add %d %d %d\n", arga, argb, argc);
+    print("add %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }
 
-int i_sub(int arga, int argb, int argc)
+int i_sub(int arg[3], champ_t *champ, char *arena)
 {
-    printf("sub %d %d %d\n", arga, argb, argc);
+    print("sub %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }

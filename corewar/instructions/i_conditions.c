@@ -7,20 +7,20 @@
 
 #include "op.h"
 
-int i_and(int arga, int argb, int argc)
+int i_and(int arg[3], champ_t *champ, char *arena)
 {
-    printf("and %d %d %d\n", arga, argb, argc);
+    print("and %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }
 
-int i_or(int arga, int argb, int argc)
+int i_or(int arg[3], champ_t *champ, char *arena)
 {
-    printf("or %d %d %d\n", arga, argb, argc);
+    print("or %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }
 
-int i_xor(int arga, int argb, int argc)
+int i_xor(int arg[3], champ_t *champ, char *arena)
 {
-    printf("xor %d %d %d\n", arga, argb, argc);
+    print("xor %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }
