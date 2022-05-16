@@ -33,17 +33,6 @@ int i_has_index(int mnemonic, int nb_arg)
     return 0;
 }
 
-int instruction_manager(int mnemonic, char *instructions)
-{
-    args_t *args = malloc(sizeof(args_t));
-    int byte_offset;
-
-    my_memset(args, 0, sizeof(args_t));
-    byte_offset = get_instruction_args(mnemonic, instructions + 1, args);
-    free(args);
-    return (byte_offset);
-}
-
 #define GET_BYTE(x) (((x)) % MEM_SIZE)
 
 static inline int is_special_case(int x)
@@ -79,7 +68,7 @@ args_t *dup_args(args_t *base)
 int size_of_arg(int code, int nb, int types[3])
 {
     if (types[nb] == T_REG)
-        return REG_SIZE;
+        return 1;
     if (types[nb] == T_IND)
         return IND_SIZE;
     if (i_has_index(code, nb + 1))
@@ -97,11 +86,13 @@ args_t *copy_args(int code, char *arena, int pc, args_t *args)
         arg_size = size_of_arg(code, i, args->type);
         my_memcpy(args->args + i,
         arena + ((pc + 2 + offset) % MEM_SIZE), arg_size);
-        convert_endian(args->args + i);
+        if (arg_size > 1)
+            convert_endian(args->args + i);
         if (arg_size == 2)
             args->args[i] >>= 16;
         offset += arg_size;
     }
+    args->byte_offset = 2 + offset;
     return dup_args(args);
 }
 
@@ -114,7 +105,7 @@ args_t *get_next_instruction(char *arena, int pc)
 
     if (code < 1 || code > 16)
         return NULL;
-    // args.code = code;
+    args.code = code;
     if (!is_special_case(code)) {
         get_coding_byte(arena[GET_BYTE(pc + 1)], &args);
         nb_arg = number_of_args(&args);
@@ -123,6 +114,7 @@ args_t *get_next_instruction(char *arena, int pc)
         if (!are_types_valid(&args, code, nb_arg))
             return NULL;
     } else {
+        args.byte_offset = (code == 1 ? 5 : 3);
         my_memcpy(args.args, arena + ((pc + 1) % MEM_SIZE), code == 1 ? 4 : 2);
         return dup_args(&args);
     }
@@ -131,4 +123,14 @@ args_t *get_next_instruction(char *arena, int pc)
 
 void instruction_reader(char *arena, champ_t *champ)
 {
+    args_t *arg = get_next_instruction(arena, champ->pc);
+
+    if (!arg) {
+        champ->pc++;
+        champ->cycle = 0;
+        return;
+    }
+    champ->args = *arg;
+    free(arg);
+    champ->cycle_to_wait = op_tab[arg->code].nbr_cycles;
 }
