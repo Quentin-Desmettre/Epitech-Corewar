@@ -8,7 +8,6 @@
 #include "op.h"
 #include "libmy.h"
 
-<<<<<<< HEAD
 void get_coding_byte(char coding_byte, args_t *args)
 {
     for (int i = 0; i < 3; i++) {
@@ -21,8 +20,6 @@ void get_coding_byte(char coding_byte, args_t *args)
     }
 }
 
-=======
->>>>>>> 4b320e593700cf3843d8b2379c1cf4a910ade9e9
 int i_has_index(int mnemonic, int nb_arg)
 {
     if (mnemonic == 9)
@@ -132,6 +129,6 @@ args_t *get_next_instruction(char *arena, int pc)
     return copy_args(code, arena, pc, &args);
 }
 
-void instruction_reader(champ_t *champ)
+void instruction_reader(char *arena, champ_t *champ)
 {
 }
