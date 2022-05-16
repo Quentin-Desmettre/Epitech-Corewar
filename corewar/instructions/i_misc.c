@@ -15,14 +15,14 @@ int i_live(int arg[3], champ_t *champ, char *arena)
 
     while (save) {
         if (save->param.champ_nbr == arg[0]) {
-            save->is_alive += 1;
+            save->is_alive = 1;
             print("Le joueur %d (%s) est en vie.\n",
             save->param.champ_nbr, save->header.prog_name);
         }
         save = save->next;
     }
     nbr_lives_done++;
-    if (nbr_lives_done == 40) {
+    if (nbr_lives_done >= 40) {
         cycle_to_die = get_cycle_to_die();
         (*cycle_to_die)--;
         nbr_lives_done = 0;
@@ -32,9 +32,9 @@ int i_live(int arg[3], champ_t *champ, char *arena)
 
 int i_zjmp(int arg[3], champ_t *champ, char *arena)
 {
-    if (champ->carry) {
+    if (1 || champ->carry) {
         champ->pc += arg[0] % IDX_MOD;
-        champ->pc %= MEM_SIZE;
+        champ->pc -= champ->args.byte_offset;
     }
     return (0);
 }

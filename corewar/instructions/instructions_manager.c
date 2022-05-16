@@ -76,6 +76,16 @@ int size_of_arg(int code, int nb, char types[3])
     return DIR_SIZE;
 }
 
+void memcpy_cor(void *dest, char *arena, int start, int size)
+{
+    size_t pos_in_arena = start;
+
+    for (int i = 0; i < size; i++) {
+        ((char *)dest)[i] = arena[pos_in_arena];
+        pos_in_arena = (pos_in_arena + 1) % MEM_SIZE;
+    }
+}
+
 args_t *copy_args(int code, char *arena, int pc, args_t *args)
 {
     int offset = 0;
@@ -84,8 +94,8 @@ args_t *copy_args(int code, char *arena, int pc, args_t *args)
 
     for (int i = 0; i < nb_arg; i++) {
         arg_size = size_of_arg(code, i, args->type);
-        my_memcpy(args->args + i,
-        arena + ((pc + 2 + offset) % MEM_SIZE), arg_size);
+        memcpy_cor(args->args + i,
+        arena, ((pc + 2 + offset) % MEM_SIZE), arg_size);
         if (arg_size > 1)
             convert_endian(args->args + i);
         if (arg_size == 2)
@@ -114,7 +124,10 @@ args_t *get_next_instruction(char *arena, int pc)
             return NULL;
     } else {
         args.byte_offset = (code == 1 ? 5 : 3);
-        my_memcpy(args.args, arena + ((pc + 1) % MEM_SIZE), code == 1 ? 4 : 2);
+        memcpy_cor(args.args, arena, ((pc + 1) % MEM_SIZE), code == 1 ? 4 : 2);
+        convert_endian(args.args);
+        if (args.byte_offset == 3)
+            args.args[0] >>= 16;
         return dup_args(&args);
     }
     return copy_args(code, arena, pc, &args);
@@ -126,10 +139,11 @@ void instruction_reader(char *arena, champ_t *champ)
 
     if (!arg) {
         champ->pc++;
+        champ->pc %= MEM_SIZE;
         champ->cycle = 0;
         return;
     }
     champ->args = *arg;
-    free(arg);
     champ->cycle_to_wait = op_tab[arg->code].nbr_cycles;
+    free(arg);
 }

@@ -52,8 +52,11 @@ void check_alive_champ(champ_t **champ)
     while (head) {
         if (head->next && !head->next->is_alive)
             head->next = head->next->next;
-        else
-            head->next = NULL;
+        head->is_alive = 0;
+        if (get_num_of_champ(champ) == 1) {
+            print("Le joueur %d (%s) a gagné.\n", (*champ)->param.champ_nbr, (*champ)->header.prog_name);
+            exit(0);
+        }
         head = head->next;
     }
 }
@@ -79,9 +82,10 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
             get_instruction(map, head);
             head = head->next;
         }
+        nbr_cycle = *get_cycle_to_die();
         dump_cycle > 0 ? dump_cycle-- : dump_cycle;
         current_cycle++;
-        if (current_cycle == nbr_cycle) {
+        if (current_cycle >= nbr_cycle) {
             check_alive_champ(&champions);
             current_cycle = 0;
         }
