@@ -13,7 +13,8 @@ int find_little_but_higher(champ_t *champ, int int_compare)
     champ_t *save = champ;
 
     while (champ) {
-        if (champ->param.champ_nbr > int_compare && champ->param.champ_nbr < little_int)
+        if (champ->param.champ_nbr > int_compare &&
+        champ->param.champ_nbr < little_int)
             little_int = champ->param.champ_nbr;
         champ = champ->next;
     }

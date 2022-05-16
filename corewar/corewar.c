@@ -22,14 +22,13 @@ void dump_print(char *map)
 char *set_map(champ_t **champ, char *map)
 {
     champ_t *save;
-    int num_of_champ;
+    int num_of_champ = get_num_of_champ(champ);
     int pos;
 
     map = malloc(sizeof(char) * (MEM_SIZE + 1));
     my_memset(map, 0, MEM_SIZE + 1);
     *champ = sort_my_list(*champ);
     save = *champ;
-    num_of_champ = get_num_of_champ(champ);
     for (int i = 0; save; i++) {
         pos = i * (MEM_SIZE / num_of_champ);
         save->pc = (save->param.adress == -1) ? pos : save->param.adress;
@@ -44,21 +43,52 @@ char *set_map(champ_t **champ, char *map)
     return (map);
 }
 
+void check_alive_champ(champ_t **champ)
+{
+    champ_t *head = *champ;
+
+    if (!head->is_alive)
+        (*champ) = head->next;
+    while (head) {
+        if (!head->next->is_alive && head->next)
+            head->next = head->next->next;
+        else
+            head->next = NULL;
+        head = head->next;
+    }
+}
+
+void get_instruction(char *map, champ_t *champ)
+{
+    champ->cycle++;
+    if (champ->cycle_to_wait == -1)
+        instruction_reader(map, champ);
+    if (champ->cycle == champ->cycle_to_wait)
+        exec_instructions(champ, map);
+}
+
 void main_loop(char *map, champ_t *champions, int dump_cycle)
 {
     int nbr_cycle = CYCLE_TO_DIE;
+    int current_cycle = 0;
     int need_dump = dump_cycle;
+    champ_t *head = champions;
 
     while (dump_cycle != 0) {
+        while (head) {
+            get_instruction(map, head);
+            head = head->next;
+        }
         dump_cycle > 0 ? dump_cycle-- : dump_cycle;
+        current_cycle++;
+        if (current_cycle == nbr_cycle) {
+            check_alive_champ(&champions);
+            current_cycle = 0;
+        }
+        head = champions;
     }
     if (need_dump != -1)
         dump_print(map);
-}
-
-void print_winner(champ_t *info_champ)
-{
-    my_putstr("A gagné\n");
 }
 
 void setup_game(int ac, char **av)
