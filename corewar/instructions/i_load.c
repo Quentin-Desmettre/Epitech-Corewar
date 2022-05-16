@@ -9,7 +9,8 @@
 
 int i_ld(int arg[3], champ_t *champ, char *arena)
 {
-    print("ld %d %d\n", arg[0], arg[1]);
+    my_memcpy(&champ->registers[arg[1]],
+    arena + (champ->pc + (arg[0] % IDX_MOD)) % MEM_SIZE, 4);
     return (0);
 }
 
