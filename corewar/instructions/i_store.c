@@ -7,14 +7,14 @@
 
 #include "op.h"
 
-int i_st(int arga, int argb)
+int i_st(int arg[3], champ_t *champ, char *arena)
 {
-    printf("st %d %d\n", arga, argb);
+    print("st %d %d\n", arg[1], arg[2]);
     return (0);
 }
 
-int i_sti(int arga, int argb, int argc)
+int i_sti(int arg[3], champ_t *champ, char *arena)
 {
-    printf("sti %d %d %d\n", arga, argb, argc);
+    print("sti %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }

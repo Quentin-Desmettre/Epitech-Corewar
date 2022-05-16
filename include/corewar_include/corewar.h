@@ -102,28 +102,28 @@ char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
 
 //corewar
 void dump_print(char *map);
-char *set_map(champ_t *champ, char *map);
+char *set_map(champ_t **champ, char *map);
 void main_loop(char *map, champ_t *champions, int dump_cycle);
 void print_winner(champ_t *info_champ);
 void setup_game(int ac, char **av);
 
 // Instructions
-int i_live(int arga);
-int i_zjmp(int arga);
-int i_fork(int arga);
-int i_lfork(int arga);
-int i_aff(int arga);
-int i_st(int arga, int argb);
-int i_sti(int arga, int argb, int argc);
-int i_ld(int arga, int argb);
-int i_ldi(int arga, int argb, int argc);
-int i_lld(int arga, int argb);
-int i_lldi(int arga, int argb);
-int i_add(int arga, int argb, int argc);
-int i_sub(int arga, int argb, int argc);
-int i_and(int arga, int argb, int argc);
-int i_or(int arga, int argb, int argc);
-int i_xor(int arga, int argb, int argc);
+int i_live(int arg[3], champ_t *champ, char *arena);
+int i_zjmp(int arg[3], champ_t *champ, char *arena);
+int i_fork(int arg[3], champ_t *champ, char *arena);
+int i_lfork(int arg[3], champ_t *champ, char *arena);
+int i_aff(int arg[3], champ_t *champ, char *arena);
+int i_st(int arg[3], champ_t *champ, char *arena);
+int i_sti(int arg[3], champ_t *champ, char *arena);
+int i_ld(int arg[3], champ_t *champ, char *arena);
+int i_ldi(int arg[3], champ_t *champ, char *arena);
+int i_lld(int arg[3], champ_t *champ, char *arena);
+int i_lldi(int arg[3], champ_t *champ, char *arena);
+int i_add(int arg[3], champ_t *champ, char *arena);
+int i_sub(int arg[3], champ_t *champ, char *arena);
+int i_and(int arg[3], champ_t *champ, char *arena);
+int i_or(int arg[3], champ_t *champ, char *arena);
+int i_xor(int arg[3], champ_t *champ, char *arena);
 
 // instructions
 int i_has_index(int mnemonic, int nb_arg);

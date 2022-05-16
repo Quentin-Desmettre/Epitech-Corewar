@@ -19,22 +19,21 @@ void dump_print(char *map)
     }
 }
 
-char *set_map(champ_t *champ, char *map)
+char *set_map(champ_t **champ, char *map)
 {
     champ_t *save;
-    int num_of_champ = 0;
-    int pos = 0;
+    int num_of_champ;
+    int pos;
 
     map = malloc(sizeof(char) * (MEM_SIZE + 1));
     my_memset(map, 0, MEM_SIZE + 1);
-    champ = sort_my_list(champ);
-    save = champ;
-    num_of_champ = get_num_of_champ(&champ);
+    *champ = sort_my_list(*champ);
+    save = *champ;
+    num_of_champ = get_num_of_champ(champ);
     for (int i = 0; save; i++) {
         pos = i * (MEM_SIZE / num_of_champ);
-        save->param.adress = (save->param.adress == -1) ? pos : save->param.adress;
-        map = cor_strcpy(map, save->instruction,
-        (int [2]){save->param.adress != -1 ? save->param.adress : pos, 1},
+        save->pc = (save->param.adress == -1) ? pos : save->param.adress;
+        map = cor_strcpy(map, save->instruction, (int [2]){save->pc, 1},
         save->header.prog_size);
         if (!map) {
             write(2, "Overlap.\n", 9);
@@ -106,7 +105,9 @@ void setup_game(int ac, char **av)
 
     check_argv(&ac, av, &dump_cycle, &info_champ);
     check_champ(ac, &info_champ);
-    map = set_map(info_champ, map);
+    map = set_map(&info_champ, map);
+    setup_all_champ_for_game(&info_champ);
+//    instruction_reader(info_champ);
     main_loop(map, info_champ, dump_cycle);
 //    print_winner(info_champ);
 }

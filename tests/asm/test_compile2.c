@@ -43,7 +43,7 @@ Test (everything, everything, .init=cr_redirect_stderr)
 {
     cr_assert(compile_file("yolo") == 0);
     cr_assert(has_error("yolo") == 1);
-    system("find tests/ -name \"*.s\" > /tmp/files");
+    system("find ../tests/asm/functional/tests -name \"*.s\" > /tmp/files");
     FILE *f = fopen("/tmp/files", "r");
     char *line = NULL;
     int my_exit_code;

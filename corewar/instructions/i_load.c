@@ -7,26 +7,26 @@
 
 #include "op.h"
 
-int i_ld(int arga, int argb)
+int i_ld(int arg[3], champ_t *champ, char *arena)
 {
-    printf("ld %d %d\n", arga, argb);
+    print("ld %d %d\n", arg[0], arg[1]);
     return (0);
 }
 
-int i_ldi(int arga, int argb, int argc)
+int i_ldi(int arg[3], champ_t *champ, char *arena)
 {
-    printf("ldi %d %d %d\n", arga, argb, argc);
+    print("ldi %d %d %d\n", arg[0], arg[1], arg[2]);
     return (0);
 }
 
-int i_lld(int arga, int argb)
+int i_lld(int arg[3], champ_t *champ, char *arena)
 {
-    printf("lld %d %d\n", arga, argb);
+    print("lld %d %d\n", arg[0], arg[1]);
     return (0);
 }
 
-int i_lldi(int arga, int argb)
+int i_lldi(int arg[3], champ_t *champ, char *arena)
 {
-    printf("lldi %d %d\n", arga, argb);
+    print("lldi %d %d\n", arg[0], arg[1]);
     return (0);
 }

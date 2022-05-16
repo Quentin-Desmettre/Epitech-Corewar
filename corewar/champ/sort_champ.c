@@ -52,7 +52,7 @@ champ_t *append_champ_with_value(champ_t *sorted, int little, champ_t *all)
         sorted = sorted->next;
     sorted->next = create_nodes(all, little);
     sorted = save;
-    return sorted;
+    return (sorted);
 }
 
 champ_t *sort_my_list(champ_t *champ)

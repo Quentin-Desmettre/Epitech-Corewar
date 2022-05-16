@@ -28,8 +28,9 @@ void setup_all_champ_for_game(champ_t **info_champ)
         save->cycle = 0;
         save->cycle_to_wait = 0;
         my_memset(save->registers, 0, REG_NUMBER);
-        save->pc = 0;
         save->is_alive = 0;
+        free(save->instruction);
+        save->instruction = NULL;
         save = save->next;
     }
 }
