@@ -5,6 +5,8 @@
 ## Makefile
 ##
 
+.PHONY: doc
+
 all	:
 	make -C asm
 	make -C corewar
