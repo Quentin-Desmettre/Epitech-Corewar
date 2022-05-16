@@ -29,7 +29,7 @@ typedef struct param_champ_s {
 typedef struct champ_s{
     char *name_champ;
     char *instruction;
-    char registers[REG_NUMBER];
+    int registers[REG_NUMBER];
     int cycle;
     int cycle_to_wait;
     int pc;
