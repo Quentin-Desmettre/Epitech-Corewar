@@ -98,7 +98,7 @@ char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
 
 //corewar
 void dump_print(char *map);
-char *set_map(champ_t *champ, char *map);
+char *set_map(champ_t **champ, char *map);
 void main_loop(char *map, champ_t *champions, int dump_cycle);
 void print_winner(champ_t *info_champ);
 void setup_game(int ac, char **av);
