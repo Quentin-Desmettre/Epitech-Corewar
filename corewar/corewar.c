@@ -7,13 +7,6 @@
 
 #include "corewar_include/op.h"
 
-int *get_cycle_to_die(void)
-{
-    static int cycle_to_die = CYCLE_TO_DIE;
-
-    return (&cycle_to_die);
-}
-
 void dump_print(char *map)
 {
     int pos_index = 0;

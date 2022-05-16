@@ -23,6 +23,7 @@ int get_num_of_champ(champ_t **info_champ)
 void setup_all_champ_for_game(champ_t **info_champ)
 {
     champ_t *save = *info_champ;
+    champ_t **tmp = NULL;
 
     while (save) {
         save->cycle = 0;
@@ -33,6 +34,8 @@ void setup_all_champ_for_game(champ_t **info_champ)
         save->instruction = NULL;
         save = save->next;
     }
+    tmp = get_champ_struct();
+    *tmp = *info_champ;
 }
 
 void check_champ(int nb_to_change, champ_t **info_champ)

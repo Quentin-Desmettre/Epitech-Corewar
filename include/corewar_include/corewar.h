@@ -124,4 +124,8 @@ int i_xor(int arg[3], champ_t *champ, char *arena);
 // lib
 void my_memcpy(void *dest, void *source, size_t size);
 
+//glob
+int *get_cycle_to_die(void);
+champ_t **get_champ_struct(void);
+
 #endif /*COREWAR_H*/
