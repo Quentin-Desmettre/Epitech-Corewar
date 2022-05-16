@@ -27,7 +27,7 @@ void setup_all_champ_for_game(champ_t **info_champ)
 
     while (save) {
         save->cycle = 0;
-        save->cycle_to_wait = 0;
+        save->cycle_to_wait = -1;
         my_memset(save->registers, 0, REG_NUMBER);
         save->is_alive = 0;
         free(save->instruction);
@@ -55,5 +55,4 @@ void check_champ(int nb_to_change, champ_t **info_champ)
         delete_champ(info_champ);
     }
     fill_header_champ(info_champ);
-    setup_all_champ_for_game(info_champ);
 }
