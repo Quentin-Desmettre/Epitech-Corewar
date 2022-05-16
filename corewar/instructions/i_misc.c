@@ -32,7 +32,10 @@ int i_live(int arg[3], champ_t *champ, char *arena)
 
 int i_zjmp(int arg[3], champ_t *champ, char *arena)
 {
-    print("zjmp %d\n", arg[0]);
+    if (champ->carry) {
+        champ->pc += arg[0] % IDX_MOD;
+        champ->pc %= MEM_SIZE;
+    }
     return (0);
 }
 
