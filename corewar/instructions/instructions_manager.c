@@ -65,7 +65,7 @@ args_t *dup_args(args_t *base)
     return a;
 }
 
-int size_of_arg(int code, int nb, int types[3])
+int size_of_arg(int code, int nb, char types[3])
 {
     if (types[nb] == T_REG)
         return 1;
@@ -101,7 +101,6 @@ args_t *get_next_instruction(char *arena, int pc)
     int code = arena[pc];
     int nb_arg;
     args_t args = {};
-    int arg_sizes[] = {4, 2, 2, 2};
 
     if (code < 1 || code > 16)
         return NULL;
