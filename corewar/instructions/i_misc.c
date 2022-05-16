@@ -50,6 +50,6 @@ int i_lfork(int arg[3], champ_t *champ, char *arena)
 
 int i_aff(int arg[3], champ_t *champ, char *arena)
 {
-    print("aff %d\n", arg[0]);
+    print("%c\n", champ->registers[arg[0]] % 256);
     return (0);
 }
