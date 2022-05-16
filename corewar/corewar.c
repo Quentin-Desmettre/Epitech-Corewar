@@ -47,10 +47,10 @@ void check_alive_champ(champ_t **champ)
 {
     champ_t *head = *champ;
 
-    if (!head->is_alive)
+    if (head && !head->is_alive)
         (*champ) = head->next;
     while (head) {
-        if (!head->next->is_alive && head->next)
+        if (head->next && !head->next->is_alive)
             head->next = head->next->next;
         else
             head->next = NULL;
