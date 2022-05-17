@@ -16,6 +16,5 @@ void exec_instructions(champ_t *champ, char *map)
     fptr[champ->args.code - 1](champ->args.args, champ, map);
     champ->cycle_to_wait = -1;
     champ->cycle = 0;
-    champ->pc += champ->args.byte_offset;
-    champ->pc %= MEM_SIZE;
+    champ->pc = (champ->pc + champ->args.byte_offset) % MEM_SIZE;
 }
