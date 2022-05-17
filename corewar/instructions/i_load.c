@@ -29,12 +29,21 @@ int i_ldi(int arg[3], champ_t *champ, char *arena)
 
 int i_lld(int arg[3], champ_t *champ, char *arena)
 {
-    print("lld %d %d\n", arg[0], arg[1]);
+    memcpy_cor(&champ->registers[arg[1]], arena,
+    (champ->pc + arg[0]) % MEM_SIZE, 4);
+    champ->carry = !champ->carry;
     return (0);
 }
 
 int i_lldi(int arg[3], champ_t *champ, char *arena)
 {
-    print("lldi %d %d\n", arg[0], arg[1]);
+    int sum = 0;
+
+    memcpy_cor(&sum, arena, ((champ->pc + arg[0]) % IDX_MOD) % MEM_SIZE,
+    IND_SIZE);
+    sum += arg[1];
+    memcpy_cor(&champ->registers[arg[2]], arena,
+    (champ->pc + sum) % MEM_SIZE, REG_SIZE);
+    champ->carry = !champ->carry;
     return (0);
 }
