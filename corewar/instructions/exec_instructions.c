@@ -9,7 +9,7 @@
 
 void exec_instructions(champ_t *champ, char *map)
 {
-    int (*fptr[])()= {&i_live, &i_ld, &i_st, &i_add, &i_sub, &i_and, &i_or,
+    int (*fptr[])() = {&i_live, &i_ld, &i_st, &i_add, &i_sub, &i_and, &i_or,
     &i_xor, &i_zjmp, &i_ldi, &i_sti, &i_fork, &i_lld, &i_lldi, &i_lfork,
     &i_aff};
 

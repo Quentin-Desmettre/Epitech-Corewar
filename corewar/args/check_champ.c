@@ -30,6 +30,7 @@ void setup_all_champ_for_game(champ_t **info_champ)
         save->cycle_to_wait = -1;
         my_memset(save->registers, 0, REG_NUMBER);
         save->is_alive = 0;
+        save->carry = 0;
         free(save->instruction);
         save->instruction = NULL;
         my_memset(&save->args, 0, sizeof(args_t));

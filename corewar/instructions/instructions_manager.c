@@ -5,20 +5,7 @@
 ** TODO: description
 */
 
-#include "op.h"
-#include "libmy.h"
-
-void get_coding_byte(char coding_byte, args_t *args)
-{
-    for (int i = 0; i < 3; i++) {
-        if (((coding_byte << 2 * i) & 0x40) == 0x40)
-            args->type[i] = T_REG;
-        if (((coding_byte << 2 * i) & 0x80) == 0x80)
-            args->type[i] = T_DIR;
-        if (((coding_byte << 2 * i) & 0xC0) == 0xC0)
-            args->type[i] = T_IND;
-    }
-}
+#include "corewar_include/op.h"
 
 int i_has_index(int mnemonic, int nb_arg)
 {
@@ -33,57 +20,12 @@ int i_has_index(int mnemonic, int nb_arg)
     return 0;
 }
 
-#define GET_BYTE(x) (((x)) % MEM_SIZE)
-
-static inline int is_special_case(int x)
-{
-    return (x == 1) || (x == 9) || (x == 12) || (x == 15);
-}
-
-int number_of_args(args_t *args)
-{
-    int nb = 0;
-
-    while (args->type[nb] && nb < 3)
-        nb++;
-    return nb;
-}
-
-int are_types_valid(args_t *args, int op_code, int nb_arg)
-{
-    for (int i = 0; i < nb_arg; i++)
-        if (!(op_tab[op_code].type[i] & args->type[i]))
-            return 0;
-    return 1;
-}
-
 args_t *dup_args(args_t *base)
 {
     args_t *a = malloc(sizeof(args_t));
 
     my_memcpy(a, base, sizeof(args_t));
     return a;
-}
-
-int size_of_arg(int code, int nb, char types[3])
-{
-    if (types[nb] == T_REG)
-        return 1;
-    if (types[nb] == T_IND)
-        return IND_SIZE;
-    if (i_has_index(code, nb + 1))
-        return IND_SIZE;
-    return DIR_SIZE;
-}
-
-void memcpy_cor(void *dest, char *arena, int start, int size)
-{
-    size_t pos_in_arena = start;
-
-    for (int i = 0; i < size; i++) {
-        ((char *)dest)[i] = arena[pos_in_arena];
-        pos_in_arena = (pos_in_arena + 1) % MEM_SIZE;
-    }
 }
 
 args_t *copy_args(int code, char *arena, int pc, args_t *args)

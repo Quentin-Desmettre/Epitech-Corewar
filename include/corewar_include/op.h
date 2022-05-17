@@ -21,6 +21,7 @@
     #include <unistd.h>
     #include <fcntl.h>
     #include "libmy.h"
+    #define GET_BYTE(x) (((x)) % MEM_SIZE)
 
 typedef char args_type_t;
 
@@ -85,5 +86,10 @@ static const op_t op_tab[] = {
     {"aff", 1, {T_REG}, 16, 2, "aff"},
     {0, 0, {0}, 0, 0, 0}
 };
+
+static inline int is_special_case(int x)
+{
+    return (x == 1) || (x == 9) || (x == 12) || (x == 15);
+}
 
 #endif
