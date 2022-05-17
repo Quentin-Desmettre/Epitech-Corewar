@@ -7,17 +7,22 @@
 
 #include "op.h"
 
-int i_add(int arg[3], champ_t *champ, char *arena)
+int i_add(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     int first = champ->registers[arg[0]];
     int second = champ->registers[arg[1]];
 
     champ->registers[arg[3]] = first + second;
+    champ->carry = !champ->carry;
     return (0);
 }
 
-int i_sub(int arg[3], champ_t *champ, char *arena)
+int i_sub(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
-    print("sub %d %d %d\n", arg[0], arg[1], arg[2]);
+    int first = champ->registers[arg[0]];
+    int second = champ->registers[arg[1]];
+
+    champ->registers[arg[3]] = first - second;
+    champ->carry = !champ->carry;
     return (0);
 }
