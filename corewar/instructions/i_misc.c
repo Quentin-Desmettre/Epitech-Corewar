@@ -7,7 +7,7 @@
 
 #include "op.h"
 
-int i_live(int arg[3], champ_t *champ, char *arena)
+int i_live(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     static int nbr_lives_done = 0;
     int *cycle_to_die = 0;
@@ -30,9 +30,9 @@ int i_live(int arg[3], champ_t *champ, char *arena)
     return (0);
 }
 
-int i_zjmp(int arg[3], champ_t *champ, char *arena)
+int i_zjmp(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
-    if (1 || champ->carry) {
+    if (champ->carry) {
         champ->pc += arg[0] % IDX_MOD;
         champ->pc -= champ->args.byte_offset;
     }
