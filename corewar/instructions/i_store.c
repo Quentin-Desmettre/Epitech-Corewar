@@ -25,8 +25,9 @@ int i_sti(int arg[3], champ_t *champ, char *arena)
         arg[2] = champ->registers[arg[2]];
     if (champ->args.type[1] == REGISTER)
         arg[1] = champ->registers[arg[1]];
-    result = champ->registers[arg[0]] + arg[1];
+    result = arg[2] + arg[1];
 
-    cpy_in_arena(arena, &arg[2], champ->pc + result % IDX_MOD, sizeof(int));
+    cpy_in_arena(arena, &champ->registers[arg[0]],
+    champ->pc + result % IDX_MOD, sizeof(int));
     return (0);
 }
