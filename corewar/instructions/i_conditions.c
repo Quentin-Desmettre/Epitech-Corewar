@@ -9,7 +9,12 @@
 
 int i_and(int arg[3], champ_t *champ, char *arena)
 {
-    print("and %d %d %d\n", arg[0], arg[1], arg[2]);
+    int first = arg[0];
+    int second = arg[1];
+
+    arg[2] = 0;
+    champ->registers[arg[2]] |= first & second;
+    champ->carry = !champ->carry;
     return (0);
 }
 
