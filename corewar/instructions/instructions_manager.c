@@ -92,6 +92,6 @@ void instruction_reader(char *arena, champ_t *champ)
         return;
     }
     champ->args = *arg;
-    champ->cycle_to_wait = op_tab[arg->code].nbr_cycles;
+    champ->cycle_to_wait = op_tab[arg->code - 1].nbr_cycles;
     free(arg);
 }
