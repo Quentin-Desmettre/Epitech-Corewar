@@ -31,7 +31,7 @@ int number_of_args(args_t *args)
 int are_types_valid(args_t *args, int op_code, int nb_arg)
 {
     for (int i = 0; i < nb_arg; i++)
-        if (!(op_tab[op_code].type[i] & args->type[i]))
+        if (!(op_tab[op_code - 1].type[i] & args->type[i]))
             return 0;
     return 1;
 }

@@ -7,6 +7,11 @@
 
 #include "corewar_include/op.h"
 
+static inline int is_special_case(int x)
+{
+    return (x == 1) || (x == 9) || (x == 12) || (x == 15);
+}
+
 int i_has_index(int mnemonic, int nb_arg)
 {
     if (mnemonic == 9)
@@ -28,22 +33,13 @@ args_t *dup_args(args_t *base)
     return a;
 }
 
-void cpy_in_arena(char *arena, void *src, int start, int size)
-{
-    size_t pos_in_arena = start;
-
-    for (int i = 0; i < size; i++) {
-        arena[pos_in_arena] = ((char *)src)[i];
-        pos_in_arena = (pos_in_arena + 1) % MEM_SIZE;
-    }
-}
-
 args_t *copy_args(int code, char *arena, int pc, args_t *args)
 {
     int offset = 0;
     int arg_size;
     int nb_arg = number_of_args(args);
 
+    printf("here\n");
     for (int i = 0; i < nb_arg; i++) {
         arg_size = size_of_arg(code, i, args->type);
         memcpy_cor(args->args + i,
@@ -70,7 +66,7 @@ args_t *get_next_instruction(char *arena, int pc)
     if (!is_special_case(code)) {
         get_coding_byte(arena[GET_BYTE(pc + 1)], &args);
         nb_arg = number_of_args(&args);
-        if (nb_arg != op_tab[code].nbr_args)
+        if (nb_arg != op_tab[code - 1].nbr_args)
             return NULL;
         if (!are_types_valid(&args, code, nb_arg))
             return NULL;
