@@ -28,16 +28,6 @@ args_t *dup_args(args_t *base)
     return a;
 }
 
-void cpy_in_arena(char *arena, void *src, int start, int size)
-{
-    size_t pos_in_arena = start;
-
-    for (int i = 0; i < size; i++) {
-        arena[pos_in_arena] = ((char *)src)[i];
-        pos_in_arena = (pos_in_arena + 1) % MEM_SIZE;
-    }
-}
-
 args_t *copy_args(int code, char *arena, int pc, args_t *args)
 {
     int offset = 0;
