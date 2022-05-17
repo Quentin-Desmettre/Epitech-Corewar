@@ -51,7 +51,7 @@ int i_lfork(int arg[3], champ_t *champ, char *arena)
     return (0);
 }
 
-int i_aff(int arg[3], champ_t *champ, char *arena)
+int i_aff(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     print("%c\n", champ->registers[arg[0]] % 256);
     return (0);
