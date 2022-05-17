@@ -9,7 +9,11 @@
 
 int i_st(int arg[3], champ_t *champ, char *arena)
 {
-    print("st %d %d\n", arg[1], arg[2]);
+    if (champ->args.type[1] == REGISTER)
+        champ->registers[arg[1]] = champ->registers[arg[0]];
+    else
+        cpy_in_arena(arena, &champ->registers[arg[0]],
+        ((champ->pc + arg[1]) % IDX_MOD) % MEM_SIZE, 4);
     return (0);
 }
 
