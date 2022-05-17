@@ -32,7 +32,7 @@ int i_live(int arg[3], champ_t *champ, char *arena)
 
 int i_zjmp(int arg[3], champ_t *champ, char *arena)
 {
-    if (1 || champ->carry) {
+    if (champ->carry) {
         champ->pc += arg[0] % IDX_MOD;
         champ->pc -= champ->args.byte_offset;
     }

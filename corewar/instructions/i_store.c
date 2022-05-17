@@ -14,7 +14,7 @@ int i_st(int arg[3], champ_t *champ, char *arena)
     else {
         convert_endian(&champ->registers[arg[0]]);
         cpy_in_arena(arena, &champ->registers[arg[0]],
-        ((champ->pc + arg[1]) % IDX_MOD) % MEM_SIZE, 4);
+        (champ->pc + arg[1] % IDX_MOD) % MEM_SIZE, 4);
         convert_endian(&champ->registers[arg[0]]);
     }
     return (0);
