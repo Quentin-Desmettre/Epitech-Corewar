@@ -7,7 +7,7 @@
 
 #include "op.h"
 
-int i_live(int arg[3], champ_t *champ, char *arena)
+int i_live(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     static int nbr_lives_done = 0;
     int *cycle_to_die = 0;
@@ -30,7 +30,7 @@ int i_live(int arg[3], champ_t *champ, char *arena)
     return (0);
 }
 
-int i_zjmp(int arg[3], champ_t *champ, char *arena)
+int i_zjmp(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     if (champ->carry) {
         champ->pc += arg[0] % IDX_MOD;
@@ -51,7 +51,7 @@ int i_lfork(int arg[3], champ_t *champ, char *arena)
     return (0);
 }
 
-int i_aff(int arg[3], champ_t *champ, char *arena)
+int i_aff(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     print("%c\n", champ->registers[arg[0]] % 256);
     return (0);
