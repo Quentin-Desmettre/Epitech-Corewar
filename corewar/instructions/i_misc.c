@@ -22,10 +22,10 @@ int i_live(int arg[3], champ_t *champ, char *arena)
         save = save->next;
     }
     nbr_lives_done++;
-    if (nbr_lives_done >= 40) {
+    if (nbr_lives_done >= NBR_LIVE) {
         cycle_to_die = get_cycle_to_die();
-        (*cycle_to_die)--;
-        nbr_lives_done = 0;
+        *cycle_to_die -= CYCLE_DELTA;
+        nbr_lives_done %= NBR_LIVE;
     }
     return (0);
 }
