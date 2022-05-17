@@ -41,13 +41,13 @@ int i_zjmp(int arg[3], champ_t *champ, char *arena)
 
 int i_fork(int arg[3], champ_t *champ, char *arena)
 {
-    print("fork %d\n", arg[0]);
+    print("Je fork a l'index %d\n", champ->pc + arg[0] % IDX_MOD);
     return (0);
 }
 
 int i_lfork(int arg[3], champ_t *champ, char *arena)
 {
-    print("lfork %d\n", arg[0]);
+    print("Je lfork a l'index %d\n", (champ->pc + arg[0]));
     return (0);
 }
 
