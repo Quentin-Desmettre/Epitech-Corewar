@@ -56,7 +56,7 @@ args_t *get_next_instruction(char *arena, int pc)
 
     if (code < 1 || code > 16)
         return NULL;
-    if (!is_special_case(code)) {
+    if (!IS_SPECIAL_CASE(code)) {
         get_coding_byte(arena[GET_BYTE(pc + 1)], &args);
         nb_arg = number_of_args(&args);
         if (nb_arg != op_tab[code - 1].nbr_args ||
