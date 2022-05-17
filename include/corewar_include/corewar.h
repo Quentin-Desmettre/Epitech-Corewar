@@ -133,6 +133,8 @@ void exec_instructions(champ_t *champ, char *map);
 
 // lib
 void my_memcpy(void *dest, void *source, size_t size);
+void memcpy_cor(void *dest, char *arena, int start, int size);
+void cpy_in_arena(char *arena, void *src, int start, int size);
 
 //glob
 int *get_cycle_to_die(void);
