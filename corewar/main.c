@@ -33,5 +33,6 @@ int main(int ac, char **av)
         return 84;
     }
     setup_game(ac, av);
+    exit(0);
     return (0);
 }

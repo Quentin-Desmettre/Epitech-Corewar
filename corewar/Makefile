@@ -9,7 +9,6 @@ ARGS	=	args/arg_manage.c \
 			args/check_args.c \
 			args/check_champ.c \
 			args/num_champ.c \
-			args/my_exit.c
 
 CHAMP	=	champ/create_champ.c \
 			champ/read_check_header.c \
@@ -22,6 +21,9 @@ VMCORE	=	instructions/instructions_manager.c \
 			instructions/i_misc.c \
 			instructions/i_operations.c \
 			instructions/i_store.c \
+			instructions/check_instruction.c \
+			cor_string_manip/cor_str.c \
+			cor_string_manip/arena_cor.c \
 
 SRC_TESTS = convert_endian.c \
 	corewar.c \

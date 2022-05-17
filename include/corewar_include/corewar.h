@@ -97,14 +97,10 @@ champ_t *create_nodes(champ_t *info, int champ);
 champ_t *append_champ_with_value(champ_t *sorted, int little, champ_t *all);
 champ_t *sort_my_list(champ_t *champ);
 
-//my_exit
-char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
-
 //corewar
 void dump_print(char *map);
 char *set_map(champ_t **champ, char *map);
 void main_loop(char *map, champ_t *champions, int dump_cycle);
-void print_winner(champ_t *info_champ);
 void setup_game(int ac, char **av);
 
 // Instructions
@@ -127,7 +123,9 @@ int i_xor(int arg[3], champ_t *champ, char *arena);
 
 // instructions
 int i_has_index(int mnemonic, int nb_arg);
-int get_instruction_args(int mnemonic, char *instructions, args_t *args);
+args_t *dup_args(args_t *base);
+args_t *copy_args(int code, char *arena, int pc, args_t *args);
+args_t *get_next_instruction(char *arena, int pc);
 void instruction_reader(char *instructions, champ_t *champ);
 void exec_instructions(champ_t *champ, char *map);
 
@@ -139,5 +137,15 @@ void cpy_in_arena(char *arena, void *src, int start, int size);
 //glob
 int *get_cycle_to_die(void);
 champ_t **get_champ_struct(void);
+
+//cor_str_manip
+void memcpy_cor(void *dest, char *arena, int start, int size);
+char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
+
+//check_instruction
+void get_coding_byte(char coding_byte, args_t *args);
+int number_of_args(args_t *args);
+int are_types_valid(args_t *args, int op_code, int nb_arg);
+int size_of_arg(int code, int nb, char types[3]);
 
 #endif /*COREWAR_H*/

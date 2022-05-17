@@ -7,43 +7,7 @@
 
 #include "corewar_include/op.h"
 
-void dump_print(char *map)
-{
-    int pos_index = 0;
-
-    for (pos_index = 0; pos_index < 6144; pos_index += 32) {
-        print("%-5X: ", pos_index);
-        for (int i = pos_index; i < pos_index + 32; i++)
-            print("%02hhX ", map[i]);
-        print("\n");
-    }
-}
-
-char *set_map(champ_t **champ, char *map)
-{
-    champ_t *save;
-    int num_of_champ = get_num_of_champ(champ);
-    int pos;
-
-    map = malloc(sizeof(char) * (MEM_SIZE + 1));
-    my_memset(map, 0, MEM_SIZE + 1);
-    *champ = sort_my_list(*champ);
-    save = *champ;
-    for (int i = 0; save; i++) {
-        pos = i * (MEM_SIZE / num_of_champ);
-        save->pc = (save->param.adress == -1) ? pos : save->param.adress;
-        map = cor_strcpy(map, save->instruction, (int [2]){save->pc, 1},
-        save->header.prog_size);
-        if (!map) {
-            write(2, "Overlap.\n", 9);
-            exit(84);
-        }
-        save = save->next;
-    }
-    return (map);
-}
-
-void check_alive_champ(champ_t **champ)
+void check_alive_champ(champ_t **champ, int need_dump, char *map)
 {
     champ_t *head = *champ;
 
@@ -54,7 +18,9 @@ void check_alive_champ(champ_t **champ)
             head->next = head->next->next;
         head->is_alive = 0;
         if (get_num_of_champ(champ) == 1) {
-            print("Le joueur %d (%s) a gagné.\n", (*champ)->param.champ_nbr, (*champ)->header.prog_name);
+            need_dump != -1 ? dump_print(map) : 0;
+            print("Le joueur %d (%s) a gagné.\n",
+            (*champ)->param.champ_nbr, (*champ)->header.prog_name);
             exit(0);
         }
         head = head->next;
@@ -86,13 +52,12 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
         dump_cycle > 0 ? dump_cycle-- : dump_cycle;
         current_cycle++;
         if (current_cycle >= nbr_cycle) {
-            check_alive_champ(&champions);
+            check_alive_champ(&champions, need_dump, map);
             current_cycle = 0;
         }
         head = champions;
     }
-    if (need_dump != -1)
-        dump_print(map);
+    need_dump != -1 ? dump_print(map) : 0;
 }
 
 void setup_game(int ac, char **av)
@@ -105,7 +70,5 @@ void setup_game(int ac, char **av)
     check_champ(ac, &info_champ);
     map = set_map(&info_champ, map);
     setup_all_champ_for_game(&info_champ);
-//    instruction_reader(info_champ);
     main_loop(map, info_champ, dump_cycle);
-//    print_winner(info_champ);
 }
