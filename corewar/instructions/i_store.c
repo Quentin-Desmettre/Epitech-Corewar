@@ -11,9 +11,12 @@ int i_st(int arg[3], champ_t *champ, char *arena)
 {
     if (champ->args.type[1] == REGISTER)
         champ->registers[arg[1]] = champ->registers[arg[0]];
-    else
+    else {
+        convert_endian(&champ->registers[arg[0]]);
         cpy_in_arena(arena, &champ->registers[arg[0]],
         ((champ->pc + arg[1]) % IDX_MOD) % MEM_SIZE, 4);
+        convert_endian(&champ->registers[arg[0]]);
+    }
     return (0);
 }
 
@@ -27,7 +30,9 @@ int i_sti(int arg[3], champ_t *champ, char *arena)
         arg[1] = champ->registers[arg[1]];
     result = arg[2] + arg[1];
 
+    convert_endian(&champ->registers[arg[0]]);
     cpy_in_arena(arena, &champ->registers[arg[0]],
     champ->pc + result % IDX_MOD, sizeof(int));
+    convert_endian(&champ->registers[arg[0]]);
     return (0);
 }
