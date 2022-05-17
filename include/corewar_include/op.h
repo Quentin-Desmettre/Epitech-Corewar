@@ -87,9 +87,4 @@ static const op_t op_tab[] = {
     {0, 0, {0}, 0, 0, 0}
 };
 
-static inline int is_special_case(int x)
-{
-    return (x == 1) || (x == 9) || (x == 12) || (x == 15);
-}
-
 #endif
