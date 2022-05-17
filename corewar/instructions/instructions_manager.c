@@ -42,6 +42,8 @@ args_t *copy_args(int code, char *arena, int pc, args_t *args)
             convert_endian(args->args + i);
         if (arg_size == 2)
             args->args[i] >>= 16;
+        if (arg_size == 1)
+            args->args[i] -= 1;
         offset += arg_size;
     }
     args->byte_offset = 2 + offset;
