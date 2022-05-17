@@ -29,7 +29,7 @@ int i_or(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     return (0);
 }
 
-int i_xor(int arg[3], champ_t *champ, char *arena)
+int i_xor(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
     int first = arg[0];
     int second = arg[1];
