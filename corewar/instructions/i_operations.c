@@ -13,7 +13,7 @@ int i_add(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     int second = champ->registers[arg[1]];
 
     champ->registers[arg[2]] = first + second;
-    champ->carry = (!champ->registers[arg[2]]) ? 0 : 1;
+    champ->carry = (!champ->registers[arg[2]]) ? 1 : 0;
     return (0);
 }
 
@@ -23,6 +23,6 @@ int i_sub(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     int second = champ->registers[arg[1]];
 
     champ->registers[arg[2]] = first - second;
-    champ->carry = (!champ->registers[arg[2]]) ? 0 : 1;
+    champ->carry = (!champ->registers[arg[2]]) ? 1 : 0;
     return (0);
 }

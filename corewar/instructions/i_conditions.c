@@ -12,9 +12,8 @@ int i_and(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     int first = arg[0];
     int second = arg[1];
 
-    champ->registers[arg[2]] = 0;
-    champ->registers[arg[2]] |= first & second;
-    champ->carry = (!champ->registers[arg[2]]) ? 0 : 1;
+    champ->registers[arg[2]] = first & second;
+    champ->carry = (!champ->registers[arg[2]]) ? 1 : 0;
     return (0);
 }
 
@@ -23,9 +22,8 @@ int i_or(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     int first = arg[0];
     int second = arg[1];
 
-    champ->registers[arg[2]] = 0;
-    champ->registers[arg[2]] |= first | second;
-    champ->carry = (!champ->registers[arg[2]]) ? 0 : 1;
+    champ->registers[arg[2]] = first | second;
+    champ->carry = (!champ->registers[arg[2]]) ? 1 : 0;
     return (0);
 }
 
@@ -34,8 +32,7 @@ int i_xor(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     int first = arg[0];
     int second = arg[1];
 
-    champ->registers[arg[2]] = 0;
-    champ->registers[arg[2]] |= first ^ second;
-    champ->carry = (!champ->registers[arg[2]]) ? 0 : 1;
+    champ->registers[arg[2]] = first ^ second;
+    champ->carry = (!champ->registers[arg[2]]) ? 1 : 0;
     return (0);
 }
