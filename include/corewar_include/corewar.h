@@ -148,4 +148,6 @@ int number_of_args(args_t *args);
 int are_types_valid(args_t *args, int op_code, int nb_arg);
 int size_of_arg(int code, int nb, char types[3]);
 
+    #define IS_SPECIAL_CASE(x) contain((char []){1, 9, 12, 15, 0}, x)
+
 #endif /*COREWAR_H*/
