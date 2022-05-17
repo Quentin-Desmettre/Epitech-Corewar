@@ -148,4 +148,9 @@ int number_of_args(args_t *args);
 int are_types_valid(args_t *args, int op_code, int nb_arg);
 int size_of_arg(int code, int nb, char types[3]);
 
+static inline int is_special_case(int x)
+{
+    return (x == 1) || (x == 9) || (x == 12) || (x == 15);
+}
+
 #endif /*COREWAR_H*/

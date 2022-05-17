@@ -55,21 +55,20 @@ void get_data(char **words, file_buffer_t *buf, char *line)
     char **labels;
 
     if (!my_strcmp(words[0], ".name"))
-        save_name(&buf->header, line);
+        return save_name(&buf->header, line);
     else if (!my_strcmp(words[0], ".comment"))
-        get_comment(&buf->header, line);
-    else {
-        labels = get_labels(&words, buf->f, NULL);
-        if (words) {
-            tmp = create_command(words,
-            buf->commands ? buf->commands->prev->data : NULL);
-        } else
-            tmp = create_null_command(buf->commands ?
-            buf->commands->prev->data : NULL);
-        append_node(&buf->commands, tmp);
-        for (int i = 0; labels[i]; i++)
-            append_node(&buf->labels, create_label(labels[i], tmp));
-    }
+        return get_comment(&buf->header, line);
+
+    labels = get_labels(&words, buf->f, NULL);
+    if (words) {
+        tmp = create_command(words,
+        buf->commands ? buf->commands->prev->data : NULL);
+    } else
+        tmp = create_null_command(buf->commands ?
+        buf->commands->prev->data : NULL);
+    append_node(&buf->commands, tmp);
+    for (int i = 0; labels[i]; i++)
+        append_node(&buf->labels, create_label(labels[i], tmp));
 }
 
 int write_file(FILE *f, char const *output)
