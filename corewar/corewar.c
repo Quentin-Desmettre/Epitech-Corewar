@@ -7,24 +7,37 @@
 
 #include "corewar_include/op.h"
 
+champ_t *last_to_live(champ_t *new)
+{
+    static champ_t *live = NULL;
+
+    if (new)
+        live = new;
+    return live;
+}
+
 void check_alive_champ(champ_t **champ, int need_dump, char *map)
 {
     champ_t *head = *champ;
 
-    if (head && !head->is_alive)
+    while (head && !head->is_alive) {
         (*champ) = head->next;
+        head = *champ;
+    }
     while (head) {
         if (head->next && !head->next->is_alive)
             head->next = head->next->next;
         head->is_alive = 0;
-        if (get_num_of_champ(champ) == 1) {
-            need_dump != -1 ? dump_print(map) : 0;
-            print("Le joueur %d (%s) a gagné.\n",
-            (*champ)->param.champ_nbr, (*champ)->header.prog_name);
-            exit(0);
-        }
         head = head->next;
     }
+    if (!(*champ) || get_num_of_champ(champ) == 1) {
+        need_dump ? dump_print(map) : 0;
+        print("Le joueur %d (%s) a gagné.\n",
+        last_to_live(NULL)->param.champ_nbr,
+        last_to_live(NULL)->header.prog_name);
+        exit(0);
+    }
+    all_champs(champ);
 }
 
 void get_instruction(char *map, champ_t *champ)
@@ -43,6 +56,7 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
     int need_dump = dump_cycle;
     champ_t *head = champions;
 
+    all_champs(&champions);
     while (dump_cycle != 0) {
         while (head) {
             get_instruction(map, head);
@@ -52,7 +66,8 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
         dump_cycle > 0 ? dump_cycle-- : dump_cycle;
         current_cycle++;
         if (current_cycle >= nbr_cycle) {
-            check_alive_champ(&champions, need_dump, map);
+            check_alive_champ(&champions,
+            (need_dump != -1 && dump_cycle == 0 ? 1 : 0), map);
             current_cycle = 0;
         }
         head = champions;
