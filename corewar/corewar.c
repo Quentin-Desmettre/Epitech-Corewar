@@ -32,9 +32,10 @@ void check_alive_champ(champ_t **champ, int need_dump, char *map)
     }
     if (!(*champ) || get_num_of_champ(champ) == 1) {
         need_dump ? dump_print(map) : 0;
-        print("Le joueur %d (%s) a gagné.\n",
-        last_to_live(NULL)->param.champ_nbr,
-        last_to_live(NULL)->header.prog_name);
+        head = last_to_live(NULL);
+        if (last_to_live(NULL))
+            print("Le joueur %d (%s) a gagné.\n", head->param.champ_nbr,
+            head->header.prog_name);
         exit(0);
     }
     all_champs(champ);
