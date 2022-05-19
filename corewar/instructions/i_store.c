@@ -23,19 +23,9 @@ int i_st(int arg[3], champ_t *champ, char *arena)
 
 int i_sti(int arg[3], champ_t *champ, char *arena)
 {
-    int result;
     int to_copy = champ->registers[arg[0]];
-    int aim_address;
 
-    if (champ->args.type[1] == REGISTER)
-        arg[1] = champ->registers[arg[1]];
-    if (champ->args.type[2] == REGISTER)
-        arg[2] = champ->registers[arg[2]];
-
-    result = arg[2] + arg[1];
     convert_endian(&to_copy);
-    aim_address = champ->pc + (result % IDX_MOD);
-
-    cpy_in_arena(arena, &to_copy, aim_address, REG_SIZE);
+    cpy_in_arena(arena, &to_copy, champ->args.tmp_ldi, REG_SIZE);
     return (0);
 }

@@ -7,16 +7,6 @@
 
 #include "op.h"
 
-/*
-
-les instructions prennent des param:
-
-//ld prend en param un indirect ;
-
-on les read au moment d'exec l'instruction (cycle 20), ou dès qu'on a load l'instruction (cycle 0) ?
-
-*/
-
 int i_ld(int arg[3], champ_t *champ, __attribute__((unused)) char *arena)
 {
     champ->registers[arg[1]] = arg[0];
