@@ -7,48 +7,40 @@
 
 #include "op.h"
 
-int i_ld(int arg[3], champ_t *champ, char *arena)
+/*
+
+les instructions prennent des param:
+
+//ld prend en param un indirect ;
+
+on les read au moment d'exec l'instruction (cycle 20), ou dès qu'on a load l'instruction (cycle 0) ?
+
+*/
+
+int i_ld(int arg[3], champ_t *champ, __attribute__((unused)) char *arena)
 {
-    memcpy_cor(&champ->registers[arg[1]], arena,
-    (champ->pc + arg[0] % IDX_MOD) % MEM_SIZE, 4);
-    convert_endian(&champ->registers[arg[1]]);
-    champ->carry = (!champ->registers[arg[1]]) ? 0 : 1;
+    champ->registers[arg[1]] = arg[0];
+    champ->carry = champ->registers[arg[1]] ? 0 : 1;
     return (0);
 }
 
-int i_ldi(int arg[3], champ_t *champ, char *arena)
+int i_ldi(int arg[3], champ_t *champ, __attribute__((unused)) char *arena)
 {
-    int sum = 0;
-
-    memcpy_cor(&sum, arena, (champ->pc + arg[0] % IDX_MOD) % MEM_SIZE,
-    IND_SIZE);
-    sum += arg[1];
-    memcpy_cor(&champ->registers[arg[2]], arena,
-    (champ->pc + sum % IDX_MOD) % MEM_SIZE, REG_SIZE);
-    convert_endian(&champ->registers[arg[2]]);
-    champ->carry = (!champ->registers[arg[1]]) ? 1 : 0;
+    champ->registers[arg[2]] = champ->args.tmp_ldi;
+    champ->carry = champ->registers[arg[2]] ? 0 : 1;
     return (0);
 }
 
-int i_lld(int arg[3], champ_t *champ, char *arena)
+int i_lld(int arg[3], champ_t *champ, __attribute__((unused)) char *arena)
 {
-    memcpy_cor(&champ->registers[arg[1]], arena,
-    (champ->pc + arg[0]) % MEM_SIZE, 4);
-    convert_endian(&champ->registers[arg[1]]);
-    champ->carry = (!champ->registers[arg[1]]) ? 1 : 0;
+    champ->registers[arg[1]] = arg[0];
+    champ->carry = champ->registers[arg[1]] ? 0 : 1;
     return (0);
 }
 
-int i_lldi(int arg[3], champ_t *champ, char *arena)
+int i_lldi(int arg[3], champ_t *champ, __attribute__((unused)) char *arena)
 {
-    int sum = 0;
-
-    memcpy_cor(&sum, arena, (champ->pc + arg[0] % IDX_MOD) % MEM_SIZE,
-    IND_SIZE);
-    sum += arg[1];
-    memcpy_cor(&champ->registers[arg[2]], arena,
-    (champ->pc + sum) % MEM_SIZE, REG_SIZE);
-    convert_endian(&champ->registers[arg[2]]);
-    champ->carry = (!champ->registers[arg[1]]) ? 0 : 1;
+    champ->registers[arg[2]] = champ->args.tmp_ldi;
+    champ->carry = champ->registers[arg[2]] ? 0 : 1;
     return (0);
 }

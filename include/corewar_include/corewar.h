@@ -15,6 +15,7 @@ enum I_TYPE {EMPTY, REGISTER, DIRECT, INDIRECT};
 typedef struct {
     int code;
     int byte_offset;
+    int tmp_ldi;
     int args[3];
     char type[3];
 } args_t;
@@ -147,6 +148,8 @@ void get_coding_byte(char coding_byte, args_t *args);
 int number_of_args(args_t *args);
 int are_types_valid(args_t *args, int op_code, int nb_arg);
 int size_of_arg(int code, int nb, char types[3]);
+champ_t *last_to_live(champ_t *new);
+champ_t **all_champs(champ_t **new);
 
     #define IS_SPECIAL_CASE(x) contain((char []){1, 9, 12, 15, 0}, x)
 
