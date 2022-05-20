@@ -169,8 +169,180 @@ Test (setup_all_champ_for_game_func, test_setup_all_champ_for_game)
     cr_assert(coucou == *get_champ_struct());
 }
 
-Test (corewar_alive_champ, test_corewar_alive_champ, .exit_code = 84)
+Test (setup_valid_num_func, test_setup_valid_num)
 {
     champ_t *coucou = malloc(sizeof(champ_t));
+    champ_t *suite = malloc(sizeof(champ_t));
+    champ_t *follow = malloc(sizeof(champ_t));
+    int valid_num[4] = {1, 2, 3, 4};
+    int cmp[4] = {1, 0, 3, 4};
+
     my_memset(coucou, 0, sizeof(champ_t));
+    my_memset(suite, 0, sizeof(champ_t));
+    my_memset(follow, 0, sizeof(champ_t));
+    coucou->next = suite;
+    suite->next = follow;
+    follow->next = NULL;
+    coucou->param.champ_nbr = 1;
+    suite->param.champ_nbr = 2;
+    suite->param.nb_is_impose = 1;
+    follow->param.champ_nbr = 4;
+    setup_valid_num(&coucou, &valid_num);
+    for (int i = 0; i < 4; i++)
+        cr_assert(valid_num[i] == cmp[i]);
+}
+
+Test (set_champ_real_num_func, test_set_champ_real_num)
+{
+    champ_t *coucou = malloc(sizeof(champ_t));
+    champ_t *suite = malloc(sizeof(champ_t));
+    champ_t *follow = malloc(sizeof(champ_t));
+    int valid_num[4] = {1, 2, 3, 4};
+
+    my_memset(coucou, 0, sizeof(champ_t));
+    my_memset(suite, 0, sizeof(champ_t));
+    my_memset(follow, 0, sizeof(champ_t));
+    coucou->next = suite;
+    suite->next = follow;
+    follow->next = NULL;
+    coucou->param.champ_nbr = 8;
+    suite->param.champ_nbr = 2;
+    suite->param.nb_is_impose = 1;
+    follow->param.champ_nbr = 4;
+    setup_valid_num(&coucou, &valid_num);
+    set_champ_real_num(&coucou, &valid_num);
+    cr_assert(coucou->param.champ_nbr == 1);
+    cr_assert(suite->param.champ_nbr == 2);
+    cr_assert(follow->param.champ_nbr == 3);
+}
+
+Test (check_same_nbr_func, test_check_same_nbr)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    for (int i = 0; i < 5; i++)
+        param->num_impose[i] = 0;
+    cr_assert(check_same_nbr(param) == 0);
+    param->num_impose[1] = 4;
+    param->num_impose[3] = 4;
+    cr_assert(check_same_nbr(param) == 1);
+}
+
+Test (check_dump_no_arg, test_check_dump_no_arg, .exit_code = 84)
+{
+    check_dump(NULL, NULL);
+}
+
+Test (check_dump_already_dump, test_check_dump_already_dump, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    check_dump(param, "bite");
+}
+
+Test (check_bad_dump, test_check_bad_dump, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->dump_cycle = -1;
+    check_dump(param, "bite");
+}
+
+Test (check_inf_dump, test_check_inf_dump, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->dump_cycle = -1;
+    check_dump(param, "13527828763632867867126736");
+}
+
+Test (check_nice_dump, test_check_nice_dump)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->dump_cycle = -1;
+    check_dump(param, "50");
+}
+
+Test (check_no_arg_num, test_check_no_arg_num, .exit_code = 84)
+{
+    check_num(NULL, NULL);
+}
+
+Test (check_num_specifie, test_check_num_specifie, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->num_impose[0] = 10;
+    check_num(param, "50");
+}
+
+Test (check_bad_num_impose, test_check_bad_num_impose, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    check_num(param, "-50");
+}
+
+Test (check_bad_alpha_impose, test_check_bad_alpha_impose, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    check_num(param, "78163761978635967153967153");
+}
+
+Test (check_nice_num, test_check_nice_num)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    check_num(param, "3");
+}
+
+Test (check_no_arg_adress, test_check_no_arg_adress, .exit_code = 84)
+{
+    check_address(NULL, NULL);
+}
+
+Test (check_adress_specifie, test_check_adress_specifie, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->adress_next = 10;
+    check_address(param, "50");
+}
+
+Test (check_bad_adress_impose, test_check_bad_adress_impose, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->adress_next = -1;
+    check_address(param, "-50");
+}
+
+Test (check_alpha_adress_impose, test_check_alpha_adress_impo, .exit_code = 84)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->adress_next = -1;
+    check_address(param, "78163761978635967153967153");
+}
+
+Test (check_nice_adress, test_check_nice_adress)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    param->adress_next = -1;
+    check_address(param, "3");
 }

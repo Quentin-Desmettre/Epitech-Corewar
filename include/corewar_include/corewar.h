@@ -63,12 +63,11 @@ void create_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
 void delete_champ(champ_t **info_champ);
 int get_num_of_champ(champ_t **info_champ);
 void setup_all_champ_for_game(champ_t **info_champ);
-void check_champ(int nb_to_change, champ_t **info_champ);
+void check_champ(champ_t **info_champ);
 
 //num champ
 void setup_valid_num(champ_t **info_champ, int valid_num[][4]);
 void set_champ_real_num(champ_t **info_champ, int valid_num[][4]);
-void change_all_nb_champ(champ_t **info_champ, int nb);
 int check_same_nbr(param_argv_t *param);
 
 //arg manage
@@ -128,6 +127,7 @@ int size_of_arg(int code, int nb, char types[3]);
 champ_t *last_to_live(champ_t *new);
 champ_t **all_champs(champ_t **new);
 champ_t **fork_list(void);
+void check_alive_champ(champ_t **champ, int need_dump, char *map);
 void increase_counter(void);
 void replace_indirects(champ_t *champ, char *arena);
 
