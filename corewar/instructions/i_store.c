@@ -11,7 +11,7 @@ int i_st(int arg[3], champ_t *champ, char *arena)
 {
     int to_copy = champ->registers[arg[0]];
 
-    if (champ->args.type[1] == REGISTER) {
+    if (champ->args.type[1] == T_REG) {
         champ->registers[arg[1]] = to_copy;
     } else {
         convert_endian(&to_copy);

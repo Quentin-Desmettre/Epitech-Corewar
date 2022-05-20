@@ -7,7 +7,7 @@
 
 #include "corewar_include/op.h"
 
-void check_header(champ_t **info_champ, size_t size)
+static void check_header(champ_t **info_champ, size_t size)
 {
     convert_endian(&(*info_champ)->header.magic);
     convert_endian(&(*info_champ)->header.prog_size);
@@ -22,7 +22,7 @@ void check_header(champ_t **info_champ, size_t size)
     }
 }
 
-void read_header(champ_t **info_champ, size_t size)
+static void read_header(champ_t **info_champ, size_t size)
 {
     int fd = open((*info_champ)->name_champ, O_RDONLY);
     size_t size_header = sizeof(header_t);

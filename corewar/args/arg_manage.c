@@ -7,7 +7,7 @@
 
 #include "corewar_include/op.h"
 
-param_argv_t *init_value(void)
+static param_argv_t *init_value(void)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -25,7 +25,8 @@ param_argv_t *init_value(void)
     return (param);
 }
 
-int check_if_opt(param_argv_t *param, char *str, char *str_next, int *index)
+static int check_if_opt(param_argv_t *param,
+char *str, char *str_next, int *index)
 {
     char *cmp_str[] = {"-dump", "-n", "-a"};
     void (*fun[])() = {&check_dump, &check_num, &check_address};

@@ -7,7 +7,7 @@
 
 #include "corewar_include/op.h"
 
-void find_little_number(int valid_num[][4], int *nbr)
+static void find_little_number(int valid_num[][4], int *nbr)
 {
     int i;
 

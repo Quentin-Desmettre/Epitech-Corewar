@@ -12,3 +12,11 @@ void convert_endian(int *nbr)
 
     *nbr = left | right;
 }
+
+void convert_endian_short(short *nbr)
+{
+    short nb = *nbr;
+    short swapped = ((nb >> 8) & 0xff) | ((nb << 8) & 0xff00);
+
+    *nbr = swapped;
+}

@@ -27,12 +27,11 @@ int main(int ac, char **av)
 {
     if (ac == 2)
         if (my_strcmp(av[1], "-h") == 0)
-            return (help_message(av[0]));
+            exit(help_message(av[0]));
     if (ac < 3) {
-        write(2, "Need at least 2 champ\n", 22);
-        return 84;
+        write(2, "Need at least 2 champions.\n", 22);
+        exit(84);
     }
     setup_game(ac, av);
     exit(0);
-    return (0);
 }

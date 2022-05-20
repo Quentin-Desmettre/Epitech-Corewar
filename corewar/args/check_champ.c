@@ -28,7 +28,7 @@ void setup_all_champ_for_game(champ_t **info_champ)
     while (save) {
         save->cycle = 0;
         save->cycle_to_wait = -1;
-        my_memset(save->registers, 0, REG_NUMBER);
+        my_memset(save->registers, 0, sizeof(int) * REG_NUMBER);
         save->registers[0] = save->param.champ_nbr;
         save->is_alive = 0;
         save->carry = 0;

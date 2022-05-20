@@ -77,6 +77,7 @@ void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ);
 
 //endian
 void convert_endian(int *nbr);
+void convert_endian_short(short *nbr);
 
 //sort_champ
 champ_t *sort_my_list(champ_t *champ);
@@ -128,5 +129,6 @@ champ_t *last_to_live(champ_t *new);
 champ_t **all_champs(champ_t **new);
 champ_t **fork_list(void);
 void increase_counter(void);
+void replace_indirects(champ_t *champ, char *arena);
 
 #endif /*COREWAR_H*/

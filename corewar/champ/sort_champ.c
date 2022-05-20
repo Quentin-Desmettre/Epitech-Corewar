@@ -7,7 +7,7 @@
 
 #include "corewar_include/op.h"
 
-int find_little_but_higher(champ_t *champ, int int_compare)
+static int find_little_but_higher(champ_t *champ, int int_compare)
 {
     int little_int = 8;
     champ_t *save = champ;
@@ -22,7 +22,7 @@ int find_little_but_higher(champ_t *champ, int int_compare)
     return (little_int);
 }
 
-champ_t *create_nodes(champ_t *info, int champ)
+static champ_t *create_nodes(champ_t *info, int champ)
 {
     champ_t *save = info;
     champ_t *return_champ = malloc(sizeof(champ_t));
@@ -41,7 +41,8 @@ champ_t *create_nodes(champ_t *info, int champ)
     return (return_champ);
 }
 
-champ_t *append_champ_with_value(champ_t *sorted, int little, champ_t *all)
+static champ_t *append_champ_with_value(champ_t *sorted,
+int little, champ_t *all)
 {
     champ_t *save = sorted;
 
