@@ -23,6 +23,11 @@
     #include "libmy.h"
     #define GET_BYTE(x) (((x)) % MEM_SIZE)
 
+    // #define MSG_WIN "The player %d (%s) has won.\n"
+    // #define MSG_LIVE "The player %d (%s) is alive.\n"
+    #define MSG_WIN "Le joueur %d (%s) a gagné.\n"
+    #define MSG_LIVE "Le joueur %d (%s) est en vie.\n"
+
 typedef char args_type_t;
 
     #define T_REG 1

@@ -29,7 +29,7 @@ void delete_champ(champ_t **info_champ)
     (*info_champ) = save;
 }
 
-champ_t *init_node(param_argv_t *param, char *path_file)
+static champ_t *init_node(param_argv_t *param, char *path_file)
 {
     champ_t *node = malloc(sizeof(champ_t));
 
@@ -48,7 +48,8 @@ champ_t *init_node(param_argv_t *param, char *path_file)
     return node;
 }
 
-void append_champ(char *path_file, param_argv_t *param, champ_t **info_champ)
+static void append_champ(char *path_file,
+param_argv_t *param, champ_t **info_champ)
 {
     champ_t *save = *info_champ;
 

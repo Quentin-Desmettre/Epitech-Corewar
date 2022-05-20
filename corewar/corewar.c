@@ -7,15 +7,6 @@
 
 #include "corewar_include/op.h"
 
-champ_t *last_to_live(champ_t *new)
-{
-    static champ_t *live = NULL;
-
-    if (new)
-        live = new;
-    return live;
-}
-
 void check_alive_champ(champ_t **champ, int need_dump, char *map)
 {
     champ_t *head = *champ;
@@ -32,36 +23,55 @@ void check_alive_champ(champ_t **champ, int need_dump, char *map)
     }
     if (!(*champ) || get_num_of_champ(champ) == 1) {
         need_dump ? dump_print(map) : 0;
-        print("Le joueur %d (%s) a gagné.\n",
-        last_to_live(NULL)->param.champ_nbr,
-        last_to_live(NULL)->header.prog_name);
+        head = last_to_live(NULL);
+        if (last_to_live(NULL))
+            print(MSG_WIN, head->param.champ_nbr, head->header.prog_name);
         exit(0);
     }
     all_champs(champ);
 }
 
-void get_instruction(char *map, champ_t *champ)
+void add_forks(void)
 {
-    champ->cycle++;
-    if (champ->cycle_to_wait == -1)
-        instruction_reader(map, champ);
-    if (champ->cycle == champ->cycle_to_wait)
-        exec_instructions(champ, map);
+    champ_t **all = all_champs(NULL);
+    champ_t *forks = *fork_list();
+    champ_t *next;
+
+    while (forks) {
+        next = forks->next;
+        forks->next = *all;
+        *all = forks;
+        forks = next;
+    }
+    *fork_list() = NULL;
 }
 
-void main_loop(char *map, champ_t *champions, int dump_cycle)
+void exec_champions(char *map, champ_t *champions)
+{
+    champ_t *champ = champions;
+
+    while (champ) {
+        champ->cycle++;
+        while (champ->pc < 0)
+            champ->pc += MEM_SIZE;
+        champ->pc %= MEM_SIZE;
+        if (champ->cycle_to_wait == -1)
+            instruction_reader(map, champ);
+        if (champ->cycle == champ->cycle_to_wait)
+            exec_instructions(champ, map);
+        champ = champ->next;
+    }
+}
+
+static void main_loop(char *map, champ_t *champions, int dump_cycle)
 {
     int nbr_cycle = CYCLE_TO_DIE;
     int current_cycle = 0;
     int need_dump = dump_cycle;
-    champ_t *head = champions;
 
     all_champs(&champions);
     while (dump_cycle != 0) {
-        while (head) {
-            get_instruction(map, head);
-            head = head->next;
-        }
+        exec_champions(map, champions);
         nbr_cycle = *get_cycle_to_die();
         dump_cycle > 0 ? dump_cycle-- : dump_cycle;
         current_cycle++;
@@ -70,7 +80,7 @@ void main_loop(char *map, champ_t *champions, int dump_cycle)
             (need_dump != -1 && dump_cycle == 0 ? 1 : 0), map);
             current_cycle = 0;
         }
-        head = champions;
+        add_forks();
     }
     need_dump != -1 ? dump_print(map) : 0;
 }

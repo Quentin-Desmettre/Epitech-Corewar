@@ -8,8 +8,7 @@
 #ifndef COREWAR_H
     #define COREWAR_H
     #include "op.h"
-
-enum I_TYPE {EMPTY, REGISTER, DIRECT, INDIRECT};
+    #define IS_SPECIAL_CASE(x) contain((char []){1, 9, 12, 15, 0}, x)
 
 // ARGS
 typedef struct {
@@ -52,18 +51,12 @@ typedef struct {
     int dump_cycle;
 } param_argv_t;
 
-//main.c
-int help_message(char *name_binarie);
-void print_info_champ(champ_t *info_champ);
-
 //check args
 void check_dump(param_argv_t *param, char *arg);
 void check_num(param_argv_t *param, char *arg);
 void check_address(param_argv_t *param, char *arg);
 
 //create champ
-champ_t *init_node(param_argv_t *param, char *path_file);
-void append_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
 void create_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
 
 //check champ
@@ -73,35 +66,25 @@ void setup_all_champ_for_game(champ_t **info_champ);
 void check_champ(int nb_to_change, champ_t **info_champ);
 
 //num champ
-void find_little_number(int valid_num[][4], int *nbr);
 void setup_valid_num(champ_t **info_champ, int valid_num[][4]);
 void set_champ_real_num(champ_t **info_champ, int valid_num[][4]);
 void change_all_nb_champ(champ_t **info_champ, int nb);
 int check_same_nbr(param_argv_t *param);
 
 //arg manage
-param_argv_t *init_value(void);
-int check_if_opt(param_argv_t *param, char *str, char *str_next, int *index);
 void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ);
+void fill_header_champ(champ_t **info_champ);
 
 //endian
 void convert_endian(int *nbr);
-
-//header_champ
-void check_header(champ_t **info_champ, size_t size);
-void read_header(champ_t **info_champ, size_t size);
-void fill_header_champ(champ_t **info_champ);
+void convert_endian_short(short *nbr);
 
 //sort_champ
-int find_little_but_higher(champ_t *champ, int int_compare);
-champ_t *create_nodes(champ_t *info, int champ);
-champ_t *append_champ_with_value(champ_t *sorted, int little, champ_t *all);
 champ_t *sort_my_list(champ_t *champ);
 
 //corewar
 void dump_print(char *map);
 char *set_map(champ_t **champ, char *map);
-void main_loop(char *map, champ_t *champions, int dump_cycle);
 void setup_game(int ac, char **av);
 
 // Instructions
@@ -124,9 +107,6 @@ int i_xor(int arg[3], champ_t *champ, char *arena);
 
 // instructions
 int i_has_index(int mnemonic, int nb_arg);
-args_t *dup_args(args_t *base);
-args_t *copy_args(int code, char *arena, int pc, args_t *args);
-args_t *get_next_instruction(char *arena, int pc);
 void instruction_reader(char *instructions, champ_t *champ);
 void exec_instructions(champ_t *champ, char *map);
 
@@ -134,14 +114,11 @@ void exec_instructions(champ_t *champ, char *map);
 void my_memcpy(void *dest, void *source, size_t size);
 void memcpy_cor(void *dest, char *arena, int start, int size);
 void cpy_in_arena(char *arena, void *src, int start, int size);
+char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
 
 //glob
 int *get_cycle_to_die(void);
 champ_t **get_champ_struct(void);
-
-//cor_str_manip
-void memcpy_cor(void *dest, char *arena, int start, int size);
-char *cor_strcpy(char *str1, const char *str2, const int cc[2], size_t size);
 
 //check_instruction
 void get_coding_byte(char coding_byte, args_t *args);
@@ -150,7 +127,8 @@ int are_types_valid(args_t *args, int op_code, int nb_arg);
 int size_of_arg(int code, int nb, char types[3]);
 champ_t *last_to_live(champ_t *new);
 champ_t **all_champs(champ_t **new);
-
-    #define IS_SPECIAL_CASE(x) contain((char []){1, 9, 12, 15, 0}, x)
+champ_t **fork_list(void);
+void increase_counter(void);
+void replace_indirects(champ_t *champ, char *arena);
 
 #endif /*COREWAR_H*/

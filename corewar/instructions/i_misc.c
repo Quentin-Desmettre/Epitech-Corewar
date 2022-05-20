@@ -7,36 +7,24 @@
 
 #include "op.h"
 
-champ_t **all_champs(champ_t **new)
+int i_live(int arg[3], __attribute__((unused)) champ_t *champ,
+__attribute__((unused)) char *arena)
 {
-    static champ_t **c = NULL;
-
-    if (new)
-        c = new;
-    return c;
-}
-
-int i_live(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
-{
-    static int nbr_lives_done = 0;
-    int *cycle_to_die = 0;
     champ_t *save = *all_champs(NULL);
+    int has_lived = 0;
 
     while (save) {
         if (save->param.champ_nbr == arg[0]) {
             save->is_alive = 1;
-            print("Le joueur %d (%s) est en vie.\n",
-            save->param.champ_nbr, save->header.prog_name);
+            has_lived = 1;
             last_to_live(save);
         }
         save = save->next;
     }
-    nbr_lives_done++;
-    while (nbr_lives_done >= NBR_LIVE) {
-        cycle_to_die = get_cycle_to_die();
-        *cycle_to_die -= CYCLE_DELTA;
-        nbr_lives_done -= NBR_LIVE;
-    }
+    if (has_lived)
+        print(MSG_LIVE, last_to_live(NULL)->param.champ_nbr,
+        last_to_live(NULL)->header.prog_name);
+    increase_counter();
     return (0);
 }
 
@@ -50,15 +38,33 @@ int i_zjmp(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     return (0);
 }
 
-int i_fork(int arg[3], champ_t *champ, char *arena)
+int i_fork(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
-    print("Je fork a l'index %d\n", champ->pc + arg[0] % IDX_MOD);
+    champ_t *new = malloc(sizeof(champ_t));
+
+    my_memcpy(new, champ, sizeof(champ_t));
+    new->pc = champ->pc + arg[0] % IDX_MOD;
+    new->cycle = 0;
+    new->is_alive = 0;
+    new->cycle_to_wait = -1;
+    new->next = *fork_list();
+    *fork_list() = new;
+
     return (0);
 }
 
-int i_lfork(int arg[3], champ_t *champ, char *arena)
+int i_lfork(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
 {
-    print("Je lfork a l'index %d\n", (champ->pc + arg[0]));
+    champ_t *new = malloc(sizeof(champ_t));
+
+    my_memcpy(new, champ, sizeof(champ_t));
+    new->pc = champ->pc + arg[0];
+    new->cycle = 0;
+    new->is_alive = 0;
+    new->cycle_to_wait = -1;
+    new->next = *fork_list();
+    *fork_list() = new;
+
     return (0);
 }
 

@@ -22,12 +22,14 @@ VMCORE	=	instructions/instructions_manager.c \
 			instructions/i_operations.c \
 			instructions/i_store.c \
 			instructions/check_instruction.c \
+			instructions/replace_indirects.c \
 			cor_string_manip/cor_str.c \
 			cor_string_manip/arena_cor.c \
 
 SRC_TESTS = convert_endian.c \
 	corewar.c \
 	glob.c \
+	globals.c \
 	$(ARGS) \
 	$(CHAMP) \
 	$(VMCORE) \

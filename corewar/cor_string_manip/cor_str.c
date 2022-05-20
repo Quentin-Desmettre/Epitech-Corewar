@@ -9,8 +9,10 @@
 
 void cpy_in_arena(char *arena, void *src, int start, int size)
 {
-    size_t pos_in_arena = start;
+    int64_t pos_in_arena = start % MEM_SIZE;
 
+    while (pos_in_arena < 0)
+        pos_in_arena += MEM_SIZE;
     for (int i = 0; i < size; i++) {
         arena[pos_in_arena] = ((char *)src)[i];
         pos_in_arena = (pos_in_arena + 1) % MEM_SIZE;
@@ -19,8 +21,10 @@ void cpy_in_arena(char *arena, void *src, int start, int size)
 
 void memcpy_cor(void *dest, char *arena, int start, int size)
 {
-    size_t pos_in_arena = start;
+    int64_t pos_in_arena = start % MEM_SIZE;
 
+    while (pos_in_arena < 0)
+        pos_in_arena += MEM_SIZE;
     for (int i = 0; i < size; i++) {
         ((char *)dest)[i] = arena[pos_in_arena];
         pos_in_arena = (pos_in_arena + 1) % MEM_SIZE;
