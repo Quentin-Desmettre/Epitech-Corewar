@@ -63,7 +63,7 @@ void create_champ(char *path_file, param_argv_t *param, champ_t **info_champ);
 void delete_champ(champ_t **info_champ);
 int get_num_of_champ(champ_t **info_champ);
 void setup_all_champ_for_game(champ_t **info_champ);
-void check_champ(int nb_to_change, champ_t **info_champ);
+void check_champ(champ_t **info_champ);
 
 //num champ
 void setup_valid_num(champ_t **info_champ, int valid_num[][4]);
