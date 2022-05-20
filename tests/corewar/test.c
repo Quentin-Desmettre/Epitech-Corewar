@@ -10,7 +10,7 @@
 #include "op.h"
 #undef exit
 
-Test (glob_var, test_glob_var)
+Test (glob_var, test_glob_var, .init=cr_redirect_stdout)
 {
     int cmp = CYCLE_TO_DIE;
     champ_t *to_cmp = NULL;
@@ -19,7 +19,8 @@ Test (glob_var, test_glob_var)
     cr_assert(*get_champ_struct() == to_cmp);
 }
 
-Test (corewar_alive, test_corewar_alive, .exit_code = 0)
+Test (corewar_alive, test_corewar_alive, .exit_code = 0,
+.init=cr_redirect_stdout)
 {
     champ_t *to_cmp = malloc(sizeof(champ_t));
     champ_t *ouais = malloc(sizeof(champ_t));
@@ -36,7 +37,8 @@ Test (corewar_alive, test_corewar_alive, .exit_code = 0)
     check_alive_champ(&ouais, -1, map);
 }
 
-Test (corewar_alive_champ, test_corewar_alive_champ, .exit_code = 0)
+Test (corewar_alive_champ, test_corewar_alive_champ, .exit_code = 0,
+.init=cr_redirect_stdout)
 {
     champ_t *to_cmp = malloc(sizeof(champ_t));
     champ_t *ouais = malloc(sizeof(champ_t));
@@ -53,7 +55,8 @@ Test (corewar_alive_champ, test_corewar_alive_champ, .exit_code = 0)
     check_alive_champ(&ouais, 0, map);
 }
 
-Test (check_endian_convertor, test_check_endian_convertor)
+Test (check_endian_convertor, test_check_endian_convertor,
+.init=cr_redirect_stdout)
 {
     int test = 0x12345678;
 
@@ -63,7 +66,7 @@ Test (check_endian_convertor, test_check_endian_convertor)
     cr_assert(test == 0x12345678);
 }
 
-Test (get_CodingByte, test_get_coding_byte)
+Test (get_CodingByte, test_get_coding_byte, .init=cr_redirect_stdout)
 {
     args_t *args = malloc(sizeof(args_t));
 
@@ -74,7 +77,7 @@ Test (get_CodingByte, test_get_coding_byte)
     cr_assert(args->type[2] == T_DIR);
 }
 
-Test (num_of_args, test_num_of_args)
+Test (num_of_args, test_num_of_args, .init=cr_redirect_stdout)
 {
     args_t *args = malloc(sizeof(args_t));
 
@@ -85,7 +88,7 @@ Test (num_of_args, test_num_of_args)
     cr_assert(number_of_args(args) == 0);
 }
 
-Test (are_types_valid_func, test_are_types_valid)
+Test (are_types_valid_func, test_are_types_valid, .init=cr_redirect_stdout)
 {
     args_t *args = malloc(sizeof(args_t));
     int live = 1;
@@ -100,9 +103,8 @@ Test (are_types_valid_func, test_are_types_valid)
     cr_assert(are_types_valid(args, sti, 3) == 0);
 }
 
-Test (i_has_index_func, test_i_has_index)
+Test (i_has_index_func, test_i_has_index, .init=cr_redirect_stdout)
 {
-    args_t *args = malloc(sizeof(args_t));
     int live = 1;
     int zjump = 9;
     int ldi = 10;
@@ -121,7 +123,8 @@ Test (i_has_index_func, test_i_has_index)
     cr_assert(i_has_index(live, 2) == 0);
 }
 
-Test (instruction_reader_func, test_instruction_reader)
+Test (instruction_reader_func, test_instruction_reader,
+.init=cr_redirect_stdout)
 {
     champ_t *champ = malloc(sizeof(champ_t));
     char *map = malloc(sizeof(char) * (MEM_SIZE + 1));
@@ -153,7 +156,8 @@ Test (instruction_reader_func, test_instruction_reader)
     cr_assert(champ->args.code == add);
 }
 
-Test (setup_all_champ_for_game_func, test_setup_all_champ_for_game)
+Test (setup_all_champ_for_game_func, test_setup_all_champ_for_game,
+.init=cr_redirect_stdout)
 {
     champ_t *coucou = malloc(sizeof(champ_t));
     champ_t *suite = malloc(sizeof(champ_t));
@@ -169,7 +173,7 @@ Test (setup_all_champ_for_game_func, test_setup_all_champ_for_game)
     cr_assert(coucou == *get_champ_struct());
 }
 
-Test (setup_valid_num_func, test_setup_valid_num)
+Test (setup_valid_num_func, test_setup_valid_num, .init=cr_redirect_stdout)
 {
     champ_t *coucou = malloc(sizeof(champ_t));
     champ_t *suite = malloc(sizeof(champ_t));
@@ -192,7 +196,8 @@ Test (setup_valid_num_func, test_setup_valid_num)
         cr_assert(valid_num[i] == cmp[i]);
 }
 
-Test (set_champ_real_num_func, test_set_champ_real_num)
+Test (set_champ_real_num_func, test_set_champ_real_num,
+.init=cr_redirect_stderr)
 {
     champ_t *coucou = malloc(sizeof(champ_t));
     champ_t *suite = malloc(sizeof(champ_t));
@@ -216,7 +221,7 @@ Test (set_champ_real_num_func, test_set_champ_real_num)
     cr_assert(follow->param.champ_nbr == 3);
 }
 
-Test (check_same_nbr_func, test_check_same_nbr)
+Test (check_same_nbr_func, test_check_same_nbr, .init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -228,29 +233,33 @@ Test (check_same_nbr_func, test_check_same_nbr)
     cr_assert(check_same_nbr(param) == 1);
 }
 
-Test (check_dump_no_arg, test_check_dump_no_arg, .exit_code = 84)
+Test (check_dump_no_arg, test_check_dump_no_arg, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     check_dump(NULL, NULL);
 }
 
-Test (check_dump_already_dump, test_check_dump_already_dump, .exit_code = 84)
+Test (check_dump_already_dump, test_check_dump_already_dump, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
     my_memset(param, 0, sizeof(param_argv_t));
-    check_dump(param, "bite");
+    check_dump(param, "test");
 }
 
-Test (check_bad_dump, test_check_bad_dump, .exit_code = 84)
+Test (check_bad_dump, test_check_bad_dump, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
     my_memset(param, 0, sizeof(param_argv_t));
     param->dump_cycle = -1;
-    check_dump(param, "bite");
+    check_dump(param, "test");
 }
 
-Test (check_inf_dump, test_check_inf_dump, .exit_code = 84)
+Test (check_inf_dump, test_check_inf_dump, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -259,7 +268,7 @@ Test (check_inf_dump, test_check_inf_dump, .exit_code = 84)
     check_dump(param, "13527828763632867867126736");
 }
 
-Test (check_nice_dump, test_check_nice_dump)
+Test (check_nice_dump, test_check_nice_dump, .init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -268,12 +277,14 @@ Test (check_nice_dump, test_check_nice_dump)
     check_dump(param, "50");
 }
 
-Test (check_no_arg_num, test_check_no_arg_num, .exit_code = 84)
+Test (check_no_arg_num, test_check_no_arg_num, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     check_num(NULL, NULL);
 }
 
-Test (check_num_specifie, test_check_num_specifie, .exit_code = 84)
+Test (check_num_specifie, test_check_num_specifie, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -282,7 +293,8 @@ Test (check_num_specifie, test_check_num_specifie, .exit_code = 84)
     check_num(param, "50");
 }
 
-Test (check_bad_num_impose, test_check_bad_num_impose, .exit_code = 84)
+Test (check_bad_num_impose, test_check_bad_num_impose, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -290,7 +302,8 @@ Test (check_bad_num_impose, test_check_bad_num_impose, .exit_code = 84)
     check_num(param, "-50");
 }
 
-Test (check_bad_alpha_impose, test_check_bad_alpha_impose, .exit_code = 84)
+Test (check_bad_alpha_impose, test_check_bad_alpha_impose, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -298,7 +311,7 @@ Test (check_bad_alpha_impose, test_check_bad_alpha_impose, .exit_code = 84)
     check_num(param, "78163761978635967153967153");
 }
 
-Test (check_nice_num, test_check_nice_num)
+Test (check_nice_num, test_check_nice_num, .init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -306,12 +319,14 @@ Test (check_nice_num, test_check_nice_num)
     check_num(param, "3");
 }
 
-Test (check_no_arg_adress, test_check_no_arg_adress, .exit_code = 84)
+Test (check_no_arg_adress, test_check_no_arg_adress, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     check_address(NULL, NULL);
 }
 
-Test (check_adress_specifie, test_check_adress_specifie, .exit_code = 84)
+Test (check_adress_specifie, test_check_adress_specifie, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -320,7 +335,8 @@ Test (check_adress_specifie, test_check_adress_specifie, .exit_code = 84)
     check_address(param, "50");
 }
 
-Test (check_bad_adress_impose, test_check_bad_adress_impose, .exit_code = 84)
+Test (check_bad_adress_impose, test_check_bad_adress_impose, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -329,7 +345,8 @@ Test (check_bad_adress_impose, test_check_bad_adress_impose, .exit_code = 84)
     check_address(param, "-50");
 }
 
-Test (check_alpha_adress_impose, test_check_alpha_adress_impo, .exit_code = 84)
+Test (check_alpha_adress_impose, test_check_alpha_adress_impo, .exit_code = 84,
+.init=cr_redirect_stderr)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
@@ -338,11 +355,72 @@ Test (check_alpha_adress_impose, test_check_alpha_adress_impo, .exit_code = 84)
     check_address(param, "78163761978635967153967153");
 }
 
-Test (check_nice_adress, test_check_nice_adress)
+Test (check_nice_adress, test_check_nice_adress, .init=cr_redirect_stdout)
 {
     param_argv_t *param = malloc(sizeof(param_argv_t));
 
     my_memset(param, 0, sizeof(param_argv_t));
     param->adress_next = -1;
     check_address(param, "3");
+}
+
+Test (get_num_of_champ_func, test_get_num_of_champ)
+{
+    champ_t *coucou = malloc(sizeof(champ_t));
+    champ_t *suite = malloc(sizeof(champ_t));
+    champ_t *follow = malloc(sizeof(champ_t));
+
+    my_memset(coucou, 0, sizeof(champ_t));
+    my_memset(suite, 0, sizeof(champ_t));
+    my_memset(follow, 0, sizeof(champ_t));
+    coucou->next = suite;
+    suite->next = follow;
+    follow->next = NULL;
+    cr_assert(get_num_of_champ(&coucou) == 3);
+}
+
+Test (create_champ_func, test_create_champ_func, .exit_code = 84,
+.init=cr_redirect_stderr)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    create_champ("test", param, NULL);
+}
+
+Test (create_champ_func_work, test_create_champ_func_work)
+{
+    param_argv_t *param = malloc(sizeof(param_argv_t));
+    champ_t *info_champ = NULL;
+
+    my_memset(param, 0, sizeof(param_argv_t));
+    create_champ("../corewar/champions/pdd.cor", param, &info_champ);
+    param->num_impose[0] = 8;
+    param->index = 0;
+    create_champ("../corewar/champions/pdd.cor", param, &info_champ);
+    param->num_impose[0] = 0;
+    create_champ("../corewar/champions/pdd.cor", param, &info_champ);
+}
+
+Test (sort_champ_func, test_sort_champ_func)
+{
+    champ_t *coucou = malloc(sizeof(champ_t));
+    champ_t *suite = malloc(sizeof(champ_t));
+    champ_t *follow = malloc(sizeof(champ_t));
+    champ_t *tmp = NULL;
+
+    my_memset(coucou, 0, sizeof(champ_t));
+    my_memset(suite, 0, sizeof(champ_t));
+    my_memset(follow, 0, sizeof(champ_t));
+    coucou->next = suite;
+    suite->next = follow;
+    follow->next = NULL;
+    coucou->param.champ_nbr = 3;
+    suite->param.champ_nbr = 2;
+    follow->param.champ_nbr = 1;
+    tmp = sort_my_list(coucou);
+    for (int i = 0; i < 3; i++) {
+        cr_assert(tmp->param.champ_nbr == i + 1);
+        tmp = tmp->next;
+    }
 }
