@@ -7,7 +7,7 @@
 
 #include "corewar_include/op.h"
 
-int help_message(char *name_binarie)
+static int help_message(char *name_binarie)
 {
     write(1, "USAGE\n    ", 10);
     my_putstr(name_binarie);

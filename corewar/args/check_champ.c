@@ -7,6 +7,20 @@
 
 #include "corewar_include/op.h"
 
+int get_alive_champs(champ_t *champs)
+{
+    int ids[4] = {0, 0, 0, 0};
+    int nb = 0;
+
+    while (champs) {
+        ids[champs->param.champ_nbr]++;
+        champs = champs->next;
+    }
+    for (int i = 0; i < 4; i++)
+        nb += (ids[i] ? 1 : 0);
+    return nb;
+}
+
 int get_num_of_champ(champ_t **info_champ)
 {
     champ_t *save = *info_champ;

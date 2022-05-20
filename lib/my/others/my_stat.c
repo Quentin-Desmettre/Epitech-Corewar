@@ -6,6 +6,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 long long int my_stat(char *file, int nbline_or_nbchar)
 {
@@ -20,6 +21,8 @@ long long int my_stat(char *file, int nbline_or_nbchar)
         return (-1);
     while (return_getline > 0) {
         return_getline = getline(&buf, &bufsize, fd);
+        free(buf);
+        buf = NULL;
         nb_char += return_getline;
         len++;
     }
