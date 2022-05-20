@@ -21,7 +21,7 @@ void check_alive_champ(champ_t **champ, int need_dump, char *map)
         head->is_alive = 0;
         head = head->next;
     }
-    if (!(*champ) || get_num_of_champ(champ) == 1) {
+    if (!(*champ) || get_alive_champs(*champ) == 1) {
         need_dump ? dump_print(map) : 0;
         head = last_to_live(NULL);
         if (last_to_live(NULL))
@@ -31,7 +31,7 @@ void check_alive_champ(champ_t **champ, int need_dump, char *map)
     all_champs(champ);
 }
 
-void add_forks(void)
+static void add_forks(void)
 {
     champ_t **all = all_champs(NULL);
     champ_t *forks = *fork_list();
@@ -46,7 +46,7 @@ void add_forks(void)
     *fork_list() = NULL;
 }
 
-void exec_champions(char *map, champ_t *champions)
+static void exec_champions(char *map, champ_t *champions)
 {
     champ_t *champ = champions;
 

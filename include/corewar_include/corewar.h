@@ -130,5 +130,6 @@ champ_t **all_champs(champ_t **new);
 champ_t **fork_list(void);
 void increase_counter(void);
 void replace_indirects(champ_t *champ, char *arena);
+int get_alive_champs(champ_t *champs);
 
 #endif /*COREWAR_H*/

@@ -41,7 +41,7 @@ char *str, char *str_next, int *index)
     return (0);
 }
 
-void error_on_check_argv(param_argv_t *param)
+static void error_on_check_argv(param_argv_t *param)
 {
     if (check_same_nbr(param)) {
         write(2, "double definition of prog_number.\n", 34);
