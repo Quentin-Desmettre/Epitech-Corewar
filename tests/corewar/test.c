@@ -104,13 +104,73 @@ Test (i_has_index_func, test_i_has_index)
 {
     args_t *args = malloc(sizeof(args_t));
     int live = 1;
+    int zjump = 9;
+    int ldi = 10;
+    int lldi = 14;
+    int sti = 11;
+    int fork = 12;
+    int lfork = 15;
 
-    my_memset(args, 0, sizeof(args_t));
-    args->type[0] = T_DIR;
-    cr_assert(size_of_arg(live, 1, args->type) == DIR_SIZE);
-    args->type[0] = T_REG;
-    args->type[1] = T_REG;
-    args->type[2] = T_IND;
-    cr_assert(size_of_arg(live, 1, args->type) == 1);
-    cr_assert(size_of_arg(live, 2, args->type) == IND_SIZE);
+    cr_assert(i_has_index(zjump, 1) == 1);
+    cr_assert(i_has_index(ldi, 2) == 1);
+    cr_assert(i_has_index(lldi, 2) == 1);
+    cr_assert(i_has_index(lldi, 3) == 0);
+    cr_assert(i_has_index(sti, 2) == 1);
+    cr_assert(i_has_index(fork, 2) == 1);
+    cr_assert(i_has_index(lfork, 2) == 1);
+    cr_assert(i_has_index(live, 2) == 0);
+}
+
+Test (instruction_reader_func, test_instruction_reader)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+    char *map = malloc(sizeof(char) * (MEM_SIZE + 1));
+    int live = 1;
+    int add = 4;
+    champ->param.champ_nbr = 2;
+
+    my_memset(map, 0, MEM_SIZE);
+    my_memset(champ, 0, sizeof(champ_t));
+    map[0] = live;
+    map[1] = champ->param.champ_nbr;
+    instruction_reader(map, champ);
+    cr_assert(champ->args.code == live);
+    my_memset(map, 0, MEM_SIZE);
+    my_memset(champ, 0, sizeof(champ_t));
+    instruction_reader(map, champ);
+    cr_assert(champ->pc == 1);
+    champ->pc = 0;
+    map[0] = 17;
+    instruction_reader(map, champ);
+    cr_assert(champ->pc == 1);
+    champ->pc = 0;
+    map[0] = add;
+    map[1] = 0b01010100;
+    map[2] = 1;
+    map[3] = 3;
+    map[4] = 6;
+    instruction_reader(map, champ);
+    cr_assert(champ->args.code == add);
+}
+
+Test (setup_all_champ_for_game_func, test_setup_all_champ_for_game)
+{
+    champ_t *coucou = malloc(sizeof(champ_t));
+    champ_t *suite = malloc(sizeof(champ_t));
+    champ_t *follow = malloc(sizeof(champ_t));
+
+    my_memset(coucou, 0, sizeof(champ_t));
+    my_memset(suite, 0, sizeof(champ_t));
+    my_memset(follow, 0, sizeof(champ_t));
+    coucou->next = suite;
+    suite->next = follow;
+    follow->next = NULL;
+    setup_all_champ_for_game(&coucou);
+    cr_assert(coucou == *get_champ_struct());
+}
+
+Test (corewar_alive_champ, test_corewar_alive_champ, .exit_code = 84)
+{
+    champ_t *coucou = malloc(sizeof(champ_t));
+    my_memset(coucou, 0, sizeof(champ_t));
 }
