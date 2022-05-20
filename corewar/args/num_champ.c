@@ -40,18 +40,6 @@ void set_champ_real_num(champ_t **info_champ, int valid_num[][4])
     (*info_champ) = save;
 }
 
-void change_all_nb_champ(champ_t **info_champ, int nb)
-{
-    champ_t *save = *info_champ;
-
-    while (*info_champ) {
-        if (nb <= (*info_champ)->param.champ_nbr)
-            (*info_champ)->param.champ_nbr += 1;
-        (*info_champ) = (*info_champ)->next;
-    }
-    (*info_champ) = save;
-}
-
 int check_same_nbr(param_argv_t *param)
 {
     int error = 0;

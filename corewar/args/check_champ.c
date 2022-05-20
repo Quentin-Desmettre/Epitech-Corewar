@@ -55,7 +55,7 @@ void setup_all_champ_for_game(champ_t **info_champ)
     *tmp = *info_champ;
 }
 
-void check_champ(int nb_to_change, champ_t **info_champ)
+void check_champ(champ_t **info_champ)
 {
     int valid_num[4] = {1, 2, 3, 4};
     int number_of_champ = get_num_of_champ(info_champ);
@@ -66,9 +66,5 @@ void check_champ(int nb_to_change, champ_t **info_champ)
     }
     setup_valid_num(info_champ, &valid_num);
     set_champ_real_num(info_champ, &valid_num);
-    if (nb_to_change) {
-        change_all_nb_champ(info_champ, nb_to_change);
-        delete_champ(info_champ);
-    }
     fill_header_champ(info_champ);
 }
