@@ -72,8 +72,8 @@ void change_all_nb_champ(champ_t **info_champ, int nb);
 int check_same_nbr(param_argv_t *param);
 
 //arg manage
-param_argv_t *init_value(void);
 void check_argv(int *ac, char **av, int *dump_cycle, champ_t **info_champ);
+void fill_header_champ(champ_t **info_champ);
 
 //endian
 void convert_endian(int *nbr);
