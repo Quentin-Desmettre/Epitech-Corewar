@@ -406,12 +406,12 @@ Test (create_champ_func_work, test_create_champ_func_work)
     champ_t *info_champ = NULL;
 
     my_memset(param, 0, sizeof(param_argv_t));
-    create_champ("../corewar/champions/pdd.cor", param, &info_champ);
+    create_champ("pdd.cor", param, &info_champ);
     param->num_impose[0] = 8;
     param->index = 0;
-    create_champ("../corewar/champions/pdd.cor", param, &info_champ);
+    create_champ("pdd.cor", param, &info_champ);
     param->num_impose[0] = 0;
-    create_champ("../corewar/champions/pdd.cor", param, &info_champ);
+    create_champ("pdd.cor", param, &info_champ);
 }
 
 Test (sort_champ_func, test_sort_champ_func)
