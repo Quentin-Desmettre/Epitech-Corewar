@@ -64,7 +64,7 @@ Test (everything, everything, .init=cr_redirect_stderr)
             system("mv *.cor ref_cor");
         cr_assert(my_exit_code == ref_exit);
         if (!ref_exit) {
-            cr_assert(WEXITSTATUS(system("diff my_cor ref_cor")) == 0);
+            cr_expect(WEXITSTATUS(system("diff my_cor ref_cor")) == 0);
             system("rm my_cor ref_cor");
         }
     }

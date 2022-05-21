@@ -302,6 +302,11 @@ int search_for_label(command_t *current, int index_of_label, list_t *labels);
 /// @return The number of byte effectively written.
 int write_command(command_t *cmd, int fd);
 
+void get_dir(char *name, char *word, command_t *c, int i);
+void get_label(int is_index, command_t *c, char *word);
+void get_ind(command_t *c, char *word);
+void get_reg(char *word, command_t *c);
+
 /// @brief Add a 2-byte integer to the command's parameters
 /// @param c The command
 /// @param i The value to add

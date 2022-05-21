@@ -5,6 +5,9 @@
 ** TODO: description
 */
 
+/// @file corewar.h
+/// @brief Main corewar header
+
 #ifndef COREWAR_H
     #define COREWAR_H
     #include "op.h"
