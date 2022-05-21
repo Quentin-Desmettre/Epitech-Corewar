@@ -30,6 +30,8 @@ fclean	:
 tests_run: fclean
 	echo "Testing ASM..."
 	make tests -C asm
+	echo "Testing COREWAR..."
+	make tests -C corewar
 	gcovr --html --html-details -o corewar.html
 	find . -name "*.o" -delete
 	mkdir -p test_report

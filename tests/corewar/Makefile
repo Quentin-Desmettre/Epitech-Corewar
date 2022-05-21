@@ -6,7 +6,8 @@
 ##
 
 SRC = \
-	test.c
+	test.c \
+	test_quentin.c
 
 OBJ = $(SRC:.c=.o)
 
