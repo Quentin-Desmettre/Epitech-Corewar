@@ -42,7 +42,6 @@ Test (corewar_alive_champ, test_corewar_alive_champ, .exit_code = 0,
 {
     champ_t *to_cmp = malloc(sizeof(champ_t));
     champ_t *ouais = malloc(sizeof(champ_t));
-    champ_t *test = NULL;
     char *map = malloc(sizeof(char) * (MEM_SIZE + 1));
     my_memset(map, 0, MEM_SIZE);
     my_memset(to_cmp, 0, sizeof(champ_t));
@@ -135,14 +134,16 @@ Test (i_has_index_func, test_i_has_index, .init=cr_redirect_stdout)
     cr_assert(i_has_index(live, 2) == 0);
 }
 
-Test (size_of_arg_func, test_size_of_arg, .init=cr_redirect_stdout)
+Test (size_of_arg_func, test_size_of_arg)
 {
     int zjump = 9;
     char types[3] = {'2', T_REG, T_IND};
+    int cr_return_value[4] = {IND_SIZE, 1, IND_SIZE, DIR_SIZE};
 
     for (int i = 0; i < 3; i++) {
-        size_of_arg(zjump, i, types);
+        cr_assert(size_of_arg(zjump, i, types) == cr_return_value[i]);
     }
+    cr_assert(size_of_arg(4, 0, types) == cr_return_value[3]);
 }
 
 Test (instruction_reader_func, test_instruction_reader,
@@ -297,6 +298,7 @@ Test (check_nice_dump, test_check_nice_dump, .init=cr_redirect_stderr)
     my_memset(param, 0, sizeof(param_argv_t));
     param->dump_cycle = -1;
     check_dump(param, "50");
+    cr_assert(param->dump_cycle == 50);
 }
 
 Test (check_no_arg_num, test_check_no_arg_num, .exit_code = 84,
@@ -339,6 +341,7 @@ Test (check_nice_num, test_check_nice_num, .init=cr_redirect_stderr)
 
     my_memset(param, 0, sizeof(param_argv_t));
     check_num(param, "3");
+    cr_assert(param->num_impose[0] == 3);
 }
 
 Test (check_no_arg_adress, test_check_no_arg_adress, .exit_code = 84,
@@ -384,6 +387,7 @@ Test (check_nice_adress, test_check_nice_adress, .init=cr_redirect_stdout)
     my_memset(param, 0, sizeof(param_argv_t));
     param->adress_next = -1;
     check_address(param, "3");
+    cr_assert(param->adress_next == 3);
 }
 
 Test (get_num_of_champ_func, test_get_num_of_champ)
@@ -422,6 +426,11 @@ Test (create_champ_func_work, test_create_champ_func_work)
     create_champ("../tests/corewar/cor_binary/pdd.cor", param, &info_champ);
     param->num_impose[0] = 0;
     create_champ("../tests/corewar/cor_binary/pdd.cor", param, &info_champ);
+    for (int i = 0; i < 3; i++) {
+        cr_assert(my_strcmp("../tests/corewar/cor_binary/pdd.cor",
+        info_champ->name_champ) == 0);
+        info_champ = info_champ->next;
+    }
 }
 
 Test (sort_champ_func, test_sort_champ_func)
@@ -523,6 +532,8 @@ Test (exec_instruction_func, check_exec_instruction)
     champ->instruction[4] = 6;
     champ->args.code = 4;
     exec_instructions(champ, map);
+    cr_assert(champ->cycle_to_wait == -1);
+    cr_assert(champ->cycle == 0);
 }
 
 Test (fill_header_champ_func_bad_size, test_fill_header_champ, .exit_code = 84,
@@ -585,6 +596,7 @@ Test (fill_header_champ_func, test_fill_header_champ)
     champ->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     champ2->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     fill_header_champ(&champ);
+    cr_assert(champ->header.magic == COREWAR_EXEC_MAGIC);
 }
 
 
@@ -610,7 +622,8 @@ Test (cpy_in_arena_func, test_cpy_in_arena)
     instruction[2] = 1;
     instruction[3] = 3;
     instruction[4] = 6;
-    cpy_in_arena(arena, instruction, -50, 20);
+    cpy_in_arena(arena, instruction, -MEM_SIZE, 20);
+    cr_assert(arena[0] == instruction[0]);
 }
 
 Test (memcpy_cor_func, test_memcpy_cor)
@@ -625,7 +638,8 @@ Test (memcpy_cor_func, test_memcpy_cor)
     instruction[2] = 1;
     instruction[3] = 3;
     instruction[4] = 6;
-    memcpy_cor(instruction, arena, -50, 20);
+    memcpy_cor(instruction, arena, -MEM_SIZE, 20);
+    cr_assert(arena[0] == instruction[0]);
 }
 
 Test (cor_strcpy_func, test_cor_strcpy)
@@ -640,7 +654,8 @@ Test (cor_strcpy_func, test_cor_strcpy)
     instruction[2] = 1;
     instruction[3] = 3;
     instruction[4] = 6;
-    cor_strcpy(arena, instruction, (int [2]){-50, 0}, 20);
+    cor_strcpy(arena, instruction, (int [2]){MEM_SIZE, 0}, 20);
+    cr_assert(arena[0] == instruction[0]);
 }
 
 Test (check_champ_error_func, check_champ_func, .exit_code = 84,
@@ -666,4 +681,5 @@ Test (check_champ_func, check_champ_func)
     champ->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     champ2->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     check_champ(&champ);
+    cr_assert(champ->header.magic == COREWAR_EXEC_MAGIC);
 }

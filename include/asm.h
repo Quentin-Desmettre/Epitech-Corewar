@@ -169,7 +169,7 @@ int getnbr_overflow(char *str);
 /// @param f The FILE* we are currently reading.
 /// @param line A pointer to an integer,
 /// representing the line we're currently on.
-/// @return char** A string array containg all the labels.
+/// @return char **A string array containg all the labels.
 /// If the labels are not linked to any command, (*base_words) is set to NULL.
 /// Else, (*base_words) is set to be the command's arguments.
 char **get_labels(char ***base_words, FILE *f, int *line);
@@ -182,7 +182,7 @@ int is_label_valid(char const *arg);
 /// @brief Create a command object, built with the given arguments.
 /// @param words The command's arguments
 /// @param prev The previous command
-/// @return command_t* representing the built command.
+/// @return command_t *representing the built command.
 command_t *create_command(char **words, command_t *prev);
 
 /// @brief Check if the given file has any error.
