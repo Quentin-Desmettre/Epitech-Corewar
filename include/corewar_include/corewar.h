@@ -11,7 +11,8 @@
 #ifndef COREWAR_H
     #define COREWAR_H
     #include "op.h"
-    #define IS_SPECIAL_CASE(x) contain((char []){1, 9, 12, 15, 0}, x)
+    #define IS_SPECIAL_CASE(x) contain((char []){1, 9, 12, 15, 0}, (x))
+    #define HAS_MOD_IDX(x) contain((char []){2, 3, 6, 7, 8, 10, 11, 0}, (x))
 
 // ARGS
 typedef struct {

@@ -7,18 +7,10 @@
 
 #include "corewar.h"
 
-static int has_mod_idx(int code)
-{
-    if (code == 2 || code == 3 || code == 6 || code == 7 || code == 8 ||
-    code == 10 || code == 11)
-        return 1;
-    return 0;
-}
-
 static void get_indirect_value(args_t *arg, char *map, int index, int pc)
 {
     int value = arg->args[index];
-    int address = pc + (has_mod_idx(arg->code) ?
+    int address = pc + (HAS_MOD_IDX(arg->code) ?
     value % IDX_MOD : value);
 
     if (arg->code == 3)
@@ -30,7 +22,7 @@ static void get_indirect_value(args_t *arg, char *map, int index, int pc)
 static void manage_ldi(int pc, args_t *arg, char *arena, int registers[16])
 {
     int value = arg->args[0];
-    int address = pc + (has_mod_idx(arg->code) ? value % IDX_MOD : value);
+    int address = pc + (HAS_MOD_IDX(arg->code) ? value % IDX_MOD : value);
     int16_t first;
     int sum;
 
@@ -54,7 +46,7 @@ static void manage_ldi(int pc, args_t *arg, char *arena, int registers[16])
 static void manage_sti(int pc, args_t *arg, char *arena, int registers[16])
 {
     int value = arg->args[1];
-    int address = pc + (has_mod_idx(arg->code) ? value % IDX_MOD : value);
+    int address = pc + value % IDX_MOD;
     int16_t first;
     int sum;
 
