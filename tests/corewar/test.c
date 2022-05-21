@@ -135,6 +135,16 @@ Test (i_has_index_func, test_i_has_index, .init=cr_redirect_stdout)
     cr_assert(i_has_index(live, 2) == 0);
 }
 
+Test (size_of_arg_func, test_size_of_arg, .init=cr_redirect_stdout)
+{
+    int zjump = 9;
+    char types[3] = {'2', T_REG, T_IND};
+
+    for (int i = 0; i < 3; i++) {
+        size_of_arg(zjump, i, types);
+    }
+}
+
 Test (instruction_reader_func, test_instruction_reader,
 .init=cr_redirect_stdout)
 {
@@ -406,12 +416,12 @@ Test (create_champ_func_work, test_create_champ_func_work)
     champ_t *info_champ = NULL;
 
     my_memset(param, 0, sizeof(param_argv_t));
-    create_champ("pdd.cor", param, &info_champ);
+    create_champ("../tests/corewar/pdd.cor", param, &info_champ);
     param->num_impose[0] = 8;
     param->index = 0;
-    create_champ("pdd.cor", param, &info_champ);
+    create_champ("../tests/corewar/pdd.cor", param, &info_champ);
     param->num_impose[0] = 0;
-    create_champ("pdd.cor", param, &info_champ);
+    create_champ("../tests/corewar/pdd.cor", param, &info_champ);
 }
 
 Test (sort_champ_func, test_sort_champ_func)
@@ -495,4 +505,165 @@ Test (check_set_map_func_err, test_set_map_err, .init=cr_redirect_stderr,
     champ->param.adress = 0;
     champ->param.adress_impose = 1;
     map = set_map(&champ, map);
+}
+
+Test (exec_instruction_func, check_exec_instruction)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+    char *map = malloc(sizeof(char) * (MEM_SIZE + 1));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    my_memset(map, 0, sizeof(char) * (MEM_SIZE));
+    champ->instruction = malloc(sizeof(char) * 20);
+    my_memset(champ->instruction, 0, sizeof(char) * 20);
+    champ->instruction[0] = 4;
+    champ->instruction[1] = 0b01010100;
+    champ->instruction[2] = 1;
+    champ->instruction[3] = 3;
+    champ->instruction[4] = 6;
+    champ->args.code = 4;
+    exec_instructions(champ, map);
+}
+
+Test (fill_header_champ_func_bad_size, test_fill_header_champ, .exit_code = 84,
+.init=cr_redirect_stderr)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+    champ_t *champ2 = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    my_memset(champ2, 0, sizeof(champ_t));
+    champ->next = champ2;
+    champ2->next = NULL;
+    champ->name_champ = "../tests/corewar/corrupted_size.cor";
+    champ2->name_champ = "../tests/corewar/pdd.cor";
+    fill_header_champ(&champ);
+}
+
+Test (fill_header_champ_func_bad_file, test_fill_header_champ, .exit_code = 84,
+.init=cr_redirect_stderr)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    champ->next = NULL;
+    champ->name_champ = "test";
+    fill_header_champ(&champ);
+}
+
+Test (fill_header_champ_func_bad_magic, test_fill_header_champ, .exit_code = 84,
+.init=cr_redirect_stderr)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    champ->next = NULL;
+    champ->name_champ = "../tests/corewar/corrupted_magic.cor";
+    fill_header_champ(&champ);
+}
+
+Test (fill_header_champ_func_bad_head, test_fill_header_champ, .exit_code = 84,
+.init=cr_redirect_stderr)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    champ->next = NULL;
+    champ->name_champ = "../tests/corewar/corrupted_header.cor";
+    fill_header_champ(&champ);
+}
+
+Test (fill_header_champ_func, test_fill_header_champ)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+    champ_t *champ2 = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    my_memset(champ2, 0, sizeof(champ_t));
+    champ->next = champ2;
+    champ2->next = NULL;
+    champ->name_champ = "../tests/corewar/pdd.cor";
+    champ2->name_champ = "../tests/corewar/pdd.cor";
+    fill_header_champ(&champ);
+}
+
+
+Test (increase_counter_func, test_increase_counter)
+{
+    int test = *get_cycle_to_die();
+
+    for (int i = 0; i < 50; i++) {
+        increase_counter();
+    }
+    cr_assert(test - 5 == *get_cycle_to_die());
+}
+
+Test (cpy_in_arena_func, test_cpy_in_arena)
+{
+    char *arena = malloc(sizeof(char) * (MEM_SIZE + 1));
+    char *instruction = malloc(sizeof(char) * 20);
+
+    my_memset(arena, 0, sizeof(char) * (MEM_SIZE));
+    my_memset(instruction, 0, sizeof(char) * 20);
+    instruction[0] = 4;
+    instruction[1] = 0b01010100;
+    instruction[2] = 1;
+    instruction[3] = 3;
+    instruction[4] = 6;
+    cpy_in_arena(arena, instruction, -50, 20);
+}
+
+Test (memcpy_cor_func, test_memcpy_cor)
+{
+    char *arena = malloc(sizeof(char) * (MEM_SIZE + 1));
+    char *instruction = malloc(sizeof(char) * 20);
+
+    my_memset(arena, 0, sizeof(char) * (MEM_SIZE));
+    my_memset(instruction, 0, sizeof(char) * 20);
+    instruction[0] = 4;
+    instruction[1] = 0b01010100;
+    instruction[2] = 1;
+    instruction[3] = 3;
+    instruction[4] = 6;
+    memcpy_cor(instruction, arena, -50, 20);
+}
+
+Test (cor_strcpy_func, test_cor_strcpy)
+{
+    char *arena = malloc(sizeof(char) * (MEM_SIZE + 1));
+    char *instruction = malloc(sizeof(char) * 20);
+
+    my_memset(arena, 0, sizeof(char) * (MEM_SIZE));
+    my_memset(instruction, 0, sizeof(char) * 20);
+    instruction[0] = 4;
+    instruction[1] = 0b01010100;
+    instruction[2] = 1;
+    instruction[3] = 3;
+    instruction[4] = 6;
+    cor_strcpy(arena, instruction, (int [2]){-50, 0}, 20);
+}
+
+Test (check_champ_error_func, check_champ_func, .exit_code = 84,
+.init=cr_redirect_stderr)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    champ->next = NULL;
+    champ->name_champ = "../tests/corewar/pdd.cor";
+    check_champ(&champ);
+}
+
+Test (check_champ_func, check_champ_func)
+{
+    champ_t *champ = malloc(sizeof(champ_t));
+    champ_t *champ2 = malloc(sizeof(champ_t));
+
+    my_memset(champ, 0, sizeof(champ_t));
+    my_memset(champ2, 0, sizeof(champ_t));
+    champ->next = champ2;
+    champ2->next = NULL;
+    champ->name_champ = "../tests/corewar/pdd.cor";
+    champ2->name_champ = "../tests/corewar/pdd.cor";
+    check_champ(&champ);
 }
