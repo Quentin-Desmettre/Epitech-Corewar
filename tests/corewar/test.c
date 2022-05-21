@@ -416,12 +416,12 @@ Test (create_champ_func_work, test_create_champ_func_work)
     champ_t *info_champ = NULL;
 
     my_memset(param, 0, sizeof(param_argv_t));
-    create_champ("../tests/corewar/pdd.cor", param, &info_champ);
+    create_champ("../tests/corewar/cor_binary/pdd.cor", param, &info_champ);
     param->num_impose[0] = 8;
     param->index = 0;
-    create_champ("../tests/corewar/pdd.cor", param, &info_champ);
+    create_champ("../tests/corewar/cor_binary/pdd.cor", param, &info_champ);
     param->num_impose[0] = 0;
-    create_champ("../tests/corewar/pdd.cor", param, &info_champ);
+    create_champ("../tests/corewar/cor_binary/pdd.cor", param, &info_champ);
 }
 
 Test (sort_champ_func, test_sort_champ_func)
@@ -535,8 +535,8 @@ Test (fill_header_champ_func_bad_size, test_fill_header_champ, .exit_code = 84,
     my_memset(champ2, 0, sizeof(champ_t));
     champ->next = champ2;
     champ2->next = NULL;
-    champ->name_champ = "../tests/corewar/corrupted_size.cor";
-    champ2->name_champ = "../tests/corewar/pdd.cor";
+    champ->name_champ = "../tests/corewar/cor_binary/corrupted_size.cor";
+    champ2->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     fill_header_champ(&champ);
 }
 
@@ -558,7 +558,7 @@ Test (fill_header_champ_func_bad_magic, test_fill_header_champ, .exit_code = 84,
 
     my_memset(champ, 0, sizeof(champ_t));
     champ->next = NULL;
-    champ->name_champ = "../tests/corewar/corrupted_magic.cor";
+    champ->name_champ = "../tests/corewar/cor_binary/corrupted_magic.cor";
     fill_header_champ(&champ);
 }
 
@@ -569,7 +569,7 @@ Test (fill_header_champ_func_bad_head, test_fill_header_champ, .exit_code = 84,
 
     my_memset(champ, 0, sizeof(champ_t));
     champ->next = NULL;
-    champ->name_champ = "../tests/corewar/corrupted_header.cor";
+    champ->name_champ = "../tests/corewar/cor_binary/corrupted_header.cor";
     fill_header_champ(&champ);
 }
 
@@ -582,8 +582,8 @@ Test (fill_header_champ_func, test_fill_header_champ)
     my_memset(champ2, 0, sizeof(champ_t));
     champ->next = champ2;
     champ2->next = NULL;
-    champ->name_champ = "../tests/corewar/pdd.cor";
-    champ2->name_champ = "../tests/corewar/pdd.cor";
+    champ->name_champ = "../tests/corewar/cor_binary/pdd.cor";
+    champ2->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     fill_header_champ(&champ);
 }
 
@@ -650,7 +650,7 @@ Test (check_champ_error_func, check_champ_func, .exit_code = 84,
 
     my_memset(champ, 0, sizeof(champ_t));
     champ->next = NULL;
-    champ->name_champ = "../tests/corewar/pdd.cor";
+    champ->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     check_champ(&champ);
 }
 
@@ -663,7 +663,7 @@ Test (check_champ_func, check_champ_func)
     my_memset(champ2, 0, sizeof(champ_t));
     champ->next = champ2;
     champ2->next = NULL;
-    champ->name_champ = "../tests/corewar/pdd.cor";
-    champ2->name_champ = "../tests/corewar/pdd.cor";
+    champ->name_champ = "../tests/corewar/cor_binary/pdd.cor";
+    champ2->name_champ = "../tests/corewar/cor_binary/pdd.cor";
     check_champ(&champ);
 }
