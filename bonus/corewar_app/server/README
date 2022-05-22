@@ -1,6 +1,8 @@
-[SETUP]
+# Corewar Server
+
+## SETUP
     sudo firewall-cmd --add-port=5001/tcp
     ./run.sh
 
-[BUGS]
+## KNOWN ISSUES
     Champ name = "Error"
