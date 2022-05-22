@@ -110,3 +110,22 @@ Test (functionnal_test_bad_prog_number, check_functionnal_test,
         setup_game(7, av);
     }
 }
+
+Test (functionnal_test_bad_work, check_functionnal_test,
+.init=cr_redirect_stderr, .exit_code = 84)
+{
+    char *res[8] = {"../tests/corewar/cor_binary/42.cor",
+    "../tests/corewar/cor_binary/add.cor",
+    "../tests/corewar/cor_binary/aff.cor",
+    "../tests/corewar/cor_binary/and.cor",
+    "../tests/corewar/cor_binary/bigzork.cor",
+    "../tests/corewar/cor_binary/live.cor",
+    "../tests/corewar/cor_binary/lld.cor",
+    "../tests/corewar/cor_binary/loose.cor"};
+
+    for (int i = 0; i < 8; i++) {
+        char *av[9] = {"./corewar", "-n", "2", res[1], "-n", "0",
+        res[0], "-n", "4"};
+        setup_game(9, av);
+    }
+}
