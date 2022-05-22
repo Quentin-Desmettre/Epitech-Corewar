@@ -44,4 +44,6 @@ functional:
 	echo "See full detail in asm.log."
 
 doc:
-	doxygen corewar.doxy
+	echo "Generating documentation..."
+	doxygen corewar.doxy > /dev/null 2>&1
+	echo "Documentation generated in ./doc/index.html."
