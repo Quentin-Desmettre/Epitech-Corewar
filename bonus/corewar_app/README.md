@@ -1,1 +1,1 @@
-# Corewar
+# Corewar APP + Server
