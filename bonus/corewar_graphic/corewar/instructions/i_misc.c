@@ -11,19 +11,18 @@ int i_live(int arg[3], __attribute__((unused)) champ_t *champ,
 __attribute__((unused)) char *arena)
 {
     champ_t *save = *all_champs(NULL);
-    int has_lived = 0;
+    // int has_lived = 0;
 
     while (save) {
         if (save->param.champ_nbr == arg[0]) {
             save->is_alive = 1;
-            has_lived = 1;
             last_to_live(save);
         }
         save = save->next;
     }
-    if (has_lived)
-        print(MSG_LIVE, last_to_live(NULL)->param.champ_nbr,
-        last_to_live(NULL)->header.prog_name);
+    // if (has_lived)
+    //     print(MSG_LIVE, last_to_live(NULL)->param.champ_nbr,
+    //     last_to_live(NULL)->header.prog_name);
     increase_counter();
     return (0);
 }
@@ -68,8 +67,8 @@ int i_lfork(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
     return (0);
 }
 
-int i_aff(int arg[3], champ_t *champ, __attribute__((unused))char *arena)
+int i_aff(__attribute__((unused))int arg[3], __attribute__((unused))champ_t *champ, __attribute__((unused))char *arena)
 {
-    my_putchar(champ->registers[arg[0]] % 256);
+    // my_putchar(champ->registers[arg[0]] % 256);
     return (0);
 }

@@ -7,16 +7,17 @@
 
 #include "corewar_include/op.h"
 
-void dump_print(char *map)
+void dump_print(__attribute__((unused))char *map)
 {
-    int pos_index = 0;
+    return;
+    // int pos_index = 0;
 
-    for (pos_index = 0; pos_index < 6144; pos_index += 32) {
-        print("%-5X: ", pos_index);
-        for (int i = pos_index; i < pos_index + 32; i++)
-            print("%02hhX ", map[i]);
-        print("\n");
-    }
+    // for (pos_index = 0; pos_index < 6144; pos_index += 32) {
+    //     print("%-5X: ", pos_index);
+    //     for (int i = pos_index; i < pos_index + 32; i++)
+    //         print("%02hhX ", map[i]);
+    //     print("\n");
+    // }
 }
 
 char *set_map(champ_t **champ, char *map)

@@ -46,7 +46,7 @@ char *check_alive_champ(champ_t **champ, int need_dump, char *map)
         need_dump ? dump_print(map) : 0;
         head = last_to_live(NULL);
         if (last_to_live(NULL)) {
-            append_char(&result_string, head->param.champ_nbr, 0);
+            append(&result_string, nbr_to_str(head->param.champ_nbr), 0);
             append(&result_string, " (", 1);
             append(&result_string, head->header.prog_name, 1);
             append(&result_string, ") a gagne.", 1);
