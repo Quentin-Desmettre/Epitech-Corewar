@@ -1,0 +1,13 @@
+*
+!*.h
+!.gitignore
+!*.c
+!Makefile
+!*/
+tests_folder/
+.vscode/
+tester/
+cmake-build-debug/
+champions
+.idea
+github
