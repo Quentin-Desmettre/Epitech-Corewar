@@ -7,7 +7,20 @@
 
 SRC = \
 	test.c \
-	test_quentin.c
+	test_champ_handling.c \
+	test_champ.c \
+	test_check_adress.c \
+	test_check_args.c \
+	test_check_champ.c \
+	test_check_dump_args.c \
+	test_check_num.c \
+	test_header.c \
+	test_instruction1.c \
+	test_instruction2.c \
+	test_instruction3.c \
+	test_setmap.c \
+	test_setup_champ.c \
+	test_str_arena.c \
 
 OBJ = $(SRC:.c=.o)
 
