@@ -9,6 +9,7 @@
 #include <criterion/redirect.h>
 #include "op.h"
 #undef exit
+#include "my_crit.h"
 
 Test (functionnal_test, check_functionnal_test, .init=cr_redirect_stdout)
 {
@@ -26,8 +27,37 @@ Test (functionnal_test, check_functionnal_test, .init=cr_redirect_stdout)
 
         setup_game(3, av);
     }
-    char *av[5] = {"./corewar", res[0], res[1], "-dump", "500"};
+}
 
+Test (fnc, fnc, .init=cr_redirect_stdout)
+{
+    char *res[8] = {"../tests/corewar/cor_binary/42.cor",
+    "../tests/corewar/cor_binary/add.cor",
+    "../tests/corewar/cor_binary/aff.cor",
+    "../tests/corewar/cor_binary/and.cor",
+    "../tests/corewar/cor_binary/bigzork.cor",
+    "../tests/corewar/cor_binary/live.cor",
+    "../tests/corewar/cor_binary/lld.cor",
+    "../tests/corewar/cor_binary/loose.cor"};
+    char *av[5] = {"./corewar", res[0], res[1], "-dump", "500"};
+    char *av2[5] = {"./corewar", res[0], res[1], "-dump", "0"};
+
+    setup_game(5, av2);
+    setup_game(5, av);
+}
+
+Test (forced_fail, forced_fail, .exit_code=84, .init=cr_redirect_stderr)
+{
+    has_to_fail(1, 1);
+    char *res[8] = {"../tests/corewar/cor_binary/42.cor",
+    "../tests/corewar/cor_binary/add.cor",
+    "../tests/corewar/cor_binary/aff.cor",
+    "../tests/corewar/cor_binary/and.cor",
+    "../tests/corewar/cor_binary/bigzork.cor",
+    "../tests/corewar/cor_binary/live.cor",
+    "../tests/corewar/cor_binary/lld.cor",
+    "../tests/corewar/cor_binary/loose.cor"};
+    char *av[5] = {"./corewar", res[0], res[1], "-dump", "500"};
     setup_game(5, av);
 }
 

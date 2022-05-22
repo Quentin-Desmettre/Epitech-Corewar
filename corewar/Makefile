@@ -73,7 +73,7 @@ valgrind:	CFLAGS += -g
 valgrind:	clean $(OBJ2)
 	gcc -o $(NAME) $(OBJ2) $(LIB) $(INCLUDE)
 
-tests: CFLAGS += --coverage
+tests: CFLAGS += --coverage -DCRITERION
 tests: $(OBJ)
 	make -s -C ../lib/my/
 	make -s --no-print-directory -C ../tests/corewar/

@@ -6,6 +6,17 @@
 */
 
 #include "corewar_include/op.h"
+#include "my_crit.h"
+
+int has_to_fail(int change, int new)
+{
+    static int fail = 0;
+
+    if (change)
+        fail = new;
+
+    return fail;
+}
 
 static void check_header(champ_t **info_champ, size_t size)
 {
@@ -38,8 +49,7 @@ static void read_header(champ_t **info_champ, size_t size)
     (*info_champ)->instruction = malloc(sizeof(char) * (size - size_header));
     if (read(fd, (*info_champ)->instruction, (size - size_header)) !=
     (long int)(size - size_header)) {
-        dprint(2, "Error on read\n");
-        exit(84);
+        exit(dprint(2, "Error on read\n") * 0 + 84);
     }
     close(fd);
 }

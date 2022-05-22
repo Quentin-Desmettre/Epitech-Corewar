@@ -36,6 +36,7 @@ tests_run: fclean
 	find . -name "*.o" -delete
 	mkdir -p test_report
 	mv *.html *.css test_report/
+	echo "Test done. See output in test_report/corewar.html."
 
 functional:
 	echo "Testing ASM..."

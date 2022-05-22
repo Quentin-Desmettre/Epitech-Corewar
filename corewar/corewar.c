@@ -82,7 +82,7 @@ static void main_loop(char *map, champ_t *champions, int dump_cycle)
         }
         add_forks();
     }
-    need_dump != -1 ? dump_print(map) : 0;
+    dump_print(map);
 }
 
 void setup_game(int ac, char **av)
