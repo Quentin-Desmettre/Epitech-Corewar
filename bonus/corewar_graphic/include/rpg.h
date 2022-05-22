@@ -76,6 +76,7 @@ typedef struct {
     sfText *byte;
     sfRectangleShape *rect;
     sfVector2i oldMousePos;
+    float zoom;
 } graphic_war_t;
 
 typedef struct {
@@ -88,6 +89,9 @@ typedef struct {
     sfSprite *corewar;
     int is_paused;
     int current_cycle;
+    sfText *winner;
+    sfText *cycle_to_die;
+    sfText *cycle;
 } main_play_t;
 
 typedef enum {

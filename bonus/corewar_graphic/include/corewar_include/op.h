@@ -66,7 +66,9 @@ typedef struct corewar_grap_s {
     int current_cycle;
     char **bytes;
     char **color;
+    int **is_dead;
     int writing;
+    int *cycle_to_die;
 } corewar_grap_t;
 
 
@@ -101,6 +103,6 @@ static const op_t op_tab[] = {
     {0, 0, {0}, 0, 0, 0}
 };
 
-corewar_grap_t **get_graph_struct(void);
+corewar_grap_t *get_graph_struct(void);
 
 #endif

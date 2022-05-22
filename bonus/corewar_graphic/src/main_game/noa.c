@@ -17,7 +17,7 @@ void set_selector_color(graphic_war_t *g, int color)
 
 void set_square_color(graphic_war_t *g, int index)
 {
-    sfColor colors[5] = {sfBlack, {0, 69, 18, 255}, {59, 0, 54, 255}, {1, 0, 89, 255}, {61, 0, 1, 255}};
+    sfColor colors[5] = {sfBlack, {0, 69, 18 * 2, 255}, {59 * 2, 0, 54 * 2, 255}, {1, 0, 89 * 2, 255}, {61 * 2, 0, 1, 255}};
     int color = g->graph->color[g->graph->current_cycle][index];
 
     if (color >= 10)
@@ -49,8 +49,8 @@ void draw_graph(graphic_war_t *g)
     float offset = size.y - (size.x / 8.0 * 96);
     sfVector2f pos = {0, offset / 2};
 
-    for (int j = 0; j < 96; j++) {
-        for (int i = 0; i < 64; i++) {
+    for (int j = 0; j < 64; j++) {
+        for (int i = 0; i < 96; i++) {
             set_square_color(g, index);
             set_letter(g, index);
             sfText_setPosition(g->byte, (sfVector2f){pos.x + 5, pos.y + 5});
@@ -76,7 +76,7 @@ void camera_move_mouse(graphic_war_t *g)
         g->oldMousePos = sfMouse_getPositionRenderWindow(windows);
     pos = (sfVector2f) {(float)g->oldMousePos.x -
     (float)mpos.x, (float)g->oldMousePos.y - (float)mpos.y};
-    sfView_move(g->view, (sfVector2f){pos.x * 2.2, pos.y * 2.2});
+    sfView_move(g->view, (sfVector2f){pos.x * g->zoom, pos.y * g->zoom});
     g->oldMousePos = sfMouse_getPositionRenderWindow(windows);
 }
 
@@ -86,10 +86,14 @@ void ingame_zoom(graphic_war_t *g, sfEvent ev)
         sfRenderTexture_setView(g->rtex, g->view);
         return;
     }
-    if (ev.mouseWheelScroll.delta < 0.0)
+    if (ev.mouseWheelScroll.delta < 0.0) {
         sfView_zoom(g->view, (float)(1.0 / 1.1));
-    else if (ev.mouseWheelScroll.delta > 0.0)
+        g->zoom *= (float)(1.0 / 1.1);
+    }
+    else if (ev.mouseWheelScroll.delta > 0.0) {
         sfView_zoom(g->view, (float)1.1);
+        g->zoom *= 1.1;
+    }
     sfRenderTexture_setView(g->rtex, g->view);
 }
 
@@ -126,5 +130,6 @@ graphic_war_t *create_graphic_war(sfVector2f size, corewar_grap_t *graph)
     sfView_zoom(g->view, (float)25);
     sfView_move(g->view, (sfVector2f){size.x * 5, size.y * 5});
     sfRenderTexture_setView(g->rtex, g->view);
+    g->zoom = 25;
     return (g);
 }
